@@ -4,6 +4,7 @@ export const projectCategories = [
   "Automation",
   "Web Development",
   "Technical Documentation",
+  "Software Architecture",
   "Research",
 ] as const;
 

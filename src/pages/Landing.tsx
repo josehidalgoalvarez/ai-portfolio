@@ -6,6 +6,7 @@ import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
 import Projects from "@/components/Projects";
 import Skills from "@/components/Skills";
+import Certifications from "@/components/Certifications";
 
 export default function Landing() {
   return (
@@ -14,6 +15,7 @@ export default function Landing() {
       <Hero />
       <About />
       <Experience />
+      <Certifications />
       <Projects />
       <Skills />
       <Contact />

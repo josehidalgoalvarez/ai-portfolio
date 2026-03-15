@@ -146,21 +146,6 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    id: "13",
-    title: "Gas Technician Technical Dashboard",
-    description:
-      "A React-based technical dashboard for gas technicians featuring an interactive heating sequence diagram, troubleshooting flowchart, safety KPIs, and TSSA-compliant record verification. Built with a SOLID architecture approach.",
-    category: "Web Development",
-    technologies: [
-      "HTML/CSS/JS",
-      "SOLID Principles",
-      "Interactive SVG",
-      "TSSA Compliance",
-    ],
-    link: "/projects/gas-tech-dashboard/",
-    featured: true,
-  },
-  {
     id: "14",
     title: "HVACHome",
     description:
@@ -181,7 +166,7 @@ export const projects: Project[] = [
     title: "Gas Technician Unit 3 Architecture & Knowledge Base",
     description:
       "Architected and documented a vanilla ES6 JavaScript refactoring of a monolithic Gas Technician study dashboard. Engineered a strict 5-layer dependency hierarchy enforcing SOLID principles—including constructor dependency injection, observer callback patterns, and stateless components (e.g., ChartService, FuelTable). Accompanied by a comprehensive DeepWiki documentation site and an interactive NotebookLM study guide (https://notebooklm.google.com/notebook/64da08f8-a548-4cae-9d53-65be553e0cf2).",
-    category: "Technical Documentation",
+    category: "Software Architecture",
     technologies: [
       "ES6 Modules",
       "SOLID Principles",
