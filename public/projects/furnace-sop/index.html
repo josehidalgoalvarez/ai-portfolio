@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive SOP: Gas Furnace Service & Maintenance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F5F5F4;
+        }
+        .tab-button {
+            transition: all 0.3s ease;
+        }
+        .tab-button.active {
+            background-color: #A8A29E;
+            color: #FFFFFF;
+            font-weight: 700;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        .accordion-header {
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .accordion-header:hover {
+            background-color: #E7E5E4;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+        .progress-bar-fill {
+            transition: width 0.5s ease-in-out;
+        }
+        .checklist-item:has(input:checked) {
+            text-decoration: line-through;
+            color: #78716C;
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-black text-stone-900 mb-2">Interactive SOP: Gas Furnace Service</h1>
+            <p class="text-lg text-stone-600 max-w-3xl mx-auto">Professional procedures for high-efficiency gas furnace inspection, maintenance, and commissioning in compliance with CSA B149.1-25 and Ontario TSSA regulations.</p>
+        </header>
+
+        <div class="w-full max-w-5xl mx-auto">
+            <!-- Tabs Navigation -->
+            <div class="flex flex-wrap justify-center border-b-2 border-stone-300 mb-8">
+                <button class="tab-button text-xs sm:text-sm py-3 px-3 sm:px-4 font-semibold text-stone-600 focus:outline-none active" data-tab="overview">Overview</button>
+                <button class="tab-button text-xs sm:text-sm py-3 px-3 sm:px-4 font-semibold text-stone-600 focus:outline-none" data-tab="safety">Safety</button>
+                <button class="tab-button text-xs sm:text-sm py-3 px-3 sm:px-4 font-semibold text-stone-600 focus:outline-none" data-tab="procedure1">Pre-Service</button>
+                <button class="tab-button text-xs sm:text-sm py-3 px-3 sm:px-4 font-semibold text-stone-600 focus:outline-none" data-tab="procedure2">Service & Startup</button>
+                <button class="tab-button text-xs sm:text-sm py-3 px-3 sm:px-4 font-semibold text-stone-600 focus:outline-none" data-tab="checklists1">Pre-Work Checks</button>
+                <button class="tab-button text-xs sm:text-sm py-3 px-3 sm:px-4 font-semibold text-stone-600 focus:outline-none" data-tab="checklists2">Field Checks</button>
+            </div>
+
+            <!-- Tab Content -->
+            <div id="overview" class="tab-content active">
+                <div class="bg-white p-6 sm:p-8 rounded-lg shadow-md animate-fade-in">
+                    <h2 class="text-3xl font-bold text-stone-800 text-center mb-6">Professional Gas Furnace Maintenance</h2>
+                    <p class="text-center text-stone-600 max-w-3xl mx-auto mb-8">This SOP provides comprehensive procedures for servicing high-efficiency condensing furnaces, ensuring regulatory compliance, optimal performance, and customer safety. All procedures follow manufacturer specifications and TSSA requirements.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div class="chart-container">
+                            <canvas id="valueDonutChart"></canvas>
+                        </div>
+                        <div class="text-center md:text-left">
+                            <div class="bg-stone-100 p-6 rounded-lg">
+                                <h3 class="text-xl font-bold text-stone-700 mb-2">Critical Performance Metric</h3>
+                                <p class="text-stone-600 mb-4">Every furnace service must verify temperature rise to ensure safe, efficient operation and warranty compliance.</p>
+                                <div class="text-center bg-stone-800 text-white p-6 rounded-lg">
+                                    <div class="text-xl font-semibold">Target Temperature Rise</div>
+                                    <div class="text-6xl font-black my-1">40-60°F</div>
+                                    <div class="text-base">Must match nameplate range</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg">
+                            <h4 class="font-bold text-stone-800 mb-2">Regulatory Compliance</h4>
+                            <p class="text-sm text-stone-600">All work must comply with CSA B149.1-25, Ontario Regulation 212/01, and TSSA requirements. Only certified G.2 or G.3 technicians may perform this work.</p>
+                        </div>
+                        <div class="bg-teal-50 border-l-4 border-teal-500 p-4 rounded-r-lg">
+                            <h4 class="font-bold text-stone-800 mb-2">Manufacturer Standards</h4>
+                            <p class="text-sm text-stone-600">Follow all manufacturer specifications for disassembly, cleaning, reassembly, and commissioning. Maintain warranty compliance.</p>
+                        </div>
+                        <div class="bg-sky-50 border-l-4 border-sky-500 p-4 rounded-r-lg">
+                            <h4 class="font-bold text-stone-800 mb-2">Professional Documentation</h4>
+                            <p class="text-sm text-stone-600">Document all findings, measurements, and actions taken. Provide customer with service report and maintenance recommendations.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="safety" class="tab-content">
+                <div class="bg-white p-6 sm:p-8 rounded-lg shadow-md animate-fade-in">
+                    <h2 class="text-3xl font-bold text-stone-800 text-center mb-6">Safety & Regulatory Compliance</h2>
+                    
+                    <div class="space-y-6 mb-8">
+                        <div class="bg-red-50 border-2 border-red-600 p-6 rounded-lg">
+                            <h3 class="text-2xl font-bold text-red-900 mb-3">⚠️ CRITICAL SAFETY WARNINGS</h3>
+                            <div class="space-y-3 text-stone-800">
+                                <p class="font-semibold">ELECTRICAL HAZARD: Disconnect electrical supply to furnace before attempting service. Failure to do so can cause electrical shock resulting in personal injury or death.</p>
+                                <p class="font-semibold">EXPLOSION HAZARD: If gas supply fails to shut off, close manual gas valve to appliance. Never purge gas lines into combustion chamber. Never use torches or any ignition source for checking gas leaks. Failure to follow these warnings can cause explosion or fire.</p>
+                                <p class="font-semibold">MANDATORY WAIT: After turning gas valve to OFF, wait minimum 5 minutes before proceeding with any work. This allows residual gas to dissipate.</p>
+                                <p class="font-semibold">TEMPERATURE RISE: Operating unit with temperature rise outside nameplate range will void warranty and could cause heat exchanger damage, intermittent operation, injury, or death.</p>
+                            </div>
+                        </div>
+
+                        <div class="p-5 border-l-4 border-amber-500 bg-stone-50 rounded-r-lg">
+                            <h3 class="font-bold text-xl text-stone-800">TSSA Certification Requirements</h3>
+                            <p class="mt-2 text-stone-600"><strong>G.3 Certificate Holders:</strong> May perform basic maintenance including filter changes, visual inspections, and cleaning under direct supervision of G.2 or G.1 certificate holder.</p>
+                            <p class="mt-2 text-stone-600"><strong>G.2 Certificate Holders:</strong> May install, inspect, alter, purge, activate, repair, service, or remove natural gas or propane appliances up to 400,000 BTU/hr input.</p>
+                            <p class="mt-2 text-stone-600"><strong>G.1 Certificate Holders:</strong> May perform all functions on appliances of any BTU input. Required for systems over 400,000 BTU/hr.</p>
+                            <p class="mt-3 text-stone-600 italic">Reference: Ontario Regulation 215/01, Sections 20-22</p>
+                        </div>
+
+                        <div class="p-5 border-l-4 border-teal-500 bg-stone-50 rounded-r-lg">
+                            <h3 class="font-bold text-xl text-stone-800">Personal Protective Equipment (PPE)</h3>
+                            <ul class="mt-3 space-y-2 text-stone-600 list-disc list-inside">
+                                <li>CSA-approved safety glasses (mandatory during all work)</li>
+                                <li>Work gloves (protection from sharp edges and heat retention)</li>
+                                <li>Non-sparking LED flashlight for interior inspection</li>
+                                <li>Appropriate clothing (no loose items near moving parts)</li>
+                            </ul>
+                        </div>
+
+                        <div class="p-5 border-l-4 border-sky-500 bg-stone-50 rounded-r-lg">
+                            <h3 class="font-bold text-xl text-stone-800">Gas Leak Detection Protocol</h3>
+                            <p class="mt-2 text-stone-600"><strong>Approved Methods:</strong> Use only approved leak detection solutions (soap and water solution or commercial leak detector). NEVER use open flame.</p>
+                            <p class="mt-2 text-stone-600"><strong>If Leak Detected:</strong> Immediately shut off gas supply at manual valve. Tag valve to prevent reopening. Notify customer and repair before proceeding with any startup.</p>
+                            <p class="mt-2 text-stone-600"><strong>Manifold Pressure Check:</strong> Verify manifold pressure matches nameplate specification before and after service.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="procedure1" class="tab-content">
+                <div class="bg-white p-6 sm:p-8 rounded-lg shadow-md animate-fade-in">
+                    <h2 class="text-3xl font-bold text-stone-800 text-center mb-6">Pre-Service Procedures</h2>
+                    <p class="text-center text-stone-600 max-w-3xl mx-auto mb-8">These phases cover initial assessment, safety shutdown, disassembly, inspection, and cleaning. Complete all steps before proceeding to Service & Startup tab.</p>
+                    <div class="space-y-4" id="accordion-container-1"></div>
+                </div>
+            </div>
+
+            <div id="procedure2" class="tab-content">
+                <div class="bg-white p-6 sm:p-8 rounded-lg shadow-md animate-fade-in">
+                    <h2 class="text-3xl font-bold text-stone-800 text-center mb-6">Service & Startup Procedures</h2>
+                    <p class="text-center text-stone-600 max-w-3xl mx-auto mb-8">These phases cover reassembly, commissioning, and customer handoff. Ensure all Pre-Service phases are complete before starting these procedures.</p>
+                    <div class="space-y-4" id="accordion-container-2"></div>
+                </div>
+            </div>
+
+            <div id="checklists1" class="tab-content">
+                <div class="bg-white p-6 sm:p-8 rounded-lg shadow-md animate-fade-in">
+                    <h2 class="text-3xl font-bold text-stone-800 text-center mb-6">Pre-Work Checklists</h2>
+                    <p class="text-center text-stone-600 max-w-3xl mx-auto mb-8">Complete these checklists before beginning any work. These ensure you have proper tools, safety equipment, and documentation.</p>
+                    <div id="checklist-container-1"></div>
+                </div>
+            </div>
+
+            <div id="checklists2" class="tab-content">
+                <div class="bg-white p-6 sm:p-8 rounded-lg shadow-md animate-fade-in">
+                    <h2 class="text-3xl font-bold text-stone-800 text-center mb-6">Field Service Checklists</h2>
+                    <p class="text-center text-stone-600 max-w-3xl mx-auto mb-8">Use these checklists during and after service work to ensure complete, professional results.</p>
+                    <div id="checklist-container-2"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        'use strict';
+
+        // =====================================================================
+        // CONSTANTS - Magic numbers eliminated (SRP)
+        // =====================================================================
+        const CONFIG = {
+            ACCORDION: {
+                ICON_COLLAPSED: '+',
+                ICON_EXPANDED: '−',
+                INITIAL_INDEX: -1
+            },
+            PROGRESS: {
+                MIN_PERCENTAGE: 0,
+                MAX_PERCENTAGE: 100
+            },
+            CSS_CLASSES: {
+                TAB_ACTIVE: 'active',
+                TAB_BUTTON: 'tab-button',
+                TAB_CONTENT: 'tab-content'
+            }
+        };
+
+        // =====================================================================
+        // DATA LAYER - Single Responsibility Principle (SRP)
+        // Data access abstracted from presentation logic
+        // =====================================================================
+        class DataProvider {
+            constructor() {
+                this.procedureData = this._initializeProcedureData();
+                this.checklistData = this._initializeChecklistData();
+            }
+
+            getProcedurePhases(containerNum) {
+                const data = this.procedureData[containerNum];
+                if (!data) {
+                    throw new Error(`Invalid container number: ${containerNum}`);
+                }
+                return data;
+            }
+
+            getChecklistCategories(containerNum) {
+                const data = this.checklistData[containerNum];
+                if (!data) {
+                    throw new Error(`Invalid container number: ${containerNum}`);
+                }
+                return data;
+            }
+
+            _initializeProcedureData() {
+                return {
+                    1: [
+                        {
+                            phase: "Phase I: Pre-Service Assessment & Safety Shutdown",
+                            steps: [
+                                "Document furnace identification: Make, Model, Serial Number, Efficiency Rating, Input Capacity, Ignition System type",
+                                "Record initial operational status and customer complaints",
+                                "Photograph furnace nameplate and current condition",
+                                "Set thermostat to lowest setting to initiate furnace shutdown",
+                                "Verify display reads '0' (standby mode) or control is OFF",
+                                "Turn manual gas valve to OFF position",
+                                "MANDATORY: Wait minimum 5 minutes for gas dissipation",
+                                "Disconnect electrical supply at breaker or disconnect switch",
+                                "Tag breaker/disconnect to prevent accidental re-energization",
+                                "Verify no voltage present using voltage tester"
+                            ]
+                        },
+                        {
+                            phase: "Phase II: Disassembly & Initial Inspection",
+                            steps: [
+                                "Remove access panels systematically. Store fasteners with corresponding panels for correct reassembly",
+                                "Photograph interior before disassembly for reassembly reference",
+                                "Disconnect igniter wire carefully. Document igniter position and orientation",
+                                "Measure igniter electrode gap using feeler gauges. Required gap: 0.110 inch ± 0.005 inch (2.79mm)",
+                                "Document gap measurement. Replace igniter if gap cannot be set to specification",
+                                "Remove retaining brackets securing burner assembly",
+                                "Remove burners sequentially from farthest to closest to gas valve",
+                                "Number or mark burners to ensure correct reinstallation position",
+                                "Inspect each burner for carbon deposits, port blockage, physical damage, fin condition",
+                                "Inspect heat exchanger through burner openings using endoscope and flashlight",
+                                "Look for cracks, holes, excessive rust, carbon buildup, or other defects",
+                                "For condensing furnaces: Inspect condensate drain system, trap, and connections for blockage or leaks"
+                            ]
+                        },
+                        {
+                            phase: "Phase III: Cleaning & Maintenance",
+                            steps: [
+                                "Clean burner faces using soft brass wire brush. Do not use steel brushes on brass burners",
+                                "Remove carbon deposits gently to avoid damaging burner surface or port geometry",
+                                "Use compressed air (40-60 PSI maximum) to blow debris from burner interior and crossovers",
+                                "Inspect burner ports for blockage. Use appropriate tool to clear blocked ports without enlarging them",
+                                "Clean burner fins and surfaces using soft brush and vacuum",
+                                "Clean heat exchanger coil surfaces accessible through burner opening using soft brass brush",
+                                "Use compressed air and vacuum to remove loose debris from heat exchanger passages",
+                                "For condensing units: Clean condensate trap and drain lines. Verify proper drainage",
+                                "Inspect and clean flame sensor rod. Use fine emery cloth or steel wool if necessary",
+                                "Check all burner components for wear or damage. Replace as needed",
+                                "For Lennox G51MP or similar: Apply ULC S636 approved transition cement or RTV high-temp sealant to flue collar connections to prevent acidic condensate leakage"
+                            ]
+                        }
+                    ],
+                    2: [
+                        {
+                            phase: "Phase IV: Reassembly & Gap Verification",
+                            steps: [
+                                "Reinstall burners in correct positions. Align tabs carefully - do not force",
+                                "Verify each burner is centered in burner ports and seated properly",
+                                "Torque burner fasteners to specification: 15-25 ft-lbs (or per manufacturer spec)",
+                                "Reinstall igniter in documented position",
+                                "Set igniter electrode gap to 0.110 inch (2.79mm) using feeler gauge",
+                                "Verify gap is positioned in hatched area relative to burner face (per manufacturer diagram)",
+                                "Secure igniter electrical connection",
+                                "Reconnect flame sensor and verify clean, tight connection",
+                                "Perform final verification: Check all fasteners tight, all gaps correct, no tools left in furnace",
+                                "Ensure all gaskets in place and safety switches properly engage",
+                                "Reinstall access panels. Do not operate unit without all panels securely in place"
+                            ]
+                        },
+                        {
+                            phase: "Phase V: Startup & Commissioning",
+                            steps: [
+                                "Verify all panels installed and all safety switches engaged",
+                                "Restore electrical power at breaker/disconnect",
+                                "Turn manual gas valve to ON position",
+                                "Perform gas leak check at valve and all connections using approved leak detection solution",
+                                "Set thermostat to call for heat",
+                                "Observe startup sequence per timing diagram: Display changes to 'H', inducer motor pre-purge (30 seconds), ignition spark, flame establishment within 3-5 seconds",
+                                "Verify flame color: Blue flame indicates proper combustion. Yellow/orange requires investigation",
+                                "Monitor flame LED: Should be continuously on when flame sensed",
+                                "Verify blower startup approximately 20 seconds after burner ignition",
+                                "Allow furnace to operate for minimum 15 minutes to stabilize",
+                                "Measure and record supply air temperature",
+                                "Measure and record return air temperature",
+                                "Calculate temperature rise (Supply minus Return)",
+                                "CRITICAL: Verify temperature rise is within range specified on furnace nameplate",
+                                "Measure and record manifold gas pressure. Verify matches nameplate specification",
+                                "Observe complete cycle including flame and blower shutdown",
+                                "Check condensate drainage (condensing units). Prime trap if necessary with 10 oz water",
+                                "Document all measurements and observations on service report"
+                            ]
+                        },
+                        {
+                            phase: "Phase VI: Final Inspection & Customer Handoff",
+                            steps: [
+                                "Perform visual inspection of all accessible components",
+                                "Verify all panels secured and area clean",
+                                "Test thermostat operation through complete cycle",
+                                "Provide customer with service report including all measurements",
+                                "Explain work performed and findings in clear, professional language",
+                                "Provide maintenance recommendations based on findings",
+                                "For standard efficiency units: Recommend burner inspection and cleaning every 2 years",
+                                "For condensing units: Recommend annual inspection of exhaust/intake systems, condensate trap, and vent connections",
+                                "Advise customer on filter maintenance schedule",
+                                "Answer customer questions professionally and thoroughly",
+                                "Leave manufacturer's manual with customer",
+                                "Tag unit with service date and technician information"
+                            ]
+                        }
+                    ]
+                };
+            }
+
+            _initializeChecklistData() {
+                return {
+                    1: {
+                        "Required Tools & Equipment": [
+                            "Socket set and ratchet (various sizes for burner fasteners)",
+                            "Soft brass wire brush (for burner cleaning)",
+                            "Compressed air source with regulator (40-60 PSI)",
+                            "Shop vacuum with attachments",
+                            "Digital multimeter or voltage tester",
+                            "Digital thermometer or temperature clamp meters (2 required)",
+                            "Manometer for gas pressure measurement",
+                            "Feeler gauge set (for igniter gap measurement)",
+                            "Non-sparking LED flashlight or work light",
+                            "Endoscope or inspection mirror",
+                            "Leak detection solution (approved soap/water or commercial)",
+                            "Camera or smartphone for documentation",
+                            "CSA-approved safety glasses",
+                            "Work gloves",
+                            "Screwdrivers (various sizes and types)",
+                            "ULC S636 approved transition cement or RTV high-temp sealant (for condensing units)"
+                        ],
+                        "Pre-Work Safety Verification": [
+                            "Valid TSSA certificate (G.2 or G.3 with supervision) present and current",
+                            "All required PPE available and in good condition",
+                            "Voltage tester functioning properly",
+                            "Leak detection solution or device available",
+                            "First aid kit and fire extinguisher locations known",
+                            "Emergency gas shutoff location identified",
+                            "Customer notified of work to be performed",
+                            "Work area clear of obstructions and combustibles",
+                            "Adequate lighting and ventilation in work area",
+                            "Lock-out/tag-out materials available if required"
+                        ],
+                        "Pre-Shutdown Documentation": [
+                            "Furnace make and model recorded",
+                            "Serial number documented",
+                            "Nameplate data photographed (input rating, temperature rise range, gas type, pressure)",
+                            "Initial operational status verified and recorded",
+                            "Customer complaints or concerns documented",
+                            "Visual exterior condition photographed",
+                            "Thermostat type and location noted"
+                        ],
+                        "Disassembly Safety Checks": [
+                            "Thermostat set to lowest setting",
+                            "Control display shows standby/OFF",
+                            "Gas valve turned to OFF position",
+                            "5-minute wait time completed after gas shutoff",
+                            "Electrical power disconnected at breaker/disconnect",
+                            "Breaker/disconnect tagged to prevent re-energization",
+                            "Voltage verified absent using tester",
+                            "All panels and fasteners organized for reassembly"
+                        ]
+                    },
+                    2: {
+                        "Component Inspection Checklist": [
+                            "Burner #1: Condition, carbon deposits, port blockage assessed",
+                            "Burner #2: Condition, carbon deposits, port blockage assessed",
+                            "Burner #3: Condition, carbon deposits, port blockage assessed",
+                            "Burner #4: Condition, carbon deposits, port blockage assessed (if applicable)",
+                            "Igniter electrode gap measured (0.110\" ± 0.005\")",
+                            "Igniter position and condition documented",
+                            "Flame sensor rod inspected and condition noted",
+                            "Heat exchanger visually inspected for cracks or damage",
+                            "Blower wheel and motor inspected",
+                            "Condensate drain and trap inspected (condensing units)",
+                            "Vent connections and seals inspected",
+                            "Wiring and connections visually inspected",
+                            "Gas valve and manifold inspected for damage or corrosion"
+                        ],
+                        "Post-Cleaning Verification": [
+                            "All burner surfaces cleaned and free of deposits",
+                            "All burner ports clear and unobstructed",
+                            "Burner fins cleaned",
+                            "Heat exchanger surfaces cleaned as accessible",
+                            "Flame sensor rod cleaned",
+                            "Igniter cleaned and positioned correctly",
+                            "Condensate system cleaned (if applicable)",
+                            "All debris removed from furnace interior",
+                            "Work area vacuumed and cleaned"
+                        ],
+                        "Reassembly Verification": [
+                            "All burners reinstalled in correct positions",
+                            "Burners centered in ports and properly seated",
+                            "All fasteners tightened to specification (15-25 ft-lbs)",
+                            "Igniter gap set to 0.110\" (verified with feeler gauge)",
+                            "Igniter positioned in hatched area per manufacturer specification",
+                            "Igniter wire securely connected",
+                            "Flame sensor wire securely connected",
+                            "All gaskets in place",
+                            "Safety switches properly engage",
+                            "No tools or materials left inside furnace",
+                            "All access panels reinstalled and secured"
+                        ],
+                        "Startup & Commissioning Checks": [
+                            "All panels secured before power restoration",
+                            "Electrical power restored at breaker",
+                            "Gas valve opened",
+                            "Gas leak check performed at all connections - no leaks detected",
+                            "Thermostat set to call for heat",
+                            "Inducer motor pre-purge observed (30 seconds typical)",
+                            "Ignition sequence verified (spark sound, flame within 3-5 seconds)",
+                            "Flame color verified BLUE (yellow/orange requires investigation)",
+                            "Flame LED continuously on when flame sensed",
+                            "Blower startup verified (~20 seconds after ignition)",
+                            "Unit operated minimum 15 minutes for stabilization",
+                            "Supply air temperature measured and recorded: _____°F",
+                            "Return air temperature measured and recorded: _____°F",
+                            "Temperature rise calculated: _____°F",
+                            "Temperature rise WITHIN nameplate range: YES/NO",
+                            "Manifold gas pressure measured: _____ inches W.C.",
+                            "Gas pressure matches nameplate specification: YES/NO",
+                            "Complete cycle observed (ignition through shutdown)",
+                            "Condensate drainage verified (if applicable)"
+                        ],
+                        "Customer Handoff & Documentation": [
+                            "Service report completed with all measurements",
+                            "Temperature rise documented and within specification",
+                            "Gas pressure documented and within specification",
+                            "All work performed documented",
+                            "Findings and recommendations documented",
+                            "Customer provided with service report copy",
+                            "Work explained to customer in clear language",
+                            "Maintenance recommendations provided (filter changes, inspection schedule)",
+                            "Customer questions answered",
+                            "Manufacturer's manual left with customer",
+                            "Service tag affixed to unit with date and technician info",
+                            "Work area left clean and organized",
+                            "Customer signature obtained (if required by company policy)"
+                        ]
+                    }
+                };
+            }
+        }
+
+        // =====================================================================
+        // UTILITY - Helper functions (SRP)
+        // =====================================================================
+        class DOMUtility {
+            static getElement(id) {
+                const element = document.getElementById(id);
+                if (!element) {
+                    console.error(`Element not found: ${id}`);
+                }
+                return element;
+            }
+
+            static getElements(selector) {
+                return document.querySelectorAll(selector);
+            }
+
+            static sanitizeId(text) {
+                return text.replace(/\s+/g, '').replace(/&/g, '');
+            }
+        }
+
+        // =====================================================================
+        // TEMPLATE RENDERER - Separation of concerns (SRP)
+        // =====================================================================
+        class TemplateRenderer {
+            static renderAccordionPhase(phase, index, containerNum) {
+                return `
+                    <div class="border border-stone-200 rounded-lg">
+                        <div class="accordion-header bg-stone-100 p-4 flex justify-between items-center" 
+                             data-container="${containerNum}" 
+                             data-index="${index}">
+                            <h3 class="text-xl font-bold text-stone-700">${phase.phase}</h3>
+                            <span class="text-2xl font-light text-stone-500 transform transition-transform duration-300" 
+                                  id="icon-${containerNum}-${index}">${CONFIG.ACCORDION.ICON_COLLAPSED}</span>
+                        </div>
+                        <div class="accordion-content" id="content-${containerNum}-${index}">
+                            <ol class="p-4 list-decimal list-inside space-y-2 text-stone-700">
+                                ${phase.steps.map(step => `<li class="ml-2">${step}</li>`).join('')}
+                            </ol>
+                        </div>
+                    </div>
+                `;
+            }
+
+            static renderChecklistCategory(categoryName, items) {
+                const sanitizedId = DOMUtility.sanitizeId(categoryName);
+                return `
+                    <div class="mb-8" data-category="${categoryName}">
+                        <h3 class="text-2xl font-bold text-stone-700 mb-2">${categoryName}</h3>
+                        <div class="w-full bg-stone-200 rounded-full h-2.5 mb-4">
+                            <div id="progress-${sanitizedId}" 
+                                 class="progress-bar-fill bg-teal-500 h-2.5 rounded-full" 
+                                 style="width: 0%"></div>
+                        </div>
+                        <div class="space-y-3" data-checklist="${sanitizedId}">
+                            ${items.map(item => this.renderChecklistItem(item)).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            static renderChecklistItem(item) {
+                return `
+                    <label class="checklist-item flex items-start p-3 bg-stone-50 rounded-lg border border-stone-200 cursor-pointer hover:bg-stone-100">
+                        <input type="checkbox" 
+                               class="h-5 w-5 mt-0.5 rounded border-stone-300 text-teal-600 focus:ring-teal-500 flex-shrink-0">
+                        <span class="ml-3 text-stone-700 font-medium">${item}</span>
+                    </label>
+                `;
+            }
+        }
+
+        // =====================================================================
+        // PROGRESS CALCULATOR - Business logic separated (SRP + ISP)
+        // =====================================================================
+        class ProgressCalculator {
+            static calculate(checkboxes) {
+                const total = checkboxes.length;
+                if (total === 0) {
+                    return CONFIG.PROGRESS.MIN_PERCENTAGE;
+                }
+
+                const checked = checkboxes.filter(cb => cb.checked).length;
+                return Math.round((checked / total) * CONFIG.PROGRESS.MAX_PERCENTAGE);
+            }
+        }
+
+        // =====================================================================
+        // STATE MANAGER - Manages state in one place (SRP)
+        // =====================================================================
+        class AccordionStateManager {
+            constructor() {
+                this.openIndices = new Map();
+            }
+
+            setOpen(containerNum, index) {
+                this.openIndices.set(containerNum, index);
+            }
+
+            close(containerNum) {
+                this.openIndices.set(containerNum, CONFIG.ACCORDION.INITIAL_INDEX);
+            }
+
+            getOpenIndex(containerNum) {
+                return this.openIndices.get(containerNum) || CONFIG.ACCORDION.INITIAL_INDEX;
+            }
+
+            isOpen(containerNum, index) {
+                return this.getOpenIndex(containerNum) === index;
+            }
+        }
+
+        // =====================================================================
+        // ACCORDION COMPONENT - Open/Closed Principle (OCP)
+        // Can be extended without modification
+        // =====================================================================
+        class AccordionComponent {
+            constructor(containerId, containerNum, dataProvider, stateManager) {
+                this.containerId = containerId;
+                this.containerNum = containerNum;
+                this.dataProvider = dataProvider;
+                this.stateManager = stateManager;
+                this.container = DOMUtility.getElement(containerId);
+                
+                if (!this.container) {
+                    throw new Error(`Accordion container not found: ${containerId}`);
+                }
+            }
+
+            render() {
+                try {
+                    const phases = this.dataProvider.getProcedurePhases(this.containerNum);
+                    const html = phases.map((phase, index) => 
+                        TemplateRenderer.renderAccordionPhase(phase, index, this.containerNum)
+                    ).join('');
+                    
+                    this.container.innerHTML = html;
+                    this._attachEventListeners();
+                } catch (error) {
+                    console.error('Error rendering accordion:', error);
+                    this.container.innerHTML = '<p class="text-red-600">Error loading content</p>';
+                }
+            }
+
+            _attachEventListeners() {
+                const headers = this.container.querySelectorAll('.accordion-header');
+                headers.forEach(header => {
+                    header.addEventListener('click', (e) => {
+                        const index = parseInt(header.dataset.index);
+                        this.toggle(index);
+                    });
+                });
+            }
+
+            toggle(index) {
+                const currentOpenIndex = this.stateManager.getOpenIndex(this.containerNum);
+                
+                // Close previously open accordion
+                if (currentOpenIndex !== CONFIG.ACCORDION.INITIAL_INDEX && currentOpenIndex !== index) {
+                    this._closeAccordion(currentOpenIndex);
+                }
+
+                // Toggle current accordion
+                if (this.stateManager.isOpen(this.containerNum, index)) {
+                    this._closeAccordion(index);
+                    this.stateManager.close(this.containerNum);
+                } else {
+                    this._openAccordion(index);
+                    this.stateManager.setOpen(this.containerNum, index);
+                }
+            }
+
+            _openAccordion(index) {
+                const content = DOMUtility.getElement(`content-${this.containerNum}-${index}`);
+                const icon = DOMUtility.getElement(`icon-${this.containerNum}-${index}`);
+                
+                if (content && icon) {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    icon.textContent = CONFIG.ACCORDION.ICON_EXPANDED;
+                }
+            }
+
+            _closeAccordion(index) {
+                const content = DOMUtility.getElement(`content-${this.containerNum}-${index}`);
+                const icon = DOMUtility.getElement(`icon-${this.containerNum}-${index}`);
+                
+                if (content && icon) {
+                    content.style.maxHeight = '0px';
+                    icon.textContent = CONFIG.ACCORDION.ICON_COLLAPSED;
+                }
+            }
+        }
+
+        // =====================================================================
+        // CHECKLIST COMPONENT - Single Responsibility (SRP)
+        // =====================================================================
+        class ChecklistComponent {
+            constructor(containerId, containerNum, dataProvider) {
+                this.containerId = containerId;
+                this.containerNum = containerNum;
+                this.dataProvider = dataProvider;
+                this.container = DOMUtility.getElement(containerId);
+                
+                if (!this.container) {
+                    throw new Error(`Checklist container not found: ${containerId}`);
+                }
+            }
+
+            render() {
+                try {
+                    const categories = this.dataProvider.getChecklistCategories(this.containerNum);
+                    const html = Object.entries(categories).map(([categoryName, items]) => 
+                        TemplateRenderer.renderChecklistCategory(categoryName, items)
+                    ).join('');
+                    
+                    this.container.innerHTML = html;
+                    this._attachEventListeners();
+                } catch (error) {
+                    console.error('Error rendering checklist:', error);
+                    this.container.innerHTML = '<p class="text-red-600">Error loading content</p>';
+                }
+            }
+
+            _attachEventListeners() {
+                const checklists = this.container.querySelectorAll('[data-checklist]');
+                checklists.forEach(checklist => {
+                    checklist.addEventListener('change', (e) => {
+                        if (e.target.type === 'checkbox') {
+                            const categoryElement = e.target.closest('[data-category]');
+                            if (categoryElement) {
+                                const categoryName = categoryElement.dataset.category;
+                                this._updateProgress(categoryName, checklist);
+                            }
+                        }
+                    });
+                });
+            }
+
+            _updateProgress(categoryName, checklistElement) {
+                const checkboxes = Array.from(checklistElement.querySelectorAll('input[type="checkbox"]'));
+                const percentage = ProgressCalculator.calculate(checkboxes);
+                const sanitizedId = DOMUtility.sanitizeId(categoryName);
+                const progressBar = DOMUtility.getElement(`progress-${sanitizedId}`);
+                
+                if (progressBar) {
+                    progressBar.style.width = `${percentage}%`;
+                }
+            }
+        }
+
+        // =====================================================================
+        // TAB MANAGER - Manages tab switching (SRP)
+        // =====================================================================
+        class TabManager {
+            constructor() {
+                this.activeTab = 'overview';
+                this._attachEventListeners();
+            }
+
+            _attachEventListeners() {
+                const tabButtons = DOMUtility.getElements('.tab-button');
+                tabButtons.forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const tabName = button.dataset.tab;
+                        if (tabName) {
+                            this.switchTab(tabName);
+                        }
+                    });
+                });
+            }
+
+            switchTab(tabName) {
+                // Hide all tab content
+                const allContent = DOMUtility.getElements('.tab-content');
+                allContent.forEach(content => {
+                    content.style.display = 'none';
+                    content.classList.remove(CONFIG.CSS_CLASSES.TAB_ACTIVE);
+                });
+
+                // Remove active class from all buttons
+                const allButtons = DOMUtility.getElements('.tab-button');
+                allButtons.forEach(button => {
+                    button.classList.remove(CONFIG.CSS_CLASSES.TAB_ACTIVE);
+                });
+
+                // Show selected tab
+                const selectedContent = DOMUtility.getElement(tabName);
+                if (selectedContent) {
+                    selectedContent.style.display = 'block';
+                    selectedContent.classList.add(CONFIG.CSS_CLASSES.TAB_ACTIVE);
+                }
+
+                // Activate button
+                const activeButton = document.querySelector(`[data-tab="${tabName}"]`);
+                if (activeButton) {
+                    activeButton.classList.add(CONFIG.CSS_CLASSES.TAB_ACTIVE);
+                }
+
+                this.activeTab = tabName;
+            }
+        }
+
+        // =====================================================================
+        // CHART INITIALIZER - Separated chart logic (SRP + DIP)
+        // =====================================================================
+        class ChartInitializer {
+            static initializeDonutChart(canvasId, chartData) {
+                const canvas = DOMUtility.getElement(canvasId);
+                if (!canvas) {
+                    console.error(`Canvas not found: ${canvasId}`);
+                    return null;
+                }
+
+                const ctx = canvas.getContext('2d');
+                return new Chart(ctx, {
+                    type: 'doughnut',
+                    data: chartData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    color: '#44403C',
+                                    font: { size: 14, weight: '600' }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    title: (tooltipItems) => tooltipItems[0].label
+                                }
+                            }
+                        },
+                        cutout: '65%'
+                    }
+                });
+            }
+        }
+
+        // =====================================================================
+        // APPLICATION - Main entry point (Dependency Inversion Principle)
+        // High-level module depends on abstractions
+        // =====================================================================
+        class SOPApplication {
+            constructor() {
+                // Initialize dependencies
+                this.dataProvider = new DataProvider();
+                this.accordionStateManager = new AccordionStateManager();
+                this.tabManager = null;
+                this.components = [];
+            }
+
+            initialize() {
+                try {
+                    // Initialize tab manager
+                    this.tabManager = new TabManager();
+
+                    // Initialize accordions
+                    const accordion1 = new AccordionComponent(
+                        'accordion-container-1',
+                        1,
+                        this.dataProvider,
+                        this.accordionStateManager
+                    );
+                    accordion1.render();
+                    this.components.push(accordion1);
+
+                    const accordion2 = new AccordionComponent(
+                        'accordion-container-2',
+                        2,
+                        this.dataProvider,
+                        this.accordionStateManager
+                    );
+                    accordion2.render();
+                    this.components.push(accordion2);
+
+                    // Initialize checklists
+                    const checklist1 = new ChecklistComponent(
+                        'checklist-container-1',
+                        1,
+                        this.dataProvider
+                    );
+                    checklist1.render();
+                    this.components.push(checklist1);
+
+                    const checklist2 = new ChecklistComponent(
+                        'checklist-container-2',
+                        2,
+                        this.dataProvider
+                    );
+                    checklist2.render();
+                    this.components.push(checklist2);
+
+                    // Initialize chart
+                    this._initializeChart();
+
+                    console.log('SOP Application initialized successfully');
+                } catch (error) {
+                    console.error('Failed to initialize application:', error);
+                }
+            }
+
+            _initializeChart() {
+                const chartData = {
+                    labels: ['Safety & Compliance', 'System Performance', 'Customer Satisfaction'],
+                    datasets: [{
+                        label: 'Service Value Components',
+                        data: [40, 35, 25],
+                        backgroundColor: ['#A8A29E', '#78716C', '#44403C'],
+                        borderColor: '#FFFFFF',
+                        borderWidth: 4,
+                        hoverOffset: 8
+                    }]
+                };
+
+                ChartInitializer.initializeDonutChart('valueDonutChart', chartData);
+            }
+        }
+
+        // =====================================================================
+        // INITIALIZATION - Application entry point
+        // =====================================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            const app = new SOPApplication();
+            app.initialize();
+        });
+
+    </script>
+</body>
+</html>

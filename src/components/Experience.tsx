@@ -9,7 +9,7 @@ export default function Experience() {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 });
 
   return (
-    <SectionContainer id="experience" className="bg-muted/30">
+    <SectionContainer id="experience" className="bg-muted/30" threshold={0.1}>
       <SectionTitle subtitle="AI Project Consultant | Hive Mind Solutions (HMS) | Kingston, ON | 2024–Present">
         Experience
       </SectionTitle>

@@ -1,4 +1,5 @@
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, ArrowRight } from "lucide-react";
+import { Link } from "react-router";
 import AnimatedCard from "../common/AnimatedCard";
 import { Project } from "@/types/project";
 
@@ -40,16 +41,25 @@ export default function ProjectCard({
         ))}
       </div>
 
-      {project.link && (
-        <a
-          href={project.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-sm text-primary hover:underline"
+      <div className="flex items-center justify-between mt-auto pt-4 gap-4">
+        <Link
+          to={`/project/${project.id}`}
+          className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
         >
-          View Project <ExternalLink size={14} />
-        </a>
-      )}
+          View Details <ArrowRight size={14} />
+        </Link>
+
+        {project.link && (
+          <a
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+          >
+            Launch <ExternalLink size={14} />
+          </a>
+        )}
+      </div>
     </AnimatedCard>
   );
 }

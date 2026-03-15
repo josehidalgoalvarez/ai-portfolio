@@ -20,7 +20,7 @@ export default function Projects() {
   );
 
   return (
-    <SectionContainer id="projects">
+    <SectionContainer id="projects" threshold={0.05}>
       <SectionTitle>Projects</SectionTitle>
 
       <CategoryFilter

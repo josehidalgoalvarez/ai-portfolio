@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive SOP: Wall Patch & Spot Paint</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <!-- 
+      CHANGE LOG:
+      - Refocused entire SOP on "Wall Patching & Spot Painting".
+      - Rebuilt 'Overview' tab to explain the SOP's structure.
+      - Replaced 'Success Metrics' donut chart with a 'Quality Metrics' Radar Chart specific to spot painting.
+      - Updated all 'Procedure' and 'Checklist' data to align with spot painting tasks.
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F5F5F4; /* stone-100 */
+        }
+        .tab-button {
+            transition: all 0.3s ease;
+        }
+        .tab-button.active {
+            background-color: #0d9488; /* teal-600 */
+            color: #FFFFFF;
+            font-weight: 700;
+        }
+        .tab-button:hover:not(.active) {
+            background-color: #f5f5f4; /* stone-100 */
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        .timeline-chart-container {
+            position: relative;
+            width: 100%;
+            height: 350px; /* Taller for Gantt chart */
+        }
+        .accordion-header {
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .accordion-header:hover {
+            background-color: #E7E5E4; /* stone-200 */
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+        .progress-bar-fill {
+            transition: width 0.5s ease-in-out;
+        }
+        .checklist-item:has(input:checked) {
+            text-decoration: line-through;
+            color: #78716C; /* stone-500 */
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-black text-stone-900 mb-2">SOP: Wall Patching & Spot Painting</h1>
+            <p class="text-lg text-stone-600 max-w-3xl mx-auto">A dynamic guide to standardizing wall repairs and spot painting for invisible, high-quality results.</p>
+        </header>
+
+        <div class="w-full max-w-5xl mx-auto">
+            <!-- Tabs Navigation -->
+            <div class="flex flex-wrap justify-center border-b-2 border-stone-300 mb-8">
+                <button class="tab-button text-sm sm:text-base py-3 px-4 sm:px-6 font-semibold text-stone-600 focus:outline-none rounded-t-lg active" onclick="openTab(event, 'overview')">Overview</button>
+                <button class="tab-button text-sm sm:text-base py-3 px-4 sm:px-6 font-semibold text-stone-600 focus:outline-none rounded-t-lg" onclick="openTab(event, 'timeline')">Timeline Dashboard</button>
+                <button class="tab-button text-sm sm:text-base py-3 px-4 sm:px-6 font-semibold text-stone-600 focus:outline-none rounded-t-lg" onclick="openTab(event, 'protocol')">Customer Protocol</button>
+                <button class="tab-button text-sm sm:text-base py-3 px-4 sm:px-6 font-semibold text-stone-600 focus:outline-none rounded-t-lg" onclick="openTab(event, 'procedure')">Technical Procedure</button>
+                <button class="tab-button text-sm sm:text-base py-3 px-4 sm:px-6 font-semibold text-stone-600 focus:outline-none rounded-t-lg" onclick="openTab(event, 'checklists')">Checklists & Tools</button>
+            </div>
+
+            <!-- Tab Content -->
+            <div id="overview" class="tab-content active">
+                <div class="bg-white p-6 sm:p-8 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-stone-800 text-center mb-6">How to Use This SOP</h2>
+                    <p class="text-center text-stone-600 max-w-3xl mx-auto mb-10">This interactive guide is built to make your workflow efficient and ensure top quality. Use the tabs to navigate to the exact information you need, when you need it.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                        <!-- Card 1 -->
+                        <div class="bg-stone-50 p-6 rounded-lg border border-stone-200">
+                            <h3 class="text-xl font-bold text-stone-700 mb-2">Timeline Dashboard</h3>
+                            <p class="text-stone-600">Go here to see the "Productivity Strategy." This tab shows how to fill mandatory drying times with parallel tasks to maximize your efficiency on site.</p>
+                        </div>
+                        <!-- Card 2 -->
+                        <div class="bg-stone-50 p-6 rounded-lg border border-stone-200">
+                            <h3 class="text-xl font-bold text-stone-700 mb-2">Technical Procedure</h3>
+                            <p class="text-stone-600">This is your core step-by-step guide. It details the 6 phases of work, from preparation to final cleanup, including the critical "Productivity Strategy" callouts.</p>
+                        </div>
+                        <!-- Card 3 -->
+                        <div class="bg-stone-50 p-6 rounded-lg border border-stone-200">
+                            <h3 class="text-xl font-bold text-stone-700 mb-2">Checklists & Tools</h3>
+                            <p class="text-stone-600">Use this tab before, during, and after the job. It has interactive checklists for tools, safety, and final quality assurance to ensure nothing is missed.</p>
+                        </div>
+                    </div>
+
+                    <h3 class="text-2xl font-bold text-stone-800 text-center mb-4">Key Quality Metrics for Spot Painting</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div class="chart-container">
+                            <canvas id="qualityMetricsRadarChart"></canvas>
+                        </div>
+                        <div class="text-center md:text-left">
+                            <div class="bg-stone-100 p-6 rounded-lg">
+                                <ul class="space-y-3">
+                                    <li class="flex items-start">
+                                        <span class="text-teal-600 font-bold text-xl mr-3">1.</span>
+                                        <span class="text-stone-700"><strong>Imperceptible Repair:</strong> The patch is perfectly flush—no bumps or hollows visible under angled light.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="text-teal-600 font-bold text-xl mr-3">2.</span>
+                                        <span class="text-stone-700"><strong>Texture & Sheen Match:</strong> The spot paint's texture (from roller/brush) and sheen (e.g., eggshell, matte) blend invisibly with the existing wall.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="text-teal-600 font-bold text-xl mr-3">3.</span>
+                                        <span class="text-stone-700"><strong>No Flashing/Halo:</strong> The repair area doesn't "flash" or show a "halo" effect when viewed from different angles. This means the primer was sealed and the paint feathered correctly.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="text-teal-600 font-bold text-xl mr-3">4.</span>
+                                        <span class="text-stone-700"><strong>Efficiency:</strong> The productivity timeline was followed, minimizing active "wait time" on site.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: TIMELINE DASHBOARD -->
+            <div id="timeline" class="tab-content">
+                <div class="bg-white p-6 sm:p-8 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-stone-800 text-center mb-6">Productivity & Timeline Dashboard</h2>
+                    <p class="text-center text-stone-600 max-w-3xl mx-auto mb-8">This dashboard visualizes the "Productivity Strategy." It shows how mandatory drying times can be filled with parallel tasks, optimizing the total project timeline.</p>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                        <!-- Pie Chart Container -->
+                        <div class="chart-container">
+                            <h3 class="text-xl font-bold text-stone-700 mb-4 text-center">Total Time Breakdown (Est.)</h3>
+                            <canvas id="timeBreakdownPieChart"></canvas>
+                        </div>
+                        <!-- Gantt Chart Container -->
+                        <div class="w-full lg:col-span-2">
+                             <h3 class="text-xl font-bold text-stone-700 mb-4 text-center">Optimized Project Timeline (Hours)</h3>
+                            <div class="timeline-chart-container">
+                                <canvas id="timelineGanttChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: CUSTOMER PROTOCOL -->
+            <div id="protocol" class="tab-content">
+                <div class="bg-white p-6 sm:p-8 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-stone-800 text-center mb-6">Customer Communication Scripts</h2>
+                    <p class="text-center text-stone-600 max-w-3xl mx-auto mb-8">Use these scripts to set expectations, explain the process, and build trust with the customer from start to finish.</p>
+                    <div class="space-y-6">
+                        <div class="p-5 border-l-4 border-amber-500 bg-stone-50 rounded-r-lg">
+                            <h3 class="font-bold text-xl text-stone-800">1. Initial Assessment</h3>
+                            <p class="mt-2 text-stone-600">`"Good [morning/afternoon], I'm [Name] and I'll be preparing and spot painting your patches today. I'll start with a 15-minute assessment to identify all areas that need attention. Once complete, I'll walk you through the timeline and answer any questions before beginning work."`</p>
+                        </div>
+                        <div class="p-5 border-l-4 border-teal-500 bg-stone-50 rounded-r-lg">
+                            <h3 class="font-bold text-xl text-stone-800">2. Setting Time Expectations</h3>
+                            <p class="mt-2 text-stone-600">`"This process involves several drying stages. The total project will take approximately [X hours/days], but I'll be using the drying time efficiently to work on other areas or tasks. I'll keep you updated as we complete each phase."`</p>
+                        </div>
+                         <div class="p-5 border-l-4 border-sky-500 bg-stone-50 rounded-r-lg">
+                            <h3 class="font-bold text-xl text-stone-800">3. Explaining the Process</h3>
+                            <p class="mt-2 text-stone-600">`"Think of wall preparation like building a foundation for a house. The putty fills and smooths imperfections, creating a perfect canvas. The primer seals the patch to prevent it from flashing through. Finally, the spot paint will blend the repair into the wall."`</p>
+                        </div>
+                        <div class="p-5 border-l-4 border-indigo-500 bg-stone-50 rounded-r-lg">
+                            <h3 class="font-bold text-xl text-stone-800">4. Quality Assurance</h3>
+                            <p class="mt-2 text-stone-600">`"Before finishing, I'll inspect the repairs under different lighting angles to ensure everything is flush and blended. This attention to detail is what makes the difference between a visible patch and an invisible repair."`</p>
+                        </div>
+                        <div class="p-5 border-l-4 border-rose-500 bg-stone-50 rounded-r-lg">
+                            <h3 class="font-bold text-xl text-stone-800">5. Maintenance Tips</h3>
+                            <p class="mt-2 text-stone-600">`"To keep your walls looking great, avoid using harsh cleaners on flat or matte finishes. For scuff marks, a magic eraser works wonders. If you need to hang pictures in the future, use proper anchors to minimize wall damage."`</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: TECHNICAL PROCEDURE -->
+            <div id="procedure" class="tab-content">
+                <div class="bg-white p-6 sm:p-8 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-stone-800 text-center mb-6">Step-by-Step Technical Procedure</h2>
+                    <p class="text-center text-stone-600 max-w-3xl mx-auto mb-8">Follow this sequence precisely for a high-quality, efficient workflow. Click each phase to expand the detailed steps.</p>
+                    <div id="accordion-container" class="space-y-2">
+                        <!-- Accordion items will be generated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: CHECKLISTS & TOOLS -->
+            <div id="checklists" class="tab-content">
+                <div class="bg-white p-6 sm:p-8 rounded-lg shadow-md">
+                     <h2 class="text-3xl font-bold text-stone-800 text-center mb-6">Checklists, Tools & Reference</h2>
+                     <p class="text-center text-stone-600 max-w-3xl mx-auto mb-8">Use these interactive checklists to ensure completeness. Reference materials are at the bottom.</p>
+                    <div id="checklist-container">
+                        <!-- Checklist content will be generated by JS -->
+                    </div>
+
+                    <!-- Static Content from MD -->
+                    <div class="mt-12">
+                        <h3 class="text-2xl font-bold text-stone-700 mb-4 border-b pb-2">Troubleshooting Common Issues</h3>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-stone-200">
+                                <thead class="bg-stone-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">Problem</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">Cause</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">Solution</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-stone-200">
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">Spackle won't dry</td>
+                                        <td class="px-6 py-4 text-sm text-stone-600">High humidity, thick application, low temp</td>
+                                        <td class="px-6 py-4 text-sm text-stone-600">Increase ventilation, use dehumidifier, apply thinner coats, raise temp</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">Spackle cracking</td>
+                                        <td class="px-6 py-4 text-sm text-stone-600">Applied too thick, dried too fast</td>
+                                        <td class="px-6 py-4 text-sm text-stone-600">Apply in thinner layers (max 1/4"), allow proper drying between coats</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">Visible repairs after paint</td>
+                                        <td class="px-6 py-4 text-sm text-stone-600">Insufficient sanding, edges not feathered</td>
+                                        <td class="px-6 py-4 text-sm text-stone-600">Sand thoroughly, feather edges wider, apply another thin skim coat if needed</td>
+                                    </tr>
+                                     <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">Paint "Flashing" or "Halo"</td>
+                                        <td class="px-6 py-4 text-sm text-stone-600">New patch absorbed paint differently; sheen is different; edges not feathered.</td>
+                                        <td class="px-6 py-4 text-sm text-stone-600">ALWAYS prime patches. Use exact same sheen. Feather paint edges lightly.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">Paint peeling</td>
+                                        <td class="px-6 py-4 text-sm text-stone-600">Dirty surface, wet putty, no primer</td>
+                                        <td class="px-6 py-4 text-sm text-stone-600">Ensure surface is clean & 100% dry. Always use quality primer over repairs.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="mt-12">
+                        <h3 class="text-2xl font-bold text-stone-700 mb-4 border-b pb-2">Appendix: Product Recommendations</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div class="bg-stone-50 p-4 rounded-lg border">
+                                <h4 class="font-bold text-lg text-stone-800 mb-2">Spackling/Putty</h4>
+                                <ul class="list-disc list-inside space-y-1 text-stone-600">
+                                    <li><strong>Small Holes:</strong> DAP Fast 'N Final</li>
+                                    <li><strong>Medium Repairs:</strong> DAP DryDex (color-change)</li>
+                                    <li><strong>Large Repairs:</strong> DAP Fast Dry Premium</li>
+                                </ul>
+                            </div>
+                            <div class="bg-stone-50 p-4 rounded-lg border">
+                                <h4 class="font-bold text-lg text-stone-800 mb-2">Primers</h4>
+                                <ul class="list-disc list-inside space-y-1 text-stone-600">
+                                    <li><strong>Standard:</strong> KILZ 2 All-Purpose Latex</li>
+                                    <li><strong>Stain Blocking:</strong> KILZ Original Oil-Based</li>
+                                    <li><strong>Fast-Dry:</strong> Zinsser Bulls Eye 1-2-3</li>
+                                </ul>
+                            </div>
+                            <div class="bg-stone-50 p-4 rounded-lg border">
+                                <h4 class="font-bold text-lg text-stone-800 mb-2">Tools</h4>
+                                <ul class="list-disc list-inside space-y-1 text-stone-600">
+                                    <li><strong>Sandpaper:</strong> 3M Pro Grade Precision</li>
+                                    <li><strong>Brushes:</strong> Purdy or Wooster Pro</li>
+                                    <li><strong>Rollers:</strong> 4" Mini-roller (for texture)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data for Technical Procedure Accordion
+        const procedureData = [
+            {
+                phase: "Phase 1: Pre-Work Preparation and Safety",
+                steps: [
+                    "Don all required PPE: Mask/Respirator, Safety Glasses, Gloves, proper footwear.",
+                    "Clear the room: Move furniture to center, cover with plastic.",
+                    "Protect surfaces: Lay drop cloths, tape baseboards, frames, and outlets.",
+                    "Establish ventilation: Open windows, use fans to direct air outward.",
+                    "Set up a clean, organized work station with all tools and materials."
+                ],
+                strategy: null
+            },
+            {
+                phase: "Phase 2: Nail, Screw, and Hardware Removal",
+                steps: [
+                    "Perform systematic wall inspection using an angled flashlight to find all hardware.",
+                    "Use a wide putty knife as a guard behind hammer/pliers when removing nails to protect drywall.",
+                    "Use end-cutting pliers to roll nails out, or a nail set to recess them.",
+                    "Carefully extract all screws. Score paint around head if necessary.",
+                    "Remove wall anchors: Pull, cut flush, or push into wall cavity.",
+                    "Scrape any raised drywall paper around holes to create a smooth, recessed area.",
+                    "Vacuum all holes and wall surfaces to remove loose debris and dust."
+                ],
+                strategy: null
+            },
+            {
+                phase: "Phase 3: Wall Putty Application",
+                steps: [
+                    "Select appropriate putty (lightweight for nail holes, standard/hybrid for larger).",
+                    "If using powder, mix to a smooth, lump-free, peanut-butter consistency.",
+                    "Apply first coat, pressing firmly into holes and feathering edges 2-3 inches.",
+                    "For large holes, apply in thin 1/4\" layers, allowing each to dry.",
+                    "Allow first coat to dry COMPLETELY (check product label: 30 mins to 8+ hours).",
+                    "Sand first coat with 150-grit sandpaper, focusing on blending edges.",
+                    "Vacuum and wipe all dust with a tack cloth or damp microfiber cloth.",
+                    "Apply a thin second coat if needed to fill indentations or shrinkage.",
+                    "Allow second coat to dry, then final sand with 180-220 grit sandpaper.",
+                    "Final vacuum and wipe-down. Inspect with angled light; surface must be perfectly smooth."
+                ],
+                strategy: {
+                    title: "PRODUCTIVITY STRATEGY: During Putty Drying (1-8 hours)",
+                    options: [
+                        "Prep Additional Rooms: Move to the next room and begin Phase 1-2 (prep & nail removal).",
+                        "Detail Work: Tape off trim, baseboards, and ceilings in the current room.",
+                        "Clean & Prep: Clean and prep doors or window frames for painting.",
+                        "Tool Maintenance: Clean mixing containers and putty knives."
+                    ]
+                }
+            },
+            {
+                phase: "Phase 4: Primer & Spot Paint Preparation",
+                steps: [
+                    "Wipe all walls with a mild detergent solution to remove grease, grime, and final dust.",
+                    "Rinse with a clean damp cloth if detergent was used. Allow to dry.",
+                    "Apply painter's tape to all edges (baseboards, trim, ceiling) ensuring a sealed edge.",
+                    "Verify room temp (50-85°F) and humidity (<50%) are in ideal range.",
+                    "Stir primer thoroughly. Apply primer ONLY to the sanded putty patches. Feather edges.",
+                    "Allow primer to dry completely per manufacturer's instructions (1-8 hours)."
+                ],
+                strategy: {
+                    title: "PRODUCTIVITY STRATEGY: During Primer Drying (1-8 hours)",
+                    options: [
+                        "Begin Next Room: Start putty application (Phase 3) in the room you prepped earlier.",
+                        "Paint Trim: Clean and prep trim, then apply first coat of paint to trim/doors.",
+                        "Cleanup: Clean brushes, rollers, and trays used for primer.",
+                        "Take Scheduled Break: Rest to prevent fatigue and review timeline."
+                    ]
+                }
+            },
+            {
+                phase: "Phase 5: Spot Paint Application",
+                steps: [
+                    "Ensure you have the exact matching paint (color, sheen). Prepare a small amount.",
+                    "Apply paint to the center of the primed patch.",
+                    "Use a small roller or brush to 'feather' the paint outwards, blending it into the existing wall paint.",
+                    "Use minimal paint on the applicator. Avoid creating a thick edge.",
+                    "Work quickly to blend the wet edge of the spot paint. Do not overwork.",
+                    "Allow first coat to dry completely (2-4 hours for latex, 24 for oil).",
+                    "Apply a second, thin 'feathered' coat if needed for full coverage."
+                ],
+                strategy: {
+                    title: "PRODUCTIVITY STRATEGY: During Paint Drying (2-4 hours per coat)",
+                    options: [
+                        "Rotate Rooms: Move to an adjacent room to apply its first coat of paint.",
+                        "Paint Trim / Prep Next Patch: Apply the second coat of paint to trim, or begin prep on another patch.",
+                        "Cleanup Prep: Clean brushes/rollers if using different colors, or prep for final cleanup.",
+                        "Quality Inspection: Inspect a different, already-dry room for any touch-ups."
+                    ]
+                }
+            },
+            {
+                phase: "Phase 6: Final Inspection and Cleanup",
+                steps: [
+                    "Inspect all painted surfaces with an angled flashlight for texture issues, drips, or holidays.",
+                    "Perform any necessary touch-ups with a small brush, feathering edges.",
+                    "Remove painter's tape. Pull at a 45-degree angle. Score edge with utility knife if paint is fully cured.",
+                    "Clean all tools: brushes, rollers, trays. (Latex: soap & water; Oil: mineral spirits).",
+                    "Fold drop cloths carefully to contain debris. Remove all plastic.",
+                    "Reinstall outlet covers and switch plates.",
+                    "Move furniture back to original positions.",
+                    "Vacuum entire room thoroughly and damp mop if needed.",
+                    "Label and properly store leftover paint for customer."
+                ],
+                strategy: null
+            }
+        ];
+
+        // Data for Checklists
+        const checklistData = {
+            "Tools & Material Inventory": [
+                "Pry bar, Hammer, Pliers, Nail set",
+                "Putty knives (2\", 4\", 6\")",
+                "Spackling/Putty (Lightweight & Standard)",
+                "Mixing container & stir stick",
+                "Sandpaper (150, 180, 220 grit), Sanding block",
+                "Tack cloth / Microfiber cloths",
+                "Primer (Latex & Stain-blocking)",
+                "Matching Paint (Color & Sheen verified)",
+                "Small touch-up roller (e.g., 4\") or high-quality brush",
+                "Small paint tray or container",
+                "Painter's tape (multiple widths)",
+                "Drop cloths (canvas or plastic)",
+                "Step ladder",
+                "Cleaning buckets, Rags, Mild detergent",
+                "Work light / Flashlight"
+            ],
+            "Pre-Work Safety": [
+                "PPE is on (Mask, Glasses, Gloves)",
+                "Room ventilation is established (fans, windows)",
+                "Furniture is centered and covered",
+                "Floors and baseboards are covered and taped",
+                "Work station is organized and stable",
+                "Ladder is inspected and stable",
+                "Temperature & humidity checked (50-85°F, <50%)",
+                "Customer communication script reviewed"
+            ],
+            "Final Quality Assurance": [
+                "Angled light inspection complete",
+                "No visible repairs, bumps, or indentations",
+                "Patch is fully covered, no primer showing",
+                "Spot paint color & sheen match existing wall",
+                "Repair is invisible from 5-ft away (no halo/flashing)",
+                "No drips, sags, or roller marks",
+                "All touch-ups are complete and blended",
+                "All tape and drop cloths removed",
+                "All outlet/switch covers re-installed",
+                "Furniture returned to original position",
+                "Floor vacuumed and/or mopped",
+                "All tools and trash removed from site"
+            ]
+        };
+
+        // --- JAVASCRIPT FUNCTIONS ---
+
+        function openTab(evt, tabName) {
+            let i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        function setupAccordions() {
+            const container = document.getElementById('accordion-container');
+            if (!container) return; // Don't run if container not on page
+            container.innerHTML = procedureData.map((item, index) => `
+                <div class="border border-stone-200 rounded-lg">
+                    <div class="accordion-header bg-stone-100 p-4 flex justify-between items-center" onclick="toggleAccordion(${index})">
+                        <h3 class="text-xl font-bold text-stone-700">${item.phase}</h3>
+                        <span class="text-2xl font-light text-stone-500 transform transition-transform duration-300" id="icon-${index}">+</span>
+                    </div>
+                    <div class="accordion-content" id="content-${index}">
+                        <div class="p-4 pt-0">
+                            <ul class="pt-4 list-decimal list-inside space-y-2 text-stone-700">
+                                ${item.steps.map(step => `<li>${step}</li>`).join('')}
+                            </ul>
+                            ${item.strategy ? `
+                            <div class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                                <h4 class="font-bold text-lg text-blue-800 mb-2">${item.strategy.title}</h4>
+                                <ul class="list-disc list-inside space-y-1 text-blue-700">
+                                    ${item.strategy.options.map(opt => `<li>${opt}</li>`).join('')}
+                                </ul>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        let openAccordionIndex = -1;
+
+        function toggleAccordion(index) {
+            const content = document.getElementById(`content-${index}`);
+            const icon = document.getElementById(`icon-${index}`);
+
+            // Close previously open accordion
+            if (openAccordionIndex !== -1 && openAccordionIndex !== index) {
+                const oldContent = document.getElementById(`content-${openAccordionIndex}`);
+                const oldIcon = document.getElementById(`icon-${openAccordionIndex}`);
+                if (oldContent) oldContent.style.maxHeight = '0px';
+                if (oldIcon) oldIcon.textContent = '+';
+            }
+
+            // Toggle current accordion
+            if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+                content.style.maxHeight = '0px';
+                icon.textContent = '+';
+                openAccordionIndex = -1;
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+                icon.textContent = '−';
+                openAccordionIndex = index;
+            }
+        }
+
+        function setupChecklists() {
+            const container = document.getElementById('checklist-container');
+            if (!container) return; // Don't run if container not on page
+            container.innerHTML = Object.keys(checklistData).map(key => `
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold text-stone-700 mb-2">${key}</h3>
+                    <div class="w-full bg-stone-200 rounded-full h-2.5 mb-4">
+                        <div id="progress-${key.replace(/[\s&]+/g, '')}" class="progress-bar-fill bg-teal-500 h-2.5 rounded-full" style="width: 0%"></div>
+                    </div>
+                    <div class="space-y-3">
+                        ${checklistData[key].map((item, index) => `
+                            <label class="checklist-item flex items-center p-3 bg-stone-50 rounded-lg border border-stone-200 cursor-pointer hover:bg-stone-100">
+                                <input type="checkbox" onchange="updateProgress('${key}')" class="h-5 w-5 rounded border-stone-300 text-teal-600 focus:ring-teal-500">
+                                <span class="ml-3 text-stone-700 font-medium">${item}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateProgress(key) {
+            const container = event.target.closest('.space-y-3');
+            if (!container) return;
+            const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+            const total = checkboxes.length;
+            let checked = 0;
+            checkboxes.forEach(cb => {
+                if (cb.checked) checked++;
+            });
+            const percentage = total > 0 ? (checked / total) * 100 : 0;
+            const progressBar = document.getElementById(`progress-${key.replace(/[\s&]+/g, '')}`);
+            if (progressBar) progressBar.style.width = `${percentage}%`;
+        }
+
+        function setupTimelineDashboard() {
+            // --- Pie Chart: Work vs Wait ---
+            const pieCtx = document.getElementById('timeBreakdownPieChart')?.getContext('2d');
+            if (pieCtx) {
+                // Estimates: Active Work ~7.5 hrs, Wait Time ~8.5 hrs
+                new Chart(pieCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Active Work Time (Est. 7.5h)', 'Mandatory Wait Time (Est. 8.5h)'],
+                        datasets: [{
+                            data: [7.5, 8.5],
+                            backgroundColor: ['#0d9488', '#ccfbf1'], // teal-600, teal-100
+                            borderColor: '#FFFFFF',
+                            borderWidth: 4,
+                            hoverOffset: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'bottom', labels: { color: '#44403C', font: { size: 12, weight: '600' } } },
+                            tooltip: { callbacks: { title: (tooltipItems) => tooltipItems[0].label } }
+                        },
+                        cutout: '65%'
+                    }
+                });
+            }
+
+            // --- Gantt Chart: Optimized Timeline ---
+            const ganttCtx = document.getElementById('timelineGanttChart')?.getContext('2d');
+            if (ganttCtx) {
+                new Chart(ganttCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Main Room Task', 'Parallel Task (Productivity)'],
+                        datasets: [
+                            {
+                                label: 'Active Work',
+                                data: [
+                                    { y: 'Main Room Task', x: [0, 1.5], label: 'P1: Prep & P2: Removal' }, // P1 & P2
+                                    { y: 'Main Room Task', x: [1.5, 2.5], label: 'P3: Putty 1' },
+                                    { y: 'Main Room Task', x: [4, 4.5], label: 'P3: Putty 2' },
+                                    { y: 'Main Room Task', x: [6, 7], label: 'P4: Prime' },
+                                    { y: 'Main Room Task', x: [9, 10], label: 'P5: Spot Paint 1' },
+                                    { y: 'Main Room Task', x: [13, 14], label: 'P5: Spot Paint 2' },
+                                    { y: 'Main Room Task', x: [14, 15], label: 'P6: Cleanup' },
+                                    { y: 'Parallel Task (Productivity)', x: [2.5, 4], label: 'Prep Next Room' },
+                                    { y: 'Parallel Task (Productivity)', x: [7, 8.5], label: 'Putty Next Room' },
+                                    { y: 'Parallel Task (Productivity)', x: [10, 11.5], label: 'Paint Trim / Prep Next Patch' }
+                                ],
+                                backgroundColor: '#047857', // emerald-700
+                                barPercentage: 0.6
+                            },
+                            {
+                                label: 'Mandatory Drying Time',
+                                data: [
+                                    { y: 'Main Room Task', x: [2.5, 4], label: 'P3: Putty 1 Dry' },
+                                    { y: 'Main Room Task', x: [4.5, 6], label: 'P3: Putty 2 Dry' },
+                                    { y: 'Main Room Task', x: [7, 9], label: 'P4: Primer Dry' },
+                                    { y: 'Main Room Task', x: [10, 13], label: 'P5: Paint 1 Dry' }
+                                ],
+                                backgroundColor: '#a7f3d0', // emerald-200
+                                barPercentage: 0.6
+                            }
+                        ]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                min: 0,
+                                max: 16,
+                                stacked: false, // <-- This was the fix
+                                title: { display: true, text: 'Project Hours from Start' }
+                            },
+                            y: {
+                                stacked: true
+                            }
+                        },
+                        plugins: {
+                            legend: { position: 'top' },
+                            tooltip: {
+                                callbacks: {
+                                    title: (tooltipItems) => tooltipItems[0].dataset.label,
+                                    label: (context) => {
+                                        const item = context.dataset.data[context.dataIndex];
+                                        return `${item.label}: ${item.x[0]}h to ${item.x[1]}h`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // --- NEW RADAR CHART FUNCTION ---
+        function setupOverviewDashboard() {
+            const radarCtx = document.getElementById('qualityMetricsRadarChart')?.getContext('2d');
+            if (radarCtx) {
+                new Chart(radarCtx, {
+                    type: 'radar',
+                    data: {
+                        labels: [
+                            'Imperceptible Repair (Flush)',
+                            'Texture & Sheen Match',
+                            'No Flashing / Halo',
+                            'Efficiency'
+                        ],
+                        datasets: [{
+                            label: 'Quality Goal',
+                            data: [5, 5, 5, 5], // Target '5' for all
+                            fill: true,
+                            backgroundColor: 'rgba(13, 148, 136, 0.2)', // teal-600 transparent
+                            borderColor: 'rgb(13, 148, 136)', // teal-600
+                            pointBackgroundColor: 'rgb(13, 148, 136)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgb(13, 148, 136)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                max: 5,
+                                min: 0,
+                                ticks: {
+                                    stepSize: 1,
+                                    display: false // Hides the '1, 2, 3, 4, 5' labels
+                                },
+                                pointLabels: {
+                                    font: {
+                                        size: 13,
+                                        weight: '600'
+                                    },
+                                    color: '#44403C' // stone-700
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false // Hide the 'Quality Goal' legend
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Setup functions for all tabs
+            setupAccordions();
+            setupChecklists();
+            setupTimelineDashboard();
+            setupOverviewDashboard(); // <-- New function call for overview chart
+
+            // Open the first tab by default
+            const firstTab = document.querySelector('.tab-button.active');
+            if (firstTab) firstTab.click();
+        });
+    </script>
+</body>
+</html>

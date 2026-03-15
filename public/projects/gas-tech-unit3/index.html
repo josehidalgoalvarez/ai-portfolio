@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Gas Technician Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4A4A4A;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+
+        .nav-link {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-link.active {
+            color: #D95B43;
+            border-bottom-color: #D95B43;
+        }
+
+        .concept-card {
+            transition: all 0.3s ease;
+            border-left-width: 4px;
+        }
+
+        .concept-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        #details-display {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+
+        #details-display.show {
+            max-height: 2000px;
+            opacity: 1;
+            margin-bottom: 4rem;
+        }
+
+        /* Tab content visibility */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- Page Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-5xl font-bold mb-3" style="color: #2A363B;">Gas Technician Study Dashboard</h1>
+            <p class="text-lg text-gray-600">Unit 3: Fuel Properties, Gas Laws & Combustion Principles</p>
+        </header>
+
+        <!-- Overview Cards & Chart -->
+        <section id="overview" class="mb-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg shadow-sm p-6 border-t-4 border-[#D95B43]">
+                    <h3 class="text-sm font-semibold text-gray-500 uppercase mb-2">Primary Fuel</h3>
+                    <p class="text-3xl font-bold text-[#2A363B]">Natural Gas</p>
+                    <p class="text-sm text-gray-600 mt-2">Methane-based (CH₄), S.G. ~0.60</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm p-6 border-t-4 border-[#F38630]">
+                    <h3 class="text-sm font-semibold text-gray-500 uppercase mb-2">Secondary Fuel</h3>
+                    <p class="text-3xl font-bold text-[#2A363B]">Propane (LPG)</p>
+                    <p class="text-sm text-gray-600 mt-2">C₃H₈, S.G. ~1.52 (Heavier than air)</p>
+                </div>
+                <div class="md:col-span-1 bg-white rounded-lg shadow-sm p-6 border-t-4 border-[#2A363B]">
+                    <h3 class="text-sm font-semibold text-gray-500 uppercase mb-2">Tertiary Fuel</h3>
+                    <p class="text-3xl font-bold text-[#2A363B]">Butane</p>
+                    <p class="text-sm text-gray-600 mt-2">C₄H₁₀, S.G. ~2.00 (Portable fuel)</p>
+                </div>
+            </div>
+
+            <div class="mt-6 bg-white rounded-lg shadow-sm p-6">
+                <h3 class="text-xl font-bold text-center mb-4">Typical Natural Gas Composition</h3>
+                <div class="chart-container h-[250px] sm:h-[300px]">
+                    <canvas id="compositionChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation Tabs -->
+        <nav class="sticky top-0 bg-[#FDFBF8]/95 backdrop-blur-sm z-10 mb-10 border-b shadow-sm">
+            <div class="flex justify-center flex-wrap gap-2 sm:gap-4 py-3">
+                <a data-tab="explorer"
+                    class="nav-link active text-sm sm:text-lg font-semibold text-gray-600 hover:text-[#D95B43] border-b-2 border-transparent pb-1 px-2">Concept
+                    Explorer</a>
+                <a data-tab="fuel-table"
+                    class="nav-link text-sm sm:text-lg font-semibold text-gray-600 hover:text-[#D95B43] border-b-2 border-transparent pb-1 px-2">Fuel
+                    Properties</a>
+                <a data-tab="strategy"
+                    class="nav-link text-sm sm:text-lg font-semibold text-gray-600 hover:text-[#D95B43] border-b-2 border-transparent pb-1 px-2">Considerations</a>
+                <a data-tab="action-plan"
+                    class="nav-link text-sm sm:text-lg font-semibold text-gray-600 hover:text-[#D95B43] border-b-2 border-transparent pb-1 px-2">Action
+                    Plan</a>
+                <a data-tab="furnace-diagram"
+                    class="nav-link text-sm sm:text-lg font-semibold text-gray-600 hover:text-[#D95B43] border-b-2 border-transparent pb-1 px-2">Furnace
+                    Diagram</a>
+            </div>
+        </nav>
+
+        <main>
+            <!-- Concept Explorer Tab -->
+            <section id="explorer" class="tab-content active mb-16">
+                <h2 class="text-3xl font-bold text-center mb-2">Concept Explorer</h2>
+                <p class="text-center text-gray-600 mb-8">Filter and explore all core concepts. Click any card to see
+                    details.</p>
+
+                <div class="flex justify-center mb-8">
+                    <div id="filters" class="flex flex-wrap justify-center gap-2 p-2 bg-white rounded-full shadow-sm">
+                        <button
+                            class="filter-btn active px-4 py-2 text-sm font-semibold rounded-full bg-[#2A363B] text-white"
+                            data-filter="all">All Concepts</button>
+                        <button class="filter-btn px-4 py-2 text-sm font-semibold rounded-full hover:bg-gray-200"
+                            data-filter="Fuel">Fuel Types</button>
+                        <button class="filter-btn px-4 py-2 text-sm font-semibold rounded-full hover:bg-gray-200"
+                            data-filter="Combustion">Combustion</button>
+                        <button class="filter-btn px-4 py-2 text-sm font-semibold rounded-full hover:bg-gray-200"
+                            data-filter="Law">Gas Laws</button>
+                        <button class="filter-btn px-4 py-2 text-sm font-semibold rounded-full hover:bg-gray-200"
+                            data-filter="Measurement">Measurements</button>
+                        <button class="filter-btn px-4 py-2 text-sm font-semibold rounded-full hover:bg-gray-200"
+                            data-filter="Safety">Safety</button>
+                    </div>
+                </div>
+
+                <div id="concept-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+                <div id="details-display" class="mt-8">
+                    <div id="details-content" class="bg-white p-6 sm:p-8 rounded-lg shadow-lg"></div>
+                </div>
+            </section>
+
+            <!-- Fuel Properties Tab -->
+            <section id="fuel-table" class="tab-content mb-16">
+                <h2 class="text-3xl font-bold text-center mb-2">Fuel Properties Comparison</h2>
+                <p class="text-center text-gray-600 mb-8">Detailed comparison of Natural Gas, Propane, and Butane.</p>
+
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden border-t-4 border-[#D95B43]">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full text-sm text-left">
+                            <thead class="bg-gray-100 text-[#2A363B]">
+                                <tr>
+                                    <th class="px-6 py-4 font-bold uppercase tracking-wider">Property</th>
+                                    <th class="px-6 py-4 font-bold uppercase tracking-wider text-[#D95B43]">Natural Gas
+                                    </th>
+                                    <th class="px-6 py-4 font-bold uppercase tracking-wider text-[#D95B43]">Propane</th>
+                                    <th class="px-6 py-4 font-bold uppercase tracking-wider text-[#D95B43]">Butane</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-3 font-medium">Chemical Formula</td>
+                                    <td class="px-6 py-3">CH₄</td>
+                                    <td class="px-6 py-3">C₃H₈</td>
+                                    <td class="px-6 py-3">C₄H₁₀</td>
+                                </tr>
+                                <tr class="bg-gray-50/50 hover:bg-gray-50">
+                                    <td class="px-6 py-3 font-medium">Specific Gravity (Air = 1.0)</td>
+                                    <td class="px-6 py-3">0.6</td>
+                                    <td class="px-6 py-3">1.52</td>
+                                    <td class="px-6 py-3">2.0</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-3 font-medium">Boiling Point</td>
+                                    <td class="px-6 py-3">-260°F (-162°C)</td>
+                                    <td class="px-6 py-3">-44°F (-42°C)</td>
+                                    <td class="px-6 py-3">32°F (0°C)</td>
+                                </tr>
+                                <tr class="bg-gray-50/50 hover:bg-gray-50">
+                                    <td class="px-6 py-3 font-medium">Heat Content (BTU/ft³)</td>
+                                    <td class="px-6 py-3">1,000</td>
+                                    <td class="px-6 py-3">2,520</td>
+                                    <td class="px-6 py-3">3,260</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-3 font-medium">Ignition Temperature</td>
+                                    <td class="px-6 py-3">1300°F (700°C)</td>
+                                    <td class="px-6 py-3">920°F (490°C)</td>
+                                    <td class="px-6 py-3">900°F (480°C)</td>
+                                </tr>
+                                <tr class="bg-gray-50/50 hover:bg-gray-50">
+                                    <td class="px-6 py-3 font-medium">Limits of Flammability</td>
+                                    <td class="px-6 py-3">4-15%</td>
+                                    <td class="px-6 py-3">2.1-9.5%</td>
+                                    <td class="px-6 py-3">1.9-8.5%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Strategy Tab -->
+            <section id="strategy" class="tab-content mb-16">
+                <h2 class="text-3xl font-bold text-center mb-2">Considerations</h2>
+                <p class="text-center text-gray-600 mb-8">Pressure and Combustion.</p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="text-xl font-bold mb-4 text-center">Pressure Regulation</h3>
+                        <div
+                            class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-4">
+                            <div class="text-center p-3 border-2 border-dashed border-gray-300 rounded-lg">
+                                <p class="font-semibold">Street Main</p>
+                                <p class="text-sm text-gray-500">~60 PSIG</p>
+                            </div>
+                            <div class="text-4xl font-thin text-gray-400">→</div>
+                            <div class="text-center p-3 bg-gray-100 rounded-lg">
+                                <p class="font-semibold">Meter Regulator</p>
+                                <p class="text-xl font-bold">~7" W.C.</p>
+                            </div>
+                            <div class="text-4xl font-thin text-gray-400">→</div>
+                            <div class="text-center p-3 bg-[#D95B43]/10 rounded-lg">
+                                <p class="font-semibold text-[#D95B43]">Appliance</p>
+                                <p class="text-xl font-bold">3.5" W.C.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="text-xl font-bold mb-4 text-center">Combustion Quality</h3>
+                        <div
+                            class="flex flex-col md:flex-row justify-around items-stretch space-y-4 md:space-y-0 md:space-x-4 text-center">
+                            <div class="flex-1 p-3 border-t-4 border-[#0077b6] bg-gray-50 rounded-b-lg">
+                                <h4 class="font-bold">IDEAL</h4>
+                                <p class="font-semibold text-sm text-[#0077b6]">Complete</p>
+                                <p class="text-xs text-gray-600 mt-1">Blue flame, max efficiency</p>
+                            </div>
+                            <div class="flex-1 p-3 border-t-4 border-[#F38630] bg-gray-50 rounded-b-lg">
+                                <h4 class="font-bold">POOR</h4>
+                                <p class="font-semibold text-sm text-[#F38630]">Incomplete</p>
+                                <p class="text-xs text-gray-600 mt-1">Yellow flame, produces CO</p>
+                            </div>
+                            <div class="flex-1 p-3 border-t-4 border-[#D95B43] bg-gray-50 rounded-b-lg">
+                                <h4 class="font-bold">DANGER</h4>
+                                <p class="font-semibold text-sm text-[#D95B43]">High CO</p>
+                                <p class="text-xs text-gray-600 mt-1">Immediate shutdown</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Action Plan Tab -->
+            <section id="action-plan" class="tab-content mb-16">
+                <h2 class="text-3xl font-bold text-center mb-2">Key Safety & Service Takeaways</h2>
+                <p class="text-center text-gray-600 mb-8">The top 5 most critical concepts for field application.</p>
+
+                <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-sm p-6 space-y-4">
+                    <div class="p-4 rounded-md border-l-4 border-[#D95B43] bg-gray-50">
+                        <h3 class="font-bold text-lg">1. Specific Gravity is Critical</h3>
+                        <p class="text-gray-700">Natural Gas (S.G. ~0.60) rises. Propane (S.G. ~1.52) sinks and pools in
+                            low areas.</p>
+                    </div>
+                    <div class="p-4 rounded-md border-l-4 border-[#F38630] bg-gray-50">
+                        <h3 class="font-bold text-lg">2. Know Your Pressures: PSIG vs. W.C.</h3>
+                        <p class="text-gray-700">PSIG for high pressure. W.C. for appliances. Key: 1 PSI ≈ 27.7" W.C.
+                        </p>
+                    </div>
+                    <div class="p-4 rounded-md border-l-4 border-[#E0E4CC] bg-gray-50">
+                        <h3 class="font-bold text-lg">3. CO is the Silent Killer</h3>
+                        <p class="text-gray-700">Legal max 400 ppm (air-free), but >100 ppm is unsafe.</p>
+                    </div>
+                    <div class="p-4 rounded-md border-l-4 border-[#696969] bg-gray-50">
+                        <h3 class="font-bold text-lg">4. Trust Your Nose (Mercaptan)</h3>
+                        <p class="text-gray-700">The "rotten egg" smell indicates a leak. Never ignore it.</p>
+                    </div>
+                    <div class="p-4 rounded-md border-l-4 border-[#2A363B] bg-gray-50">
+                        <h3 class="font-bold text-lg">5. Gases Behave Predictably (Gas Laws)</h3>
+                        <p class="text-gray-700">Boyle's Law: P₁V₁ = P₂V₂. Doubling pressure halves volume.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Furnace Diagram Tab (Hidden by default) -->
+            <section id="furnace-diagram" class="tab-content mb-16">
+                <h2 class="text-3xl font-bold text-center mb-2">Furnace Dilution Air Diagram</h2>
+                <p class="text-center text-gray-600 mb-8">Visualizing airflow, combustion, and dilution in a gas
+                    furnace.</p>
+
+                <div class="bg-white rounded-lg shadow-sm p-6 border-t-4 border-[#2A363B]">
+                    <div class="w-full max-w-3xl mx-auto mb-8">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 900" width="100%" height="100%">
+                            <title>Furnace Dilution Air Diagram</title>
+                            <desc>Technical schematic of a gas furnace showing airflow paths</desc>
+
+                            <style>
+                                .label-main {
+                                    font-family: Arial;
+                                    font-size: 18px;
+                                    font-weight: bold;
+                                    fill: #000;
+                                }
+
+                                .label-sub {
+                                    font-family: Arial;
+                                    font-size: 14px;
+                                    fill: #333;
+                                }
+
+                                .label-title {
+                                    font-family: Arial;
+                                    font-size: 20px;
+                                    font-weight: bold;
+                                    fill: #000;
+                                    text-anchor: middle;
+                                }
+
+                                .casing {
+                                    fill: none;
+                                    stroke: #000;
+                                    stroke-width: 3;
+                                }
+
+                                .internal-wall {
+                                    fill: none;
+                                    stroke: #000;
+                                    stroke-width: 2;
+                                }
+
+                                .thin-detail {
+                                    fill: none;
+                                    stroke: #000;
+                                    stroke-width: 1.5;
+                                }
+
+                                .burner-body {
+                                    fill: #333;
+                                    stroke: #000;
+                                }
+
+                                .flame {
+                                    fill: #000;
+                                }
+
+                                .blower-belt {
+                                    stroke: #000;
+                                    stroke-width: 4;
+                                    fill: none;
+                                }
+
+                                .pulley {
+                                    fill: #999;
+                                    stroke: #000;
+                                }
+
+                                .filter-rect {
+                                    fill: url(#crossHatch);
+                                    stroke: #000;
+                                    stroke-width: 2;
+                                }
+
+                                .flow-air {
+                                    fill: none;
+                                    stroke: #555;
+                                    stroke-width: 2;
+                                    stroke-dasharray: 6, 4;
+                                    marker-end: url(#arrow-grey);
+                                }
+
+                                .flow-exhaust {
+                                    fill: none;
+                                    stroke: #000;
+                                    stroke-width: 2;
+                                    stroke-dasharray: 10, 5;
+                                    marker-end: url(#arrow-black);
+                                }
+
+                                .flow-intake {
+                                    fill: none;
+                                    stroke: #000;
+                                    stroke-width: 2.5;
+                                    marker-end: url(#arrow-black);
+                                }
+
+                                .lead-line {
+                                    stroke: #000;
+                                    stroke-width: 1;
+                                    fill: none;
+                                }
+                            </style>
+
+                            <defs>
+                                <pattern id="crossHatch" width="6" height="6" patternUnits="userSpaceOnUse">
+                                    <path d="M0,6 L6,0 M-1,1 L1,-1 M5,7 L7,5" stroke="#888" stroke-width="1" />
+                                </pattern>
+                                <marker id="arrow-black" markerWidth="12" markerHeight="12" refX="10" refY="6"
+                                    orient="auto">
+                                    <path d="M2,2 L10,6 L2,10 L4,6 Z" fill="#000" />
+                                </marker>
+                                <marker id="arrow-grey" markerWidth="12" markerHeight="12" refX="10" refY="6"
+                                    orient="auto">
+                                    <path d="M2,2 L10,6 L2,10 L4,6 Z" fill="#555" />
+                                </marker>
+                            </defs>
+
+                            <text x="400" y="40" class="label-title">Cutaway of a furnace showing dilution air</text>
+                            <path d="M250,200 L500,200 L500,230 L580,230 L580,700 L280,700 L280,230" class="casing" />
+                            <path d="M280,200 L280,150 L50,150 M280,230 L50,230" class="casing" />
+                            <path d="M250,550 L50,550 M250,680 L50,680" class="casing" />
+                            <path d="M460,200 L460,60 M500,200 L500,60" class="casing" />
+                            <line x1="280" y1="550" x2="580" y2="550" class="internal-wall" />
+                            <line x1="460" y1="230" x2="460" y2="550" class="internal-wall" />
+                            <line x1="460" y1="400" x2="580" y2="400" class="thin-detail" />
+                            <rect x="250" y="550" width="30" height="150" class="filter-rect" />
+                            <path d="M300,230 L300,520 L440,520 L440,230" class="internal-wall" stroke-dasharray="2,2"
+                                opacity="0.5" />
+                            <path d="M310,520 L310,250 Q310,210 450,210" class="internal-wall" fill="none" />
+
+                            <g id="blower-assembly" transform="translate(340, 630)">
+                                <path d="M0,0 Q-40,0 -40,40 Q-40,80 0,80 Q40,80 40,40" class="internal-wall"
+                                    fill="none" />
+                                <circle cx="0" cy="40" r="15" class="pulley" />
+                                <circle cx="160" cy="-20" r="10" class="pulley" />
+                                <line x1="0" y1="40" x2="160" y2="-20" class="blower-belt" />
+                            </g>
+
+                            <g id="burner-assembly" transform="translate(330, 480)">
+                                <rect x="0" y="0" width="90" height="20" class="burner-body" rx="2" />
+                                <text x="45" y="15" fill="white" font-size="12" text-anchor="middle">Burner</text>
+                                <path
+                                    d="M10,0 L15,-15 L20,0 M30,0 L35,-15 L40,0 M50,0 L55,-15 L60,0 M70,0 L75,-15 L80,0"
+                                    class="flame" />
+                            </g>
+
+                            <g transform="translate(480, 450)">
+                                <rect x="0" y="0" width="40" height="30" fill="none" stroke="#000" stroke-width="1.5" />
+                                <circle cx="20" cy="15" r="8" fill="#ddd" stroke="#000" />
+                                <polyline points="-60,40 0,40 20,40 20,30" fill="none" stroke="#000" stroke-width="2" />
+                            </g>
+
+                            <g transform="translate(580, 320)">
+                                <line x1="0" y1="0" x2="20" y2="10" class="thin-detail" />
+                                <line x1="0" y1="15" x2="20" y2="25" class="thin-detail" />
+                                <line x1="0" y1="-10" x2="0" y2="35" stroke="#fff" stroke-width="4" />
+                            </g>
+
+                            <path d="M100,600 L240,600" class="flow-air" />
+                            <path d="M340,580 Q280,530 290,350 Q290,230 200,210" class="flow-air" />
+                            <path d="M280,180 L100,180" class="flow-air" />
+                            <path d="M375,460 Q380,300 440,280 Q470,260 480,150" class="flow-exhaust" />
+                            <path d="M620,330 Q540,340 530,300 Q520,260 490,220" class="flow-intake" />
+                            <path d="M620,510 L540,510" class="flow-intake" />
+
+                            <text x="180" y="80" class="label-sub">Heated air to rooms</text>
+                            <line x1="180" y1="90" x2="250" y2="170" class="lead-line" stroke-dasharray="2,2" />
+                            <text x="150" y="270" class="label-sub">Heat</text>
+                            <text x="150" y="290" class="label-sub">exchanger</text>
+                            <text x="150" y="450" class="label-sub">Combustion</text>
+                            <text x="150" y="470" class="label-sub">products</text>
+                            <text x="160" y="650" class="label-sub">Cold air</text>
+                            <text x="160" y="670" class="label-sub">from rooms</text>
+                            <text x="265" y="780" class="label-sub" text-anchor="middle">Filter</text>
+                            <text x="340" y="670" class="label-sub">Blower</text>
+                            <text x="650" y="550" class="label-sub">Combustion air</text>
+                            <text x="650" y="570" class="label-sub">and excess air</text>
+                            <text x="620" y="350" class="label-main">DILUTION AIR</text>
+                            <text x="650" y="270" class="label-sub">Draft hood</text>
+                        </svg>
+                    </div>
+
+                    <div class="mt-6 text-gray-700">
+                        <h3 class="font-bold text-lg mb-2">Understanding the Airflow</h3>
+                        <p class="mb-4">This diagram illustrates the critical airflow paths in a standard natural draft
+                            gas furnace:</p>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li><strong>Combustion Air:</strong> Air that mixes directly with the gas at the burner to
+                                support the flame.</li>
+                            <li><strong>Dilution Air:</strong> Air that enters through the draft hood to cool the hot
+                                flue gases and assist in creating a stable draft.</li>
+                            <li><strong>Circulating Air:</strong> The household air (cold return) that is heated and
+                                distributed to the rooms.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="text-center mt-12 text-sm text-gray-500 border-t pt-6">
+            <p>This interactive dashboard is a dynamic study tool for Gas Technician concepts.</p>
+            <p>Information is based on standard industry principles and CSA B149.1 code.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Helper function to format chemical formulas in HTML
+        const formatFormulas = (str) => {
+            if (!str) return '';
+            return str
+                .replace(/CₓHₙ/g, 'C<sub>x</sub>H<sub>n</sub>')
+                .replace(/CH₄/g, 'CH<sub>4</sub>')
+                .replace(/C₃H₈/g, 'C<sub>3</sub>H<sub>8</sub>')
+                .replace(/C₄H₁₀/g, 'C<sub>4</sub>H<sub>10</sub>')
+                .replace(/C₂H₅SH/g, 'C<sub>2</sub>H<sub>5</sub>SH')
+                .replace(/C₂H₆\+/g, 'C<sub>2</sub>H<sub>6</sub>+')
+                .replace(/H₂O/g, 'H<sub>2</sub>O')
+                .replace(/CO₂/g, 'CO<sub>2</sub>')
+                .replace(/O₂/g, 'O<sub>2</sub>')
+                .replace(/N₂/g, 'N<sub>2</sub>')
+                .replace(/P₁V₁/g, 'P<sub>1</sub>V<sub>1</sub>')
+                .replace(/P₂V₂/g, 'P<sub>2</sub>V<sub>2</sub>')
+                .replace(/T₁/g, 'T<sub>1</sub>')
+                .replace(/T₂/g, 'T<sub>2</sub>')
+                .replace(/V₁/g, 'V<sub>1</sub>')
+                .replace(/V₂/g, 'V<sub>2</sub>');
+        };
+
+        // Concepts data array - ALL VALUES FROM REFERENCE IMAGES
+        const conceptsData = [
+            // FUEL TYPES
+            {
+                id: 'natgas',
+                name: 'Natural Gas (CH₄)',
+                tier: 'Fuel',
+                type: 'Hydrocarbon Fuel',
+                focus: 'Primary Fuel Source',
+                admin: 'Utility',
+                benefit: '~1,000 BTU/ft³',
+                description: 'A hydrocarbon fuel composed mainly of Methane (CH₄). S.G. ~0.6, making it lighter than air.'
+            },
+            {
+                id: 'propane',
+                name: 'Propane (C₃H₈)',
+                tier: 'Fuel',
+                type: 'Hydrocarbon Fuel',
+                focus: 'Secondary Fuel',
+                admin: 'Supplier',
+                benefit: '~2,520 BTU/ft³',
+                description: 'A hydrocarbon fuel (C₃H₈) stored as liquid under pressure. S.G. ~1.52, heavier than air and will sink.'
+            },
+            {
+                id: 'butane',
+                name: 'Butane (C₄H₁₀)',
+                tier: 'Fuel',
+                type: 'Hydrocarbon Fuel',
+                focus: 'Portable Fuel',
+                admin: 'Supplier',
+                benefit: '~3,260 BTU/ft³',
+                description: 'A hydrocarbon fuel (C₄H₁₀) used in lighters and camping stoves. S.G. ~2.0, significantly heavier than air.'
+            },
+            {
+                id: 'hydrocarbon',
+                name: 'Hydrocarbon (CₓHₙ)',
+                tier: 'Fuel',
+                type: 'Chemical Class',
+                focus: 'Fuel Composition',
+                admin: 'Chemistry',
+                benefit: 'Releases energy on combustion',
+                description: 'Chemical compounds made only of hydrogen and carbon atoms. Primary components of all fossil fuels.'
+            },
+            // SAFETY
+            {
+                id: 'mercaptan',
+                name: 'Mercaptan (C₂H₅SH)',
+                tier: 'Safety',
+                type: 'Safety Additive',
+                focus: 'Leak Detection',
+                admin: 'Gas Supplier',
+                benefit: 'Distinct "rotten egg" smell',
+                description: 'A sulfur-based compound added to odorless fuels (NG, Propane) to make them detectable by smell for safety.'
+            },
+            {
+                id: 'co',
+                name: 'Carbon Monoxide (CO)',
+                tier: 'Safety',
+                type: 'Byproduct of Combustion',
+                focus: 'Deadly Poison',
+                admin: 'CSA B149.1',
+                benefit: 'Max 400 ppm (Air-Free)',
+                description: 'A colorless, odorless, deadly gas produced by incomplete combustion. Any reading >100 ppm is serious.'
+            },
+            // MEASUREMENT
+            {
+                id: 'psig',
+                name: 'PSIG (Gauge Pressure)',
+                tier: 'Measurement',
+                type: 'Unit of Pressure',
+                focus: 'High Pressure Systems',
+                admin: 'Engineering',
+                benefit: '1 PSI ≈ 27.7" W.C.',
+                description: 'Pound-force per Square Inch Gauge. Used for high pressure (e.g., street mains, propane tanks).'
+            },
+            {
+                id: 'wc',
+                name: 'Inches of Water Column ("W.C.)',
+                tier: 'Measurement',
+                type: 'Unit of Pressure',
+                focus: 'Low Pressure Systems',
+                admin: 'Engineering',
+                benefit: '1 PSI ≈ 27.7" W.C.',
+                description: 'A very small unit of pressure used for low-pressure gas systems, such as appliance manifolds.'
+            },
+            {
+                id: 'btu',
+                name: 'BTU (British Thermal Unit)',
+                tier: 'Measurement',
+                type: 'Unit of Energy',
+                focus: 'Quantifying Heat',
+                admin: 'Physics',
+                benefit: '1 BTU = Energy to heat 1 lb H₂O by 1°F',
+                description: 'The base unit of heat energy. Used to rate the input and output of appliances.'
+            },
+            {
+                id: 'heatcontent',
+                name: 'Heat Content (Calorific Value)',
+                tier: 'Measurement',
+                type: 'Fuel Property',
+                focus: 'Energy Density',
+                admin: 'Chemistry',
+                benefit: 'NG: 1,000 BTU/ft³ | Propane: 2,520 BTU/ft³ | Butane: 3,260 BTU/ft³',
+                description: 'The total amount of thermal energy released during complete combustion of a specific quantity of fuel.'
+            },
+            // GAS LAWS
+            {
+                id: 'spg',
+                name: 'Specific Gravity (Gas)',
+                tier: 'Law',
+                type: 'Physical Property',
+                focus: 'Gas Behavior',
+                admin: 'Physics',
+                benefit: 'Air = 1.0',
+                description: 'The ratio of the density of a gas to the density of air. If < 1.0 it rises. If > 1.0 it sinks.'
+            },
+            {
+                id: 'boiling',
+                name: 'Boiling Point',
+                tier: 'Law',
+                type: 'Physical Property',
+                focus: 'Liquid-to-Gas Transition',
+                admin: 'Physics',
+                benefit: 'NG: -260°F (-162°C) | Propane: -44°F (-42°C) | Butane: 32°F (0°C)',
+                description: 'The specific temperature at which a liquid turns into a gas (vapor).'
+            },
+            {
+                id: 'expansion',
+                name: 'Vapour Expansion (Liquid-to-Gas)',
+                tier: 'Law',
+                type: 'Physical Property',
+                focus: 'Storage & Transport',
+                admin: 'Physics',
+                benefit: 'Propane 1:270 | NG (LNG) 1:600',
+                description: 'The ratio of gas volume to liquid volume. e.g., 1 ft³ liquid propane = 270 ft³ of propane gas.'
+            },
+            {
+                id: 'boyles',
+                name: 'Boyle\'s Law',
+                tier: 'Law',
+                type: 'Gas Law',
+                focus: 'Pressure-Volume Relationship',
+                admin: 'Physics',
+                benefit: 'P₁V₁ = P₂V₂',
+                description: 'At constant temperature, a gas\'s pressure and volume are inversely proportional.'
+            },
+            {
+                id: 'charles',
+                name: 'Charles\'s Law',
+                tier: 'Law',
+                type: 'Gas Law',
+                focus: 'Volume-Temp Relationship',
+                admin: 'Physics',
+                benefit: 'V₁/T₁ = V₂/T₂',
+                description: 'At constant pressure, a gas\'s volume and absolute temperature are directly proportional.'
+            },
+            {
+                id: 'combined',
+                name: 'Combined Gas Law',
+                tier: 'Law',
+                type: 'Gas Law',
+                focus: 'P-V-T Relationship',
+                admin: 'Physics',
+                benefit: '(P₁V₁)/T₁ = (P₂V₂)/T₂',
+                description: 'Describes the complete relationship between the pressure, volume, and temperature of a gas.'
+            },
+            // COMBUSTION - ALL VALUES FROM IMAGES
+            {
+                id: 'flammability',
+                name: 'Limits of Flammability',
+                tier: 'Combustion',
+                type: 'Combustion Property',
+                focus: 'Safety & Combustion',
+                admin: 'CSA Code',
+                benefit: 'NG: 4-15% | Propane: 2.1-9.5% | Butane: 1.9-8.5%',
+                description: 'The upper (UEL) and lower (LEL) ranges of a gas-in-air mixture that can support combustion.'
+            },
+            {
+                id: 'ignition_temp',
+                name: 'Ignition Temperature',
+                tier: 'Combustion',
+                type: 'Combustion Property',
+                focus: 'Ignition Source',
+                admin: 'CSA Code',
+                benefit: 'NG: 1300°F (700°C) | Propane: 920°F (490°C) | Butane: 900°F (480°C)',
+                description: 'The temperature at which a gas-air mixture will self-ignite and continue to burn without an external flame source.'
+            },
+            {
+                id: 'flame_temp',
+                name: 'Maximum Flame Temperature',
+                tier: 'Combustion',
+                type: 'Combustion Property',
+                focus: 'Burner Operation',
+                admin: 'CSA Code',
+                benefit: 'NG, Propane & Butane: ~3600°F (1980°C)',
+                description: 'The maximum temperature of a "perfect" flame (stoichiometric combustion) with no excess air.'
+            },
+            {
+                id: 'flame_speed',
+                name: 'Flame Speed',
+                tier: 'Combustion',
+                type: 'Combustion Property',
+                focus: 'Burner Design',
+                admin: 'CSA Code',
+                benefit: 'NG: 12 in/s | Propane: 11 in/s',
+                description: 'The speed at which a flame front moves through a gas-air mixture. Burners are designed with gas velocity higher than flame speed to prevent flashback.'
+            }
+        ];
+
+        // Color map for concept tiers
+        const tierColors = {
+            'Fuel': '#D95B43',
+            'Combustion': '#0077b6',
+            'Law': '#F38630',
+            'Measurement': '#2A363B',
+            'Safety': '#c9184a'
+        };
+
+        // DOM element references
+        const conceptGrid = document.getElementById('concept-grid');
+        const detailsDisplay = document.getElementById('details-display');
+        const detailsContent = document.getElementById('details-content');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        // Function to render the concept cards to the grid
+        const renderConcepts = (filter = 'all') => {
+            conceptGrid.innerHTML = '';
+            const filteredConcepts = filter === 'all' ? conceptsData : conceptsData.filter(p => p.tier === filter);
+
+            filteredConcepts.forEach(concept => {
+                const card = document.createElement('div');
+                card.className = `concept-card bg-white rounded-lg shadow-sm p-4 cursor-pointer border-l-4`;
+                card.style.borderColor = tierColors[concept.tier];
+                card.dataset.id = concept.id;
+                card.innerHTML = `
+                    <h3 class="font-bold text-lg text-[#2A363B]">${formatFormulas(concept.name)}</h3>
+                    <p class="text-sm text-gray-600">${concept.type}</p>
+                    <div class="mt-2 flex justify-between items-center">
+                        <span class="text-xs font-semibold px-2 py-1 rounded-full bg-gray-100">${concept.focus}</span>
+                        <span class="text-xs font-bold" style="color: ${tierColors[concept.tier]}">${concept.tier}</span>
+                    </div>
+                `;
+                conceptGrid.appendChild(card);
+            });
+        };
+
+        // Function to show the details of a clicked concept
+        const showDetails = (conceptId) => {
+            const concept = conceptsData.find(p => p.id === conceptId);
+            if (!concept) return;
+
+            detailsContent.innerHTML = `
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h2 class="text-3xl font-bold text-[#2A363B]">${formatFormulas(concept.name)}</h2>
+                        <p class="text-md text-gray-500" style="color: ${tierColors[concept.tier]}">${concept.tier} Concept</p>
+                    </div>
+                    <button id="close-details" class="text-2xl text-gray-500 hover:text-gray-800">&times;</button>
+                </div>
+                <div class="border-t my-4"></div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center md:text-left">
+                    <div>
+                        <p class="text-sm font-semibold text-gray-500 uppercase">Category</p>
+                        <p class="font-medium">${concept.type}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm font-semibold text-gray-500 uppercase">Primary Focus</p>
+                        <p class="font-medium">${concept.focus}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm font-semibold text-gray-500 uppercase">Value</p>
+                        <p class="font-medium">${formatFormulas(concept.benefit)}</p>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <p class="text-sm font-semibold text-gray-500 uppercase">Description</p>
+                    <p class="mt-1">${formatFormulas(concept.description)}</p>
+                </div>
+            `;
+            detailsDisplay.classList.add('show');
+            detailsDisplay.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            document.getElementById('close-details').addEventListener('click', () => {
+                detailsDisplay.classList.remove('show');
+            });
+        };
+
+        // Event listener for the concept grid (delegated)
+        conceptGrid.addEventListener('click', (e) => {
+            const card = e.target.closest('.concept-card');
+            if (card) {
+                showDetails(card.dataset.id);
+            }
+        });
+
+        // Event listener for filter buttons
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active', 'bg-[#2A363B]', 'text-white'));
+                btn.classList.add('active', 'bg-[#2A363B]', 'text-white');
+                renderConcepts(btn.dataset.filter);
+                detailsDisplay.classList.remove('show');
+            });
+        });
+
+        // Tab switching functionality
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetTab = link.dataset.tab;
+
+                // Remove active class from all nav links
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+
+                // Hide all tab contents
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                // Show the target tab
+                const targetContent = document.getElementById(targetTab);
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                }
+            });
+        });
+
+        // Chart.js: Natural Gas Composition Chart
+        const compositionChartCtx = document.getElementById('compositionChart').getContext('2d');
+        new Chart(compositionChartCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Methane (CH₄)', 'Other Hydrocarbons (C₂H₆+)', 'Non-Combustible (N₂, CO₂)'],
+                datasets: [{
+                    data: [90, 7, 3],
+                    backgroundColor: ['#D95B43', '#F38630', '#696969'],
+                    borderColor: '#FDFBF8',
+                    borderWidth: 4,
+                    hoverOffset: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '60%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            font: {
+                                size: 14
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        renderConcepts();
+    </script>
+</body>
+</html>

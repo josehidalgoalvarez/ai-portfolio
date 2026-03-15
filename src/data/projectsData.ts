@@ -176,4 +176,20 @@ export const projects: Project[] = [
     link: "https://mediumturquoise-gazelle-912925.hostingersite.com/",
     featured: true,
   },
+  {
+    id: "15",
+    title: "Gas Technician Unit 3 Architecture & Knowledge Base",
+    description:
+      "Architected and documented a vanilla ES6 JavaScript refactoring of a monolithic Gas Technician study dashboard. Engineered a strict 5-layer dependency hierarchy enforcing SOLID principles—including constructor dependency injection, observer callback patterns, and stateless components (e.g., ChartService, FuelTable). Accompanied by a comprehensive DeepWiki documentation site and an interactive NotebookLM study guide (https://notebooklm.google.com/notebook/64da08f8-a548-4cae-9d53-65be553e0cf2).",
+    category: "Technical Documentation",
+    technologies: [
+      "ES6 Modules",
+      "SOLID Principles",
+      "DeepWiki",
+      "NotebookLM",
+      "JavaScript Architecture"
+    ],
+    link: "https://deepwiki.com/josehidalgoalvarez/Gas-Technician-3-Unit-3/1-overview",
+    featured: true,
+  },
 ];

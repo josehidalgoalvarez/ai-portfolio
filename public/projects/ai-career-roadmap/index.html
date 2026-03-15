@@ -1,0 +1,2259 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced AI Career Roadmap v10 (with 69 O'Reilly Books)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background: oklch(0.98 0 0);
+            --foreground: oklch(0.145 0 0);
+            --card: oklch(1 0 0);
+            --card-foreground: oklch(0.145 0 0);
+            --primary: oklch(0.205 0 0);
+            --primary-foreground: oklch(0.985 0 0);
+            --muted: oklch(0.97 0 0);
+            --muted-foreground: oklch(0.556 0 0);
+            --border: oklch(0.922 0 0);
+            --radius: 0.625rem;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--foreground);
+        }
+
+        .container-main {
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4 { color: var(--foreground) !important; font-weight: 700; letter-spacing: -0.025em; }
+        
+        /* Ensure all Phase containers perfectly match the Portfolio's AnimatedCard style */
+        section > div[class*="bg-"], header.bg-white {
+            background: var(--card) !important;
+            border: 1px solid var(--border) !important;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1) !important;
+            color: var(--card-foreground) !important;
+            border-radius: var(--radius) !important;
+        }
+        
+        /* Overrides to ensure text contrast inside those cards regardless of original Tailwind colors */
+        .text-white, .text-gray-200, .text-gray-300 { color: var(--foreground) !important; }
+        .text-gray-400, .text-gray-500, .text-gray-600, .text-gray-700 { color: var(--muted-foreground) !important; }
+        .text-blue-800, .text-purple-800, .text-green-800, .text-teal-900, .text-blue-900, .text-green-900, .text-purple-900, .text-teal-600, .text-blue-600, .text-green-600 { color: var(--foreground) !important; }
+
+        .timeline-item { position: relative; padding-bottom: 2.5rem; padding-left: 2.5rem; }
+        .timeline-item:not(:last-child) { border-left: 2px solid var(--border); }
+        .timeline-item:last-child { padding-bottom: 0; border-left: 2px solid transparent; }
+        .timeline-marker {
+            position: absolute; top: 0; left: -0.9rem; width: 1.8rem; height: 1.8rem;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; background: var(--primary); color: var(--primary-foreground); font-size: 0.9rem;
+        }
+
+        .details-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out; }
+        .details-toggle:checked~.details-content { max-height: 2000px; }
+
+        /* Subtle contrast background for highlighted modules inside the cards */
+        .specialization-highlight, .priority-highlight, .conditional-add, .short-course-highlight, .hybrid-strategy {
+            background: oklch(0.96 0 0); /* slightly darker than mutated 0.97 for better contrast */
+            color: var(--foreground);
+            border: 1px solid var(--border) !important;
+            padding: 10px 14px;
+            border-radius: var(--radius);
+            margin: 8px 0;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .book-recommendation, .milestone-box, div[class*="bg-gradient"], div[class*="bg-blue-50"], div[class*="bg-green-50"], div[class*="bg-purple-50"], div[class*="bg-teal-50"], div[class*="bg-gray-80"] {
+            background: oklch(0.94 0 0) !important; /* Even slightly darker grey for these inset boxes to pop from the white card */
+            border: 1px solid var(--border) !important;
+            color: var(--foreground) !important;
+            box-shadow: none !important;
+            border-radius: var(--radius) !important;
+        }
+
+        .book-recommendation { font-size: 0.85rem; padding: 10px; margin: 8px 0; }
+
+        .course-link, a {
+            color: var(--foreground) !important;
+            text-decoration: underline;
+            text-decoration-color: var(--border);
+            text-underline-offset: 4px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .course-link:hover, a.text-blue-400:hover, a:hover {
+            color: var(--muted-foreground) !important;
+            text-decoration-color: var(--muted-foreground);
+        }
+        
+        .badge {
+            background: var(--foreground) !important; /* using foreground makes it a nice high-contrast dark badge */
+            color: var(--background) !important;
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 9999px;
+            font-weight: 600;
+            border: none !important;
+        }
+
+        table { border-collapse: collapse; width: 100%; border-radius: var(--radius); overflow: hidden; }
+        th, td { border-bottom: 1px solid var(--border) !important; padding: 12px; text-align: left; }
+        th { background: oklch(0.94 0 0) !important; color: var(--foreground); font-weight: 600; }
+        tr:hover { background: var(--muted) !important; }
+        
+        /* Utility for the grid */
+        .max-w-7xl { max-width: 80rem; }
+        .phases-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            align-items: start;
+        }
+        @media (min-width: 1024px) {
+            .phases-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        .phases-grid > section { margin-bottom: 0 !important; height: 100%; display: flex; flex-direction: column; }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <div class="container-main">
+        <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+
+            <!-- HEADER -->
+            <header class="text-center mb-12 bg-white rounded-lg shadow-lg p-8">
+                <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight" style="color: #667eea;">AI Career Roadmap
+                </h1>
+                <p class="mt-4 text-xl md:text-2xl font-bold text-gray-700">AI Engineering + Full-Stack Data +
+                    Leadership</p>
+                <p class="mt-2 text-lg font-medium text-gray-600">Hybrid Strategy: Professional Certificates + Optional
+                    Master's Degree</p>
+                <p class="mt-4 text-md text-gray-700"><strong>Last Updated:</strong> March 2026 (Updated with newly completed Data Science, Full-Stack, and PM credentials) V10</p>
+            </header>
+
+            <!-- STRATEGIC OVERVIEW -->
+            <section class="mb-16 bg-white rounded-lg shadow-lg p-8">
+                <h2 class="text-3xl font-bold mb-6" style="color: #667eea;">Strategic Overview</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="border-l-4 border-blue-500 pl-4">
+                        <h3 class="text-lg font-bold mb-2">📍 Career Objective</h3>
+                        <p class="text-gray-700">Staff/Principal AI Engineer with elite expertise in generative AI,
+                            agentic systems, product strategy, and production-ready data infrastructure.</p>
+                    </div>
+                    <div class="border-l-4 border-purple-500 pl-4">
+                        <h3 class="text-lg font-bold mb-2">⏱️ Timeline</h3>
+                        <p class="text-gray-700"><strong>Phase 1 (Professional Path):</strong> 22-28
+                            months<br><strong>Phase 2 (Optional MS-AI):</strong> 24-36 additional months</p>
+                    </div>
+                    <div class="border-l-4 border-green-500 pl-4">
+                        <h3 class="text-lg font-bold mb-2">💼 Total Investment</h3>
+                        <p class="text-gray-700"><strong>Professional Path:</strong> $150-300<br><strong>With MS-AI
+                                Degree:</strong> $16,050 total</p>
+                    </div>
+                    <div class="border-l-4 border-orange-500 pl-4">
+                        <h3 class="text-lg font-bold mb-2">🎓 Credential Outcome</h3>
+                        <p class="text-gray-700"><strong>Path 1:</strong> 7+ Professional Certificates + 20+ Short
+                            Courses<br><strong>Path 2:</strong> Professional Certs + Master of Science</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- HYBRID STRATEGY EXPLANATION -->
+            <section class="mb-16 bg-white rounded-lg shadow-lg p-8">
+                <h2 class="text-3xl font-bold mb-6" style="color: #667eea;">🎯 Hybrid Strategy Explained</h2>
+                <div class="hybrid-strategy">
+                    <p class="mb-3">Execute your professional certificate roadmap (Phases 1-5) with maximum
+                        specialization in generative AI, agentic systems, and product management. Upon completion,
+                        evaluate pursuing CU Boulder's MS-AI degree to combine practical credentials with accredited
+                        Master's degree.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-lg">
+                        <h3 class="font-bold text-blue-900 mb-3">Phase 1-5: Professional Path (22-28 mo)</h3>
+                        <ul class="text-sm text-blue-800 space-y-2 list-disc list-inside">
+                            <li>Expert-level Gen AI/Agentic credentials</li>
+                            <li>Product management mastery</li>
+                            <li>Data infrastructure knowledge</li>
+                            <li>Portfolio of advanced projects</li>
+                            <li>Ready for staff/principal roles</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-lg">
+                        <h3 class="font-bold text-purple-900 mb-3">Post-Professional: Career Phase (3-5 yrs)</h3>
+                        <ul class="text-sm text-purple-800 space-y-2 list-disc list-inside">
+                            <li>Secure staff/principal AI role</li>
+                            <li>Build AI projects in production</li>
+                            <li>Lead technical teams</li>
+                            <li>Establish thought leadership</li>
+                            <li>Assess MS-AI value</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-lg">
+                        <h3 class="font-bold text-green-900 mb-3">Optional Phase 6: MS-AI (24-36 mo)</h3>
+                        <ul class="text-sm text-green-800 space-y-2 list-disc list-inside">
+                            <li>CU Boulder MS-AI degree</li>
+                            <li>Transfer prior credits</li>
+                            <li>Leverage existing expertise</li>
+                            <li>Deepen math foundations</li>
+                            <li>Ultimate credential combo</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <div class="phases-grid mb-16">
+            <!-- PHASE 1: FOUNDATION (COMPLETE) - MERGED -->
+            <section class="mb-16">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div>
+                            <h2 class="text-3xl font-bold" style="color: #667eea;">Phase 1: Foundation & Project
+                                Management</h2>
+                            <p class="text-gray-600 font-semibold mt-1">✅ Status: COMPLETE</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Google Project Management -->
+                        <div class="priority-highlight" style="background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #6ee7b7;">
+                            ✅ COMPLETED: <a
+                                href="https://www.coursera.org/professional-certificates/google-project-management"
+                                class="course-link" style="color: white;">Google Project Management Professional Certificate</a>
+                            (7 courses)
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase1-pm" class="details-toggle hidden" checked>
+                            <label for="toggle-phase1-pm"
+                                class="cursor-pointer font-semibold text-green-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course & Book Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <ol class="list-decimal list-inside space-y-2 text-sm mb-4">
+                                    <li>Foundations of Project Management</li>
+                                    <li>Project Initiation: Starting a Successful Project</li>
+                                    <li>Project Planning: Putting It All Together</li>
+                                    <li>Project Execution: Running the Project</li>
+                                    <li>Agile Project Management</li>
+                                    <li>Capstone: Applying Project Management in the Real World</li>
+                                    <li>Accelerate Your Job Search with AI (Shared)</li>
+                                </ol>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "A Guide to the Project Management Body of Knowledge (PMBOK Guide)" (PMI)
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Generative AI for Project Managers -->
+                        <div class="priority-highlight" style="background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #6ee7b7;">
+                            ✅ COMPLETED: <a
+                                href="https://www.coursera.org/specializations/generative-ai-for-project-managers"
+                                class="course-link" style="color: white;">Generative AI for Project Managers Specialization</a>
+                            (3 courses)
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase1-genai-pm" class="details-toggle hidden" checked>
+                            <label for="toggle-phase1-genai-pm"
+                                class="cursor-pointer font-semibold text-green-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <ol class="list-decimal list-inside space-y-2 text-sm mb-4">
+                                    <li>Generative AI: Introduction and Applications (Shared)</li>
+                                    <li>Generative AI: Prompt Engineering Basics (Shared)</li>
+                                    <li>Generative AI: Unleash Your Project Management Potential</li>
+                                </ol>
+                                <p class="text-sm text-gray-700 mb-3"><strong>Overlap Note:</strong> Shares the first two courses directly with the IBM AI Developer certificate, making this a highly efficient complementary credential.</p>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Google IT Automation -->
+                        <div class="priority-highlight" style="background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #6ee7b7;">
+                            ✅ COMPLETED: <a
+                                href="https://www.coursera.org/professional-certificates/google-it-automation"
+                                class="course-link" style="color: white;">Google IT Automation with Python Professional Certificate</a>
+                            (7 courses)
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase1-it" class="details-toggle hidden" checked>
+                            <label for="toggle-phase1-it"
+                                class="cursor-pointer font-semibold text-green-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course & Book Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <ol class="list-decimal list-inside space-y-2 text-sm mb-4">
+                                    <li>Crash Course on Python</li>
+                                    <li>Using Python to Interact with the Operating System</li>
+                                    <li>Introduction to Git and GitHub</li>
+                                    <li>Troubleshooting and Debugging Techniques</li>
+                                    <li>Configuration Management and the Cloud</li>
+                                    <li>Automating Real-World Tasks with Python</li>
+                                    <li>Accelerate Your Job Search with AI (Shared)</li>
+                                </ol>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "Automate the Boring Stuff with Python" (Al Sweigart)
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Data Science Fundamentals -->
+                        <div class="priority-highlight" style="background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #6ee7b7;">
+                            ✅ COMPLETED: <a
+                                href="https://www.coursera.org/specializations/data-science-fundamentals-python-sql"
+                                class="course-link" style="color: white;">Data Science Fundamentals with Python and SQL Specialization</a>
+                            (5 courses)
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase1-ds" class="details-toggle hidden" checked>
+                            <label for="toggle-phase1-ds"
+                                class="cursor-pointer font-semibold text-green-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course & Book Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <ol class="list-decimal list-inside space-y-2 text-sm mb-4">
+                                    <li>Tools for Data Science</li>
+                                    <li>Python for Data Science, AI & Development (Shared)</li>
+                                    <li>Python Project for Data Science</li>
+                                    <li>Statistics for Data Science with Python</li>
+                                    <li>Databases and SQL for Data Science with Python</li>
+                                </ol>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "Python for Data Analysis" (Wes McKinney)
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>🎧 Audiobook:</strong> "Azure AI Fundamentals (AI-900) Study Guide" by Tom Taulli and Tristan Morris
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 milestone-box">
+                        <strong>📊 Key Skills Acquired:</strong> Project management, Agile/Scrum, Stakeholder
+                        Communication, Python Programming, Git, SQL, Database Management, IT Automation.
+                    </div>
+                </div>
+            </section>
+
+            <!-- PHASE 2: GENERATIVE AI FOUNDATIONS & FULL-STACK DEVELOPMENT - MERGED -->
+            <section class="mb-16">
+                <div class="bg-white rounded-lg shadow-lg p-8 border-l-8" style="border-color: #4facfe;">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div
+                            class="bg-blue-100 text-blue-600 w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl">
+                            2</div>
+                        <div>
+                            <h2 class="text-3xl font-bold" style="color: #667eea;">Phase 2: Generative AI Foundations &
+                                Full-Stack Development</h2>
+                            <p class="text-gray-600 font-semibold mt-1">⏳ CURRENT FOCUS (In Progress)</p>
+                            <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mt-2">ACTIVE
+                                PHASE</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- IBM AI Developer -->
+                        <div class="priority-highlight" style="background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #6ee7b7;">
+                            ✅ COMPLETED: <a
+                                href="https://www.coursera.org/professional-certificates/applied-artifical-intelligence-ibm-watson-ai"
+                                class="course-link" style="color: white;">IBM AI Developer Professional Certificate</a>
+                            (10 courses)
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase2-developer" class="details-toggle hidden" checked>
+                            <label for="toggle-phase2-developer"
+                                class="cursor-pointer font-semibold text-green-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course & Book Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <ol class="list-decimal list-inside space-y-2 text-sm mb-4 text-gray-800">
+                                    <li>✅ Introduction to Software Engineering</li>
+                                    <li>✅ Introduction to Artificial Intelligence (AI)</li>
+                                    <li>✅ Generative AI: Introduction and Applications</li>
+                                    <li>✅ Generative AI: Prompt Engineering Basics</li>
+                                    <li>✅ Introduction to HTML, CSS, & JavaScript</li>
+                                    <li>✅ Python for Data Science, AI & Development</li>
+                                    <li>✅ Developing AI Applications with Python and Flask</li>
+                                    <li>✅ Building Generative AI-Powered Applications with Python</li>
+                                    <li>✅ Generative AI: Elevate your Software Development Career</li>
+                                    <li>✅ Software Developer Career Guide and Interview Preparation</li>
+                                </ol>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "AI-Assisted Programming" (Tom Taulli)
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "GitHub Copilot Certification Study Guide" (Tom Taulli)
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- NEW: IBM Full Stack Software Developer -->
+                        <div class="priority-highlight" style="background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%); border-color: #93c5fd;">
+                            🔄 IN PROGRESS: <a
+                                href="https://www.coursera.org/professional-certificates/ibm-full-stack-cloud-developer"
+                                class="course-link" style="color: white;">IBM Full Stack Software Developer Professional Certificate</a>
+                            (15 courses)
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase2-fullstack" class="details-toggle hidden" checked>
+                            <label for="toggle-phase2-fullstack"
+                                class="cursor-pointer font-semibold text-blue-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <ol class="list-decimal list-inside space-y-2 text-sm mb-4 text-gray-800">
+                                    <li>✅ Introduction to Software Engineering (Shared)</li>
+                                    <li>✅ Introduction to Cloud Computing</li>
+                                    <li>✅ Introduction to HTML, CSS, & JavaScript (Shared)</li>
+                                    <li>Getting Started with Git and GitHub</li>
+                                    <li>Developing Front-End Apps with React</li>
+                                    <li>Developing Back-End Apps with Node.js and Express</li>
+                                    <li>✅ Python for Data Science, AI & Development (Shared)</li>
+                                    <li>✅ Developing AI Applications with Python and Flask (Shared)</li>
+                                    <li>Django Application Development with SQL and Databases</li>
+                                    <li>Introduction to Containers w/ Docker, Kubernetes & OpenShift</li>
+                                    <li>Application Development using Microservices and Serverless</li>
+                                    <li>Full Stack Application Development Capstone Project</li>
+                                    <li>Full Stack Software Developer Assessment</li>
+                                    <li>✅ Generative AI: Elevate your Software Development Career (Shared)</li>
+                                    <li>✅ Software Developer Career Guide and Interview Preparation (Shared)</li>
+                                </ol>
+                                <p class="text-sm text-gray-700 mb-3"><strong>Overlap Note:</strong> Shares several courses with the IBM AI Developer certificate, accelerating completion. Excellent for building production-ready web apps for AI portfolios.</p>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- NEW: Introduction to Data Science -->
+                        <div class="priority-highlight" style="background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%); border-color: #93c5fd;">
+                            ⏳ NEXT UP: <a
+                                href="https://www.coursera.org/specializations/introduction-data-science"
+                                class="course-link" style="color: white;">Introduction to Data Science Specialization</a>
+                            (4 courses)
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase2-intro-ds" class="details-toggle hidden" checked>
+                            <label for="toggle-phase2-intro-ds"
+                                class="cursor-pointer font-semibold text-blue-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <ol class="list-decimal list-inside space-y-2 text-sm mb-4 text-gray-800">
+                                    <li>What is Data Science?</li>
+                                    <li>✅ Tools for Data Science (Shared from Phase 1)</li>
+                                    <li>Data Science Methodology</li>
+                                    <li>✅ Databases and SQL for Data Science with Python (Shared from Phase 1)</li>
+                                </ol>
+                                <p class="text-sm text-gray-700 mb-3"><strong>Overlap Note:</strong> 50% of this specialization is already completed via the Data Science Fundamentals specialization in Phase 1!</p>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- NEW: Related IBM Explorations Section -->
+                        <div class="bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-lg border-l-4 border-gray-400 mb-4">
+                            <h3 class="font-bold text-gray-800 mb-3">🔍 Shared Specializations to Explore</h3>
+                            <p class="text-sm text-gray-700 mb-4">The following credentials share substantial overlap with the Full Stack and AI Developer certificates. Consider completing these for additional specialized credentials with minimal extra effort.</p>
+                        </div>
+
+                        <div class="conditional-add" style="background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);">
+                            🎓 EXPLORE: <a href="https://www.coursera.org/professional-certificates/ibm-frontend-developer" class="course-link" style="color: white;">IBM Front-End Developer Professional Certificate</a>
+                        </div>
+                        
+                        <div>
+                            <input type="checkbox" id="toggle-phase2-frontend-explore" class="details-toggle hidden">
+                            <label for="toggle-phase2-frontend-explore"
+                                class="cursor-pointer font-semibold text-purple-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm text-gray-700 mb-3"><strong>Strategic Value:</strong> Focuses heavily on UI/UX and React. Shares major foundational courses with the Full Stack pathway.</p>
+                                <p class="text-sm font-semibold text-gray-800 mb-2">Unique Courses to Complete:</p>
+                                <ul class="list-disc list-inside space-y-1 text-sm mb-4 text-gray-700">
+                                    <li>Getting Started with Front-End and Web Development</li>
+                                    <li>Designing User Interfaces and Experiences (UI/UX)</li>
+                                    <li>Developing Websites and Front-Ends with Bootstrap</li>
+                                    <li>Intermediate Web and Front-End Development</li>
+                                    <li>Get Started with Cloud Native, DevOps, Agile, and NoSQL</li>
+                                    <li>Front-End Development Capstone Project</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="conditional-add" style="background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);">
+                            🎓 EXPLORE: <a href="https://www.coursera.org/professional-certificates/ibm-backend-development" class="course-link" style="color: white;">IBM Back-End Development Professional Certificate</a>
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase2-backend-explore" class="details-toggle hidden">
+                            <label for="toggle-phase2-backend-explore"
+                                class="cursor-pointer font-semibold text-purple-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm text-gray-700 mb-3"><strong>Strategic Value:</strong> Focuses on server-side logic, Django, Node.js, and databases. Heavy overlap with Full Stack pathway.</p>
+                                <p class="text-sm font-semibold text-gray-800 mb-2">Unique Courses to Complete:</p>
+                                <ul class="list-disc list-inside space-y-1 text-sm mb-4 text-gray-700">
+                                    <li>Hands-on Introduction to Linux Commands and Shell Scripting</li>
+                                    <li>Application Security for Developers and DevOps Professionals</li>
+                                    <li>Monitoring and Observability for Development and DevOps</li>
+                                    <li>Back-end Application Development Capstone Project</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="conditional-add" style="background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);">
+                            🎓 EXPLORE: <a href="https://www.coursera.org/professional-certificates/devops-and-software-engineering" class="course-link" style="color: white;">IBM DevOps and Software Engineering Professional Certificate</a>
+                        </div>
+                        
+                        <div>
+                            <input type="checkbox" id="toggle-phase2-devops-explore" class="details-toggle hidden">
+                            <label for="toggle-phase2-devops-explore"
+                                class="cursor-pointer font-semibold text-purple-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm text-gray-700 mb-3"><strong>Strategic Value:</strong> Extends full-stack knowledge into CI/CD, Agile, DevOps philosophy, and robust deployment pipelines.</p>
+                                <p class="text-sm font-semibold text-gray-800 mb-2">Unique Courses to Complete:</p>
+                                <ul class="list-disc list-inside space-y-1 text-sm mb-4 text-gray-700">
+                                    <li>Introduction to DevOps</li>
+                                    <li>Introduction to Agile Development and Scrum</li>
+                                    <li>Hands-on Introduction to Linux Commands and Shell Scripting</li>
+                                    <li>Introduction to Test and Behavior Driven Development</li>
+                                    <li>Continuous Integration and Continuous Delivery (CI/CD)</li>
+                                    <li>Application Security for Developers and DevOps Professionals</li>
+                                    <li>Monitoring and Observability for Development and DevOps</li>
+                                    <li>DevOps Capstone Project</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- NEW: Machine Learning Specialization -->
+                        <div class="priority-highlight">
+                            🎯 FOUNDATIONAL SPECIALIZATION: <a
+                                href="https://www.coursera.org/specializations/machine-learning-introduction"
+                                class="course-link" style="color: white;">Machine Learning Specialization</a>
+                            (DeepLearning.AI, Stanford Online) — Learn foundational AI concepts through an intuitive
+                            visual approach
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase2-ml-spec" class="details-toggle hidden">
+                            <label for="toggle-phase2-ml-spec"
+                                class="cursor-pointer font-semibold text-blue-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Specialization Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm font-bold text-gray-800 mb-2">⭐ Core foundational concepts for
+                                    understanding AI/ML algorithms and mathematics</p>
+                                <p class="text-sm text-gray-700 mb-2"><em>Level: Beginner | Focus: Foundational ML
+                                        concepts, algorithms, and implementation</em></p>
+                                <p class="text-sm text-gray-700 mb-3"><strong>Overlap Note:</strong> Provides
+                                    mathematical foundation that complements IBM AI Developer. Focuses on classical ML
+                                    algorithms before deep learning.</p>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- NEW: Deep Learning Specialization -->
+                        <div class="priority-highlight">
+                            🎯 CORE SPECIALIZATION: <a href="https://www.coursera.org/specializations/deep-learning"
+                                class="course-link" style="color: white;">Deep Learning Specialization</a>
+                            (DeepLearning.AI) — Build neural networks (CNNs, RNNs, LSTMs, Transformers)
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase2-dl-spec" class="details-toggle hidden" checked>
+                            <label for="toggle-phase2-dl-spec"
+                                class="cursor-pointer font-semibold text-blue-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Specialization Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm font-bold text-gray-800 mb-2">⭐ Essential for understanding deep
+                                    neural networks architecture</p>
+                                <p class="text-sm text-gray-700 mb-2"><em>Level: Intermediate | Focus: Neural networks,
+                                        CNNs, RNNs, LSTMs, Transformers, using Python and TensorFlow</em></p>
+                                <p class="text-sm text-gray-700 mb-3"><strong>Overlap Note:</strong> Builds upon Machine
+                                    Learning Specialization. Directly prepares for Phase 3 transformer-based LLM work.
+                                </p>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- NEW: Build with Andrew (Optional for absolute beginners) -->
+                        <div class="conditional-add">
+                            🎓 OPTIONAL (For Complete Beginners): <a
+                                href="https://www.deeplearning.ai/courses/build-with-andrew/" class="course-link"
+                                style="color: white;">Build with Andrew</a> — If you've never written code before, learn
+                            to describe ideas and let AI transform them into apps
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase2-build-andrew" class="details-toggle hidden">
+                            <label for="toggle-phase2-build-andrew"
+                                class="cursor-pointer font-semibold text-orange-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm font-bold text-gray-800 mb-2">⚡ Quick start for absolute beginners
+                                    (&lt;30 minutes)</p>
+                                <p class="text-sm text-gray-700 mb-2"><em>Level: Beginner | Focus: No-code app building
+                                        with AI assistance</em></p>
+                                <p class="text-sm text-gray-700 mb-3"><strong>Skip if:</strong> You already completed
+                                    Phase 1 (Google IT Automation with Python). This is only for people with zero coding
+                                    experience.</p>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- IBM AI Engineering Part 1 -->
+                        <div class="specialization-highlight">
+                            🎯 CORE: <a href="https://www.coursera.org/professional-certificates/ai-engineer"
+                                class="course-link" style="color: white;">IBM AI Engineering Professional Certificate
+                                (Part 1 of 2)</a> (First 6 courses, ~45 hours)
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase2-engineering" class="details-toggle hidden" checked>
+                            <label for="toggle-phase2-engineering"
+                                class="cursor-pointer font-semibold text-blue-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course & Book Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <ol class="list-decimal list-inside space-y-2 text-sm mb-4">
+                                    <li>Machine Learning with Python</li>
+                                    <li>Introduction to Deep Learning & Neural Networks with Keras</li>
+                                    <li>Introduction to Computer Vision and Image Processing</li>
+                                    <li>Deep Neural Networks with PyTorch</li>
+                                    <li>Building Deep Learning Models with TensorFlow</li>
+                                    <li>AI Capstone Project with Deep Learning</li>
+                                </ol>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "Hands-On Machine Learning with Scikit-Learn, Keras &
+                                    TensorFlow, 3rd Ed." (Aurélien Géron)
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "Deep Learning with PyTorch" (Eli Stevens, Luca Antiga,
+                                    Thomas Viehmann)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="milestone-box mt-4">
+                            <strong>✅ Phase 2 Completion Milestone:</strong> You will have foundational knowledge of gen
+                            AI applications, ML/DL theory, PyTorch/TensorFlow frameworks, computer vision basics,
+                            full-stack AI app development with Flask, and practical experience building AI-powered
+                            applications. Ready to advance to specialized RAG/agentic systems.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PHASE 3: ADVANCED RAG, AGENTIC AI & LLM SYSTEMS - MERGED -->
+            <section class="mb-16">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div>
+                            <h2 class="text-3xl font-bold" style="color: #667eea;">Phase 3: Advanced RAG, Agentic AI &
+                                LLM Systems</h2>
+                            <p class="text-gray-600 font-semibold mt-1">⏳ Estimated Duration: 7-9 months (180-220 hours)
+                            </p>
+                            <p class="text-red-600 font-bold mt-2">🔥 PRIMARY DIFFERENTIATOR PHASE — This is your elite
+                                skillset</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- IBM Generative AI Engineering -->
+                        <div class="specialization-highlight">
+                            🎯 CORE: <a
+                                href="https://www.coursera.org/professional-certificates/generative-ai-engineering"
+                                class="course-link" style="color: white;">IBM Generative AI Engineering Professional
+                                Certificate</a> (7 courses, ~70 hours)
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase3-genai" class="details-toggle hidden" checked>
+                            <label for="toggle-phase3-genai"
+                                class="cursor-pointer font-semibold text-blue-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course & Book Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <ol class="list-decimal list-inside space-y-2 text-sm mb-4">
+                                    <li>Generative AI and LLMs: Architecture and Data Preparation</li>
+                                    <li>Gen AI Foundational Models for NLP & Language Understanding</li>
+                                    <li>Generative AI Language Modeling with Transformers</li>
+                                    <li>Generative AI Engineering and Fine-Tuning Transformers</li>
+                                    <li>Generative AI Advance Fine-Tuning for LLMs</li>
+                                    <li>Fundamentals of AI Agents Using RAG and LangChain</li>
+                                    <li>Project: Generative AI Applications with RAG and LangChain</li>
+                                </ol>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "LLM Engineer's Handbook" (Paul Iusztin & Maxime Labonne)
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "Designing Machine Learning Systems" (Chip Huyen)
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "LLMOps" (Abi Aryan)
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "Site Reliability Engineering" (Betsy Beyer et al.) 🎧
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "An Illustrated Guide to AI Agents" (Maarten Grootendorst and Jay Alammar)
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- NEW: Agentic AI Course (Andrew Ng) - FLAGSHIP -->
+                        <div class="priority-highlight">
+                            🔥 FLAGSHIP COURSE: <a href="https://www.deeplearning.ai/courses/agentic-ai/"
+                                class="course-link" style="color: white;">Agentic AI</a> (DeepLearning.AI, Andrew Ng) —
+                            Build agentic AI systems with iterative, multi-step workflows
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase3-agentic-andrew" class="details-toggle hidden"
+                                checked>
+                            <label for="toggle-phase3-agentic-andrew"
+                                class="cursor-pointer font-semibold text-blue-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm font-bold text-gray-800 mb-2">⭐ ESSENTIAL: Taught by Andrew Ng — The
+                                    definitive course on agentic AI patterns</p>
+                                <p class="text-sm text-gray-700 mb-2"><em>Level: Intermediate | Focus: Reflection, tool
+                                        use, planning, multi-agent collaboration</em></p>
+                                <p class="text-sm text-gray-700 mb-3"><strong>Overlap Note:</strong> Complements IBM
+                                    Generative AI Engineering. Focuses specifically on agentic design patterns and
+                                    workflows.</p>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- NEW: DeepLearning.AI Agentic Short Courses Section -->
+                        <div
+                            class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-lg border-l-4 border-green-500 mb-4">
+                            <h3 class="font-bold text-green-900 mb-3">🚀 DeepLearning.AI Agentic Systems Short Courses
+                            </h3>
+                            <p class="text-sm text-gray-700 mb-4">The following short courses provide hands-on
+                                experience with specific agentic frameworks and tools. Complete these to build
+                                comprehensive agentic AI expertise.</p>
+                        </div>
+
+                        <!-- AI Agentic Design Patterns with AutoGen -->
+                        <div class="short-course-highlight">
+                            🤖 SHORT COURSE: <a
+                                href="https://www.deeplearning.ai/short-courses/ai-agentic-design-patterns-with-autogen/"
+                                class="course-link" style="color: white;">AI Agentic Design Patterns with AutoGen</a>
+                            (Microsoft, Penn State) — Multi-agent systems with diverse roles
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase3-autogen" class="details-toggle hidden">
+                            <label for="toggle-phase3-autogen"
+                                class="cursor-pointer font-semibold text-green-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm text-gray-700 mb-2"><em>Level: Beginner | Focus: AutoGen framework for
+                                        multi-agent conversations</em></p>
+                                <p class="text-sm text-gray-700 mb-3"><strong>Overlap Note:</strong> AutoGen-specific
+                                    implementation of agentic patterns. Complements CrewAI and LangGraph frameworks.</p>
+                            </div>
+                        </div>
+
+                        <!-- Design, Develop, and Deploy Multi-Agent Systems with CrewAI -->
+                        <div class="short-course-highlight">
+                            🤖 SHORT COURSE: <a
+                                href="https://www.deeplearning.ai/short-courses/multi-agent-systems-with-crewai/"
+                                class="course-link" style="color: white;">Design, Develop, and Deploy Multi-Agent
+                                Systems with CrewAI</a> — Build practical multi-agent systems with tools and memory
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase3-crewai" class="details-toggle hidden">
+                            <label for="toggle-phase3-crewai"
+                                class="cursor-pointer font-semibold text-green-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm text-gray-700 mb-2"><em>Level: Beginner | Focus: CrewAI framework for
+                                        collaborative agents with tools and memory</em></p>
+                                <p class="text-sm text-gray-700 mb-3"><strong>Overlap Note:</strong> CrewAI-specific
+                                    approach. Different framework philosophy than AutoGen/LangGraph.</p>
+                            </div>
+                        </div>
+
+                        <!-- AI Agents in LangGraph -->
+                        <div class="short-course-highlight">
+                            🤖 SHORT COURSE: <a href="https://www.deeplearning.ai/short-courses/ai-agents-in-langgraph/"
+                                class="course-link" style="color: white;">AI Agents in LangGraph</a> (LangChain, Tavily)
+                            — Build agentic AI workflows using LangGraph
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase3-langgraph" class="details-toggle hidden">
+                            <label for="toggle-phase3-langgraph"
+                                class="cursor-pointer font-semibold text-green-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm text-gray-700 mb-2"><em>Level: Intermediate | Focus: LangGraph for
+                                        stateful agent workflows with agentic search</em></p>
+                                <p class="text-sm text-gray-700 mb-3"><strong>Overlap Note:</strong> Core LangGraph
+                                    framework. Essential for understanding state machines in agent systems.</p>
+                            </div>
+                        </div>
+
+                        <!-- Long-Term Agentic Memory With LangGraph -->
+                        <div class="short-course-highlight">
+                            🤖 SHORT COURSE: <a
+                                href="https://www.deeplearning.ai/short-courses/long-term-agentic-memory-with-langgraph/"
+                                class="course-link" style="color: white;">Long-Term Agentic Memory With LangGraph</a>
+                            (LangChain) — Build AI agents with long-term memory
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase3-langmem" class="details-toggle hidden">
+                            <label for="toggle-phase3-langmem"
+                                class="cursor-pointer font-semibold text-green-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm text-gray-700 mb-2"><em>Level: Intermediate | Focus: Memory management
+                                        with LangMem in LangGraph agents</em></p>
+                                <p class="text-sm text-gray-700 mb-3"><strong>Overlap Note:</strong> Advanced LangGraph
+                                    topic. Builds on "AI Agents in LangGraph" course.</p>
+                            </div>
+                        </div>
+
+                        <!-- Building and Evaluating Data Agents -->
+                        <div class="short-course-highlight">
+                            🤖 SHORT COURSE: <a
+                                href="https://www.deeplearning.ai/short-courses/building-and-evaluating-data-agents/"
+                                class="course-link" style="color: white;">Building and Evaluating Data Agents</a>
+                            (Snowflake) — Build multi-agent systems that connect to data sources
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase3-dataagents" class="details-toggle hidden">
+                            <label for="toggle-phase3-dataagents"
+                                class="cursor-pointer font-semibold text-green-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm text-gray-700 mb-2"><em>Level: Intermediate | Focus: Agents that plan
+                                        steps, connect to data sources, and provide insights</em></p>
+                                <p class="text-sm text-gray-700 mb-3"><strong>Overlap Note:</strong> Specialized for
+                                    data analytics workflows. Complements general agentic courses.</p>
+                            </div>
+                        </div>
+
+                        <!-- DSPy: Build and Optimize Agentic Apps -->
+                        <div class="short-course-highlight">
+                            🤖 SHORT COURSE: <a
+                                href="https://www.deeplearning.ai/short-courses/dspy-build-and-optimize-agentic-apps/"
+                                class="course-link" style="color: white;">DSPy: Build and Optimize Agentic Apps</a>
+                            (Databricks) — Build, debug, and optimize AI agents with DSPy and MLflow
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase3-dspy" class="details-toggle hidden">
+                            <label for="toggle-phase3-dspy"
+                                class="cursor-pointer font-semibold text-green-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm text-gray-700 mb-2"><em>Level: Intermediate | Focus: Programmatic
+                                        optimization of prompts and agent architectures</em></p>
+                                <p class="text-sm text-gray-700 mb-3"><strong>Overlap Note:</strong> DSPy is a different
+                                    paradigm than prompt engineering — focuses on learned optimization.</p>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- NEW: Coding Agents Section -->
+                        <div
+                            class="bg-gradient-to-r from-purple-50 to-indigo-50 p-6 rounded-lg border-l-4 border-purple-500 mb-4">
+                            <h3 class="font-bold text-purple-900 mb-3">💻 Coding Agents & Development Tools</h3>
+                            <p class="text-sm text-gray-700 mb-4">Learn to build and use AI agents specifically designed
+                                for coding, debugging, and software development automation.</p>
+                        </div>
+
+                        <!-- Building Coding Agents with Tool Execution -->
+                        <div class="short-course-highlight">
+                            💻 SHORT COURSE: <a
+                                href="https://www.deeplearning.ai/short-courses/building-coding-agents-with-tool-execution/"
+                                class="course-link" style="color: white;">Building Coding Agents with Tool Execution</a>
+                            (E2B) — Build AI agents that write and execute code safely
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase3-e2b" class="details-toggle hidden">
+                            <label for="toggle-phase3-e2b"
+                                class="cursor-pointer font-semibold text-green-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm text-gray-700 mb-2"><em>Level: Intermediate | Focus: Sandboxed code
+                                        execution for AI agents</em></p>
+                                <p class="text-sm text-gray-700 mb-3"><strong>Overlap Note:</strong> Complements other
+                                    coding agent courses with focus on secure execution environments.</p>
+                            </div>
+                        </div>
+
+                        <!-- Claude Code: A Highly Agentic Coding Assistant -->
+                        <div class="short-course-highlight">
+                            💻 SHORT COURSE: <a href="https://www.deeplearning.ai/short-courses/claude-code/"
+                                class="course-link" style="color: white;">Claude Code: A Highly Agentic Coding
+                                Assistant</a> (Anthropic) — Explore, build, and refine codebases with Claude Code
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase3-claude-code" class="details-toggle hidden">
+                            <label for="toggle-phase3-claude-code"
+                                class="cursor-pointer font-semibold text-green-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm text-gray-700 mb-2"><em>Level: Intermediate | Focus: Using Claude Code
+                                        for agentic coding workflows</em></p>
+                                <p class="text-sm text-gray-700 mb-3"><strong>Overlap Note:</strong> Product-specific
+                                    course for Claude Code tool. Practical implementation of agentic coding.</p>
+                            </div>
+                        </div>
+
+                        <!-- Build Apps with Windsurf's AI Coding Agents -->
+                        <div class="short-course-highlight">
+                            💻 SHORT COURSE: <a
+                                href="https://www.deeplearning.ai/short-courses/build-apps-with-windsurfs-ai-coding-agents/"
+                                class="course-link" style="color: white;">Build Apps with Windsurf's AI Coding
+                                Agents</a> (Windsurf) — Build, debug, and deploy with an Agentic AI-powered IDE
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase3-windsurf" class="details-toggle hidden">
+                            <label for="toggle-phase3-windsurf"
+                                class="cursor-pointer font-semibold text-green-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm text-gray-700 mb-2"><em>Level: Beginner | Focus: Agentic IDE workflows
+                                        for application development</em></p>
+                                <p class="text-sm text-gray-700 mb-3"><strong>Overlap Note:</strong> Alternative to
+                                    Claude Code/Cursor. Shows different IDE integration approach.</p>
+                            </div>
+                        </div>
+
+                        <!-- Gemini CLI -->
+                        <div class="short-course-highlight">
+                            💻 SHORT COURSE: <a href="https://www.deeplearning.ai/short-courses/gemini-cli/"
+                                class="course-link" style="color: white;">Gemini CLI: Code & Create with an Open-Source
+                                Agent</a> (Google) — Build applications from command line using Gemini CLI
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase3-gemini-cli" class="details-toggle hidden">
+                            <label for="toggle-phase3-gemini-cli"
+                                class="cursor-pointer font-semibold text-green-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm text-gray-700 mb-2"><em>Level: Beginner | Focus: Command-line agentic
+                                        coding with Google's open-source tool</em></p>
+                                <p class="text-sm text-gray-700 mb-3"><strong>Overlap Note:</strong> CLI-based approach.
+                                    Open source alternative to proprietary coding assistants.</p>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- NEW: Anthropic Skilljar Courses -->
+                        <div
+                            class="bg-gradient-to-r from-teal-50 to-emerald-50 p-6 rounded-lg border-l-4 border-teal-500 mb-4">
+                            <h3 class="font-bold text-teal-900 mb-3">🧠 Anthropic AI & Claude Ecosystem</h3>
+                            <p class="text-sm text-gray-700 mb-4">Master Claude, the Model Context Protocol (MCP), and Anthropic's ecosystem of tools directly from the creators.</p>
+                        </div>
+
+                        <!-- Anthropic Core Skills -->
+                        <div class="short-course-highlight">
+                            🧠 COURSE TRACK: <a
+                                href="https://anthropic.skilljar.com/"
+                                class="course-link" style="color: white;">Anthropic Skilljar Academy</a>
+                            (Anthropic) — Deep dive into Claude functionality
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase3-anthropic-core" class="details-toggle hidden" checked>
+                            <label for="toggle-phase3-anthropic-core"
+                                class="cursor-pointer font-semibold text-teal-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm font-bold text-gray-800 mb-2">Key courses to complete from the catalog:</p>
+                                <ul class="list-disc list-inside space-y-2 text-sm mb-4 text-gray-800">
+                                    <li><strong>Claude 101:</strong> Everyday work tasks with Claude</li>
+                                    <li><strong>Claude Code in Action:</strong> Integrating Claude Code into your dev workflow</li>
+                                    <li><strong>Building with the Claude API:</strong> Full spectrum of working with Anthropic models</li>
+                                    <li><strong>Introduction to Model Context Protocol:</strong> Build MCP servers from scratch using Python</li>
+                                    <li><strong>Model Context Protocol: Advanced Topics:</strong> Sampling, fs access, and transport mechanisms</li>
+                                    <li><strong>Introduction to Agent Skills:</strong> Build reusable markdown instructions in Claude Code</li>
+                                    <li><strong>AI Fluency: Framework & Foundations:</strong> Ethical and safe collaboration</li>
+                                </ul>
+                                <p class="text-sm text-gray-700 mb-3"><strong>Strategic Value:</strong> Anthropic's MCP model is emerging as the industry standard for agentic context tools. Mastering this directly from Anthropic is a major competitive advantage.</p>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- NEW: RAG & Vector Databases Section -->
+                        <div
+                            class="bg-gradient-to-r from-blue-50 to-cyan-50 p-6 rounded-lg border-l-4 border-blue-500 mb-4">
+                            <h3 class="font-bold text-blue-900 mb-3">🔍 RAG, Vector Databases & Retrieval Systems</h3>
+                            <p class="text-sm text-gray-700 mb-4">Master retrieval-augmented generation, vector
+                                databases, and advanced search techniques for AI applications.</p>
+                        </div>
+
+                        <!-- Building Applications with Vector Databases -->
+                        <div class="short-course-highlight">
+                            🔍 SHORT COURSE: <a
+                                href="https://www.deeplearning.ai/short-courses/building-applications-with-vector-databases/"
+                                class="course-link" style="color: white;">Building Applications with Vector
+                                Databases</a> (Pinecone) — Semantic search, RAG, and anomaly detection
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase3-vectordb" class="details-toggle hidden" checked>
+                            <label for="toggle-phase3-vectordb"
+                                class="cursor-pointer font-semibold text-green-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm text-gray-700 mb-2"><em>Level: Beginner | Focus: Six applications with
+                                        Pinecone vector database</em></p>
+                                <p class="text-sm text-gray-700 mb-3"><strong>Overlap Note:</strong> Complements IBM's
+                                    RAG fundamentals with hands-on Pinecone implementation.</p>
+                            </div>
+                        </div>
+
+                        <!-- Multi-vector Image Retrieval -->
+                        <div class="short-course-highlight">
+                            🔍 SHORT COURSE: <a
+                                href="https://www.deeplearning.ai/short-courses/multi-vector-image-retrieval/"
+                                class="course-link" style="color: white;">Multi-vector Image Retrieval</a> (Qdrant) —
+                            Advanced retrieval with multiple vectors for fine-grained multimodal search
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase3-multivector" class="details-toggle hidden">
+                            <label for="toggle-phase3-multivector"
+                                class="cursor-pointer font-semibold text-green-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm text-gray-700 mb-2"><em>Level: Intermediate | Focus: Multi-vector
+                                        representations for images, text-to-image matching</em></p>
+                                <p class="text-sm text-gray-700 mb-3"><strong>Overlap Note:</strong> Advanced retrieval
+                                    technique. Complements basic vector database course.</p>
+                            </div>
+                        </div>
+
+                        <!-- Redis Semantic Caching for AI Agents -->
+                        <div class="short-course-highlight">
+                            🔍 SHORT COURSE: <a
+                                href="https://www.deeplearning.ai/short-courses/redis-semantic-caching-for-ai-agents/"
+                                class="course-link" style="color: white;">Redis Semantic Caching for AI Agents</a>
+                            (Redis) — Speed up and reduce costs with semantic caching
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase3-redis" class="details-toggle hidden">
+                            <label for="toggle-phase3-redis"
+                                class="cursor-pointer font-semibold text-green-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm text-gray-700 mb-2"><em>Level: Intermediate | Focus: Semantic caching
+                                        to reuse responses based on meaning</em></p>
+                                <p class="text-sm text-gray-700 mb-3"><strong>Overlap Note:</strong> Production
+                                    optimization technique. Essential for cost-effective agentic systems.</p>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- NEW: Multimodal & Specialized Applications -->
+                        <div
+                            class="bg-gradient-to-r from-orange-50 to-amber-50 p-6 rounded-lg border-l-4 border-orange-500 mb-4">
+                            <h3 class="font-bold text-orange-900 mb-3">🎨 Multimodal AI & Specialized Applications</h3>
+                            <p class="text-sm text-gray-700 mb-4">Explore multimodal models, document AI, voice agents,
+                                and specialized AI application domains.</p>
+                        </div>
+
+                        <!-- Large Multimodal Model Prompting with Gemini -->
+                        <div class="short-course-highlight">
+                            🎨 SHORT COURSE: <a
+                                href="https://www.deeplearning.ai/short-courses/large-multimodal-model-prompting-with-gemini/"
+                                class="course-link" style="color: white;">Large Multimodal Model Prompting with
+                                Gemini</a> (Google Cloud) — Best practices for multimodal prompting
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase3-gemini" class="details-toggle hidden">
+                            <label for="toggle-phase3-gemini"
+                                class="cursor-pointer font-semibold text-green-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm text-gray-700 mb-2"><em>Level: Beginner | Focus: Google's Gemini model
+                                        for multimodal tasks</em></p>
+                                <p class="text-sm text-gray-700 mb-3"><strong>Overlap Note:</strong> Model-specific
+                                    prompting techniques. Complements general prompt engineering.</p>
+                            </div>
+                        </div>
+
+                        <!-- Document AI: From OCR to Agentic Doc Extraction -->
+                        <div class="short-course-highlight">
+                            🎨 SHORT COURSE: <a
+                                href="https://www.deeplearning.ai/short-courses/document-ai-from-ocr-to-agentic-doc-extraction/"
+                                class="course-link" style="color: white;">Document AI: From OCR to Agentic Doc
+                                Extraction</a> (LandingAI) — Parse documents and extract info from charts, tables, forms
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase3-docai" class="details-toggle hidden">
+                            <label for="toggle-phase3-docai"
+                                class="cursor-pointer font-semibold text-green-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm text-gray-700 mb-2"><em>Level: Intermediate | Focus: Agentic document
+                                        parsing with visual grounding</em></p>
+                                <p class="text-sm text-gray-700 mb-3"><strong>Overlap Note:</strong> Specialized
+                                    application domain. Combines vision and agentic systems.</p>
+                            </div>
+                        </div>
+
+                        <!-- Building Live Voice Agents with Google's ADK -->
+                        <div class="short-course-highlight">
+                            🎨 SHORT COURSE: <a
+                                href="https://www.deeplearning.ai/short-courses/building-live-voice-agents-with-googles-adk/"
+                                class="course-link" style="color: white;">Building Live Voice Agents with Google's
+                                ADK</a> (Google) — Real-time voice AI agents using Agent Development Kit
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase3-voice" class="details-toggle hidden">
+                            <label for="toggle-phase3-voice"
+                                class="cursor-pointer font-semibold text-green-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm text-gray-700 mb-2"><em>Level: Intermediate | Focus: Voice-based agent
+                                        interactions, multi-agent podcast systems</em></p>
+                                <p class="text-sm text-gray-700 mb-3"><strong>Overlap Note:</strong> Voice modality for
+                                    agents. Expands beyond text-only interactions.</p>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- NEW: Advanced Frameworks & Integration -->
+                        <div
+                            class="bg-gradient-to-r from-pink-50 to-rose-50 p-6 rounded-lg border-l-4 border-pink-500 mb-4">
+                            <h3 class="font-bold text-pink-900 mb-3">⚙️ Advanced Frameworks & Model Context Protocol
+                            </h3>
+                            <p class="text-sm text-gray-700 mb-4">Master advanced integration patterns and the Model
+                                Context Protocol for rich-context AI applications.</p>
+                        </div>
+
+                        <!-- Build LLM Apps with LangChain.js -->
+                        <div class="short-course-highlight">
+                            ⚙️ SHORT COURSE: <a
+                                href="https://www.deeplearning.ai/short-courses/build-llm-apps-with-langchain-js/"
+                                class="course-link" style="color: white;">Build LLM Apps with LangChain.js</a>
+                            (LangChain) — JavaScript framework for building with LLMs
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase3-langchainjs" class="details-toggle hidden">
+                            <label for="toggle-phase3-langchainjs"
+                                class="cursor-pointer font-semibold text-green-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm text-gray-700 mb-2"><em>Level: Intermediate | Focus: LangChain in
+                                        JavaScript/TypeScript ecosystem</em></p>
+                                <p class="text-sm text-gray-700 mb-3"><strong>Overlap Note:</strong> JavaScript
+                                    alternative to Python LangChain. Useful for full-stack web developers.</p>
+                            </div>
+                        </div>
+
+                        <!-- MCP: Build Rich-Context AI Apps with Anthropic -->
+                        <div class="short-course-highlight">
+                            ⚙️ SHORT COURSE: <a
+                                href="https://www.deeplearning.ai/short-courses/mcp-build-rich-context-ai-apps-with-anthropic/"
+                                class="course-link" style="color: white;">MCP: Build Rich-Context AI Apps with
+                                Anthropic</a> (Anthropic) — Model Context Protocol for tools, data, and prompts
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase3-mcp" class="details-toggle hidden">
+                            <label for="toggle-phase3-mcp"
+                                class="cursor-pointer font-semibold text-green-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm text-gray-700 mb-2"><em>Level: Intermediate | Focus: Standardized
+                                        protocol for AI app context management</em></p>
+                                <p class="text-sm text-gray-700 mb-3"><strong>Overlap Note:</strong> Emerging standard
+                                    for AI integrations. Complements existing frameworks.</p>
+                            </div>
+                        </div>
+
+                        <div class="milestone-box mt-4">
+                            <strong>✅ Phase 3 Completion Milestone:</strong> You will have mastered RAG systems, vector
+                            databases, multimodal AI, agentic frameworks (LangGraph, CrewAI, AutoGen), LLM fine-tuning,
+                            coding agents, semantic caching, document AI, voice agents, and production-ready generative
+                            AI architectures. You now have elite, market-differentiated expertise in agentic AI systems.
+                            Ready for staff-level AI engineering interviews.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PHASE 4: LEADERSHIP, PRODUCT STRATEGY & PROJECT EXCELLENCE - MERGED -->
+            <section class="mb-16">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div>
+                            <h2 class="text-3xl font-bold" style="color: #667eea;">Phase 4: Leadership, Product Strategy
+                                & Project Excellence</h2>
+                            <p class="text-gray-600 font-semibold mt-1">⏳ Estimated Duration: 5-6 months (150-180 hours)
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- IBM AI Product Manager -->
+                        <div class="specialization-highlight">
+                            🎯 CORE LEADERSHIP: <a
+                                href="https://www.coursera.org/professional-certificates/ibm-ai-product-manager"
+                                class="course-link" style="color: white;">IBM AI Product Manager Professional
+                                Certificate</a> (10 courses, ~100 hours) — PRIMARY CREDENTIAL
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase4-product" class="details-toggle hidden" checked>
+                            <label for="toggle-phase4-product"
+                                class="cursor-pointer font-semibold text-blue-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course & Book Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <ol class="list-decimal list-inside space-y-2 text-sm mb-4">
+                                    <li>Product Management: An Introduction</li>
+                                    <li>Product Management: Foundations & Stakeholder Collaboration</li>
+                                    <li>Product Management: Initial Product Strategy and Plan</li>
+                                    <li>Product Management: Developing and Delivering a New Product</li>
+                                    <li>Introduction to Artificial Intelligence (AI) (Shared)</li>
+                                    <li>Generative AI: Introduction and Applications (Shared)</li>
+                                    <li>Generative AI: Prompt Engineering Basics (Shared)</li>
+                                    <li>Generative AI: Foundation Models and Platforms</li>
+                                    <li>Product Management: Building AI-Powered Products</li>
+                                    <li>Generative AI: Supercharge Your Product Management Career</li>
+                                </ol>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "The Art of AI Product Development" (Janna Lipenkova) 🎧
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "Design for How People Think" (John Whalen) 🎧
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "Inspired" by Marty Cagan
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "AI Engineering" (Chip Huyen) 🎧
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "AI-Native Software Delivery" (Nick Durkin et al.)
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "The Engineering Executive's Primer" (Will Larson) 🎧
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "Think Like a Software Engineering Manager" (Akanksha
+                                    Gupta) 🎧
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "Collaborative Software Design" (Gien Verschatse et al.)
+                                    🎧
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "Crucial Conversations" (Grenny, Patterson et al.) 🎧
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "Pitch Anything" (Oren Klaff) 🎧
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "How to Deliver a TED Talk" (Jeremey Donovan) 🎧
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "Discussing Design" (Adam Connor et al.) 🎧
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "How To Talk To Absolutely Anyone" (Mark Rhodes) 🎧
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "The Relatable Leader" (Rachel DeAlto) 🎧
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "Leading the High Energy Culture" (David Casullo) 🎧
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "Technology Strategy Patterns" (Eben Hewitt) 🎧
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "The CEO Difference" (D. A. Benton) 🎧
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "The Salesforce Business Analyst Handbook" (Srini
+                                    Munagavalasa) 🎧
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "Talk to the Elephant" (Julie Dirksen) 🎧
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>🎧 Audiobook:</strong> "Building AI-Powered Products" (Dr. Marily Nika and Cara Firestone)
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>🎧 Audiobook:</strong> "The Staff Engineer's Path" (Tanya Reilly and Wendy Tremont King)
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "Fundamentals of Software Architecture, 2nd Edition" (Mark Richards and Neal Ford)
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>🎧 Audiobook:</strong> "Facilitating Software Architecture" (Andrew Harmel-Law and Mike Cooper)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="milestone-box mt-4">
+                            <strong>✅ Phase 4 Completion Milestone:</strong> You will have mastered product management,
+                            AI product strategy, project delivery with AI tools, cross-functional leadership, and
+                            commercialization of AI products. Combined with technical expertise from Phases 2-3, you now
+                            have rare "technical AI engineer + product strategy" profile—highly competitive for
+                            staff/principal roles.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PHASE 5: DATA ENGINEERING SPECIALIZATION (OPTIONAL) - MERGED -->
+            <section class="mb-16">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div>
+                            <h2 class="text-3xl font-bold" style="color: #667eea;">Phase 5: Data Engineering
+                                Specialization (Optional)</h2>
+                            <p class="text-gray-600 font-semibold mt-1">⏳ Estimated Duration: 6-8 months (140-180 hours)
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-amber-50 p-6 rounded-lg border-l-4 border-amber-500 mb-4">
+                        <p class="text-gray-800"><strong>🔍 Strategic Purpose:</strong> Creates full-stack "data
+                            infrastructure + AI" expertise, rare and highly valued in top tech companies. Enables you to
+                            architect scalable AI systems with deep understanding of data pipelines, warehousing, and
+                            ETL.</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- IBM Data Engineering Professional Certificate -->
+                        <div class="conditional-add">
+                            📊 CONDITIONAL: <a
+                                href="https://www.coursera.org/professional-certificates/ibm-data-engineer"
+                                class="course-link" style="color: white;">IBM Data Engineering Professional Certificate
+                                (Selective Courses)</a> (4-5 courses, ~80 hours) — SELECT COURSES ONLY
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase5-dataeng" class="details-toggle hidden" checked>
+                            <label for="toggle-phase5-dataeng"
+                                class="cursor-pointer font-semibold text-orange-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Course & Book Details ▼
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm font-bold text-gray-800 mb-3">✅ TAKE THESE (strategically aligned with
+                                    AI roadmap):</p>
+                                <ul class="text-sm text-gray-700 space-y-2 mb-4 list-disc list-inside">
+                                    <li>ETL and Data Pipelines with Shell, Airflow and Kafka</li>
+                                    <li>Introduction to Big Data with Spark and Hadoop</li>
+                                    <li>Machine Learning with Apache Spark</li>
+                                </ul>
+                                <div class="book-recommendation">
+                                    <strong>🎧 Audiobook:</strong> "Designing Data-Intensive Applications" (Martin Kleppmann and Benjamin Lange)
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>🎧 Audiobook:</strong> "Effective Platform Engineering" (Sean Alvarez, Ajay Chankramath, Bryan Oliver and Nic Cheneweth)
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>🎧 Audiobook:</strong> "Enabling Microservice Success" (Sarah Wells and Zura Johnson)
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>🎧 Audiobook:</strong> "Building Microservices: Designing Fine-Grained Systems" (Sam Newman and Theodore O'Brien)
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>🎧 Audiobook:</strong> "Designing Distributed Systems" (Brendan Burns and Tom Beyer)
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>🎧 Audiobook:</strong> "Software Architecture: The Hard Parts" (Neal Ford, Mark Richards, Pramod Sadalage, Zhamak Dehghani and Dena Dahilig)
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "Fundamentals of Data Engineering" (Joe Reis & Matt Housley) 🎧
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "Deciphering Data Architectures" (James Serra)
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "AWS Certified Data Engineer Associate Study Guide"
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "Generative AI on AWS" 🎧
+                                </div>
+                                <div class="book-recommendation">
+                                    <strong>📖 Book:</strong> "Data-Driven Cybersecurity" (Mariano Mattei) 🎧
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Conditional: Data Warehouse Engineering -->
+                        <div class="conditional-add">
+                            🏢 CONDITIONAL: <a
+                                href="https://www.coursera.org/professional-certificates/data-warehouse-engineering"
+                                class="course-link" style="color: white;">IBM Data Warehouse Engineer Professional
+                                Certificate</a> (9 courses, ~110 hours) — BI-FOCUSED ALTERNATIVE
+                        </div>
+
+                        <div class="milestone-box mt-4">
+                            <strong>✅ Phase 5 Completion Milestone (if pursued):</strong> You will have added
+                            production-grade data infrastructure expertise to your AI foundation. Understanding of ETL,
+                            Airflow, Kafka, Big Data systems, and Spark ML enables you to architect end-to-end AI
+                            systems at scale. This creates a rare "full-stack AI engineer" profile.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PHASE 6: OPTIONAL MS-AI DEGREE (HYBRID STRATEGY) -->
+            <section class="mb-16">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div>
+                            <h2 class="text-3xl font-bold" style="color: #667eea;">Phase 6: CU Boulder Master of Science
+                                in AI (OPTIONAL)</h2>
+                            <p class="text-gray-600 font-semibold mt-1">⏳ Timing: 24-36 months AFTER completing Phase 5
+                                (Months 25-60+)</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-indigo-50 p-6 rounded-lg border-l-4 border-indigo-500 mb-4">
+                        <p class="text-gray-800"><strong>🎓 Strategic Purpose:</strong> Add accredited Master's degree
+                            credential to your professional portfolio. Leverage prior learning and expertise to
+                            accelerate degree completion. Combined with Phases 1-5, creates unmatched profile: practical
+                            expert + academic credential.</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- MS-AI Overview -->
+                        <div class="hybrid-strategy"
+                            style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: #212529;">
+                            <p><strong>Why Pursue After Phase 5 Completion:</strong></p>
+                            <ul class="text-sm mt-2 space-y-1 list-disc list-inside">
+                                <li>You'll have staff/principal AI role and proven expertise</li>
+                                <li>Can evaluate if degree credential value justifies 24-36 month commitment</li>
+                                <li>Can pursue part-time while working (CU allows 8-year max timeline)</li>
+                                <li>Can leverage prior coursework for credit transfer (verify with admissions)</li>
+                            </ul>
+                        </div>
+
+                        <!-- MS-AI Program Details -->
+                        <div class="specialization-highlight">
+                            🎓 <a href="https://www.coursera.org/degrees/ms-artificial-intelligence-boulder"
+                                class="course-link" style="color: white;">CU Boulder Master of Science in Artificial
+                                Intelligence</a> (30 credits)
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="toggle-phase6-ms" class="details-toggle hidden">
+                            <label for="toggle-phase6-ms"
+                                class="cursor-pointer font-semibold text-blue-600 hover:underline flex items-center gap-2">
+                                📚 Show/Hide Program Details <span class="text-lg">▼</span>
+                            </label>
+                            <div class="details-content mt-3 ml-4">
+                                <p class="text-sm font-bold text-gray-800 mb-3">Program Structure (30 credits):</p>
+                                <div class="text-sm text-gray-700 space-y-2 mb-4">
+                                    <p><strong>Pathway/Foundations (3 credits):</strong> Introduction to Supervised
+                                        Learning, Unsupervised Algorithms, Intro to Deep Learning</p>
+                                    <p><strong>Foundations of AI (6 credits - choose 2):</strong> Probability,
+                                        Optimization, Machine Learning, Linear Algebra, Theory of Computation,
+                                        Probabilistic Models, Autonomous Systems</p>
+                                    <p><strong>AI Core (6 credits - choose 2):</strong> Computer Vision, NLP, Neural
+                                        Networks/Deep Learning, Robotics, Data Mining, Reinforcement Learning,
+                                        User-Centered Design</p>
+                                    <p><strong>Electives (15 credits - choose 5 specializations or 4+3
+                                            courses):</strong> RL, NLP, Generative AI (Spring 2026), Computer Vision,
+                                        Deep Learning, Autonomous Systems, Ethics, Big Data, etc.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="milestone-box mt-4"
+                            style="background: linear-gradient(to right, #667eea, #764ba2); color: white;">
+                            <strong>🏆 Final Hybrid Milestone (if pursued):</strong> Master of Science in AI from CU
+                            Boulder + 7+ professional certifications + 20+ specialized short courses + proven expert
+                            experience in AI systems, agentic frameworks, product strategy, and data infrastructure =
+                            Elite profile for principal engineer, technical leadership, and executive roles.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PHASE 7: LIFELONG LEARNER & CONTINUOUS EXCELLENCE -->
+            <section class="mb-16">
+                <div class="bg-gray-900 rounded-lg shadow-lg p-8">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div>
+                            <h2 class="text-3xl font-bold text-white">Phase 7: The Lifelong Learner</h2>
+                            <p class="text-gray-400 font-semibold mt-1">⏳ Timing: Continuous & Ongoing</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-800 p-6 rounded-lg border-l-4 border-gray-500 mb-4">
+                        <p class="text-gray-300"><strong>♾️ Strategic Purpose:</strong> Technology, particularly AI, moves too fast for any static curriculum. This phase represents the continuous integration of new discoveries, frameworks, and methodologies into your evolving engineering portfolio.</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="p-4 bg-gray-800 rounded-lg">
+                            <h3 class="font-bold text-gray-200 mb-2">📚 Continuous Curriculum Maintenance</h3>
+                            <ul class="text-sm text-gray-400 space-y-2 list-disc list-inside">
+                                <li><strong>New DeepLearning.AI Shorts:</strong> Complete every new relevant short-course as they release to stay updated on the latest vendor tooling.</li>
+                                <li><strong>Research Papers:</strong> Maintain a cadence of reading defining architecture papers (e.g. arXiv AI abstracts).</li>
+                                <li><strong>Framework Evolution:</strong> Migrate projects and maintain expertise as tools like LangChain, LangGraph, and AutoGen update their major versions.</li>
+                            </ul>
+                        </div>
+                        <div class="p-4 bg-gray-800 rounded-lg">
+                            <h3 class="font-bold text-gray-200 mb-2">🤝 Ecosystem Integration & Open Source</h3>
+                            <ul class="text-sm text-gray-400 space-y-2 list-disc list-inside">
+                                <li><strong>Community Contributions:</strong> Contribute PRs to core agentic frameworks, demonstrating production-level awareness.</li>
+                                <li><strong>Showcasing Portfolios:</strong> Publish technical articles covering niche discoveries or custom implementations for RAG and Vector Databases.</li>
+                                <li><strong>Networking:</strong> Attend regional tech conferences, maintain enterprise networking, and mentor aspiring product managers and engineers.</li>
+                            </ul>
+                        </div>
+                        <div class="p-4 bg-gray-800 rounded-lg">
+                            <h3 class="font-bold text-gray-200 mb-2">🧠 Personal Philosophy & Knowledge Base</h3>
+                            <p class="text-sm text-gray-400 mb-3">Distilled insights and mental models maintained via NotebookLM, forming the foundation of high-leverage decision making and technical execution.</p>
+                            <ul class="text-sm text-gray-400 space-y-2 list-disc list-inside">
+                                <li><strong><a href="https://notebooklm.google.com/notebook/f6b32156-e809-494c-8eff-6790ffc5ba67" class="text-blue-400 hover:underline" target="_blank">Alex Hormozi (298 sources):</a></strong> Scaling frameworks, overcoming ignorance debt, and mastering the four types of leverage (collaboration, capital, code, content).</li>
+                                <li><strong><a href="https://notebooklm.google.com/notebook/3b937cee-5cc4-48a2-a317-7fbecafb460d" class="text-blue-400 hover:underline" target="_blank">Adrià Solà Pastor (247 sources):</a></strong> Personal development, financial literacy, compound interest, and cultivating irreplaceable human skills in the AI era.</li>
+                                <li><strong><a href="https://notebooklm.google.com/notebook/533c4e84-4754-45e5-9acb-ba8ab9c81f34" class="text-blue-400 hover:underline" target="_blank">Vinh Giang (299 sources):</a></strong> Communication mastery, the "challenge network," and translating technical depth into compelling narratives.</li>
+                                <li><strong><a href="https://notebooklm.google.com/notebook/384970f4-3c7a-48e3-bdbf-ce7b0dde8c12" class="text-blue-400 hover:underline" target="_blank">Digital Film School (299 sources):</a></strong> Intuitive storytelling and high-stakes production management.</li>
+                                <li><strong><a href="https://notebooklm.google.com/notebook/1a4cf829-bc20-4784-a43f-78a4632ce1a7" class="text-blue-400 hover:underline" target="_blank">Jose Hidalgo Resume (58 sources):</a></strong> Career synthesis across AI development and energy systems engineering.</li>
+                                <li><strong><a href="https://notebooklm.google.com/notebook/98e24eb1-f249-4dfa-91b8-4b63d644059c" class="text-blue-400 hover:underline" target="_blank">Gas Technician Trade (10 sources):</a></strong> Grounding in physical infrastructure, safety standards, and practical trade mechanics.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            </div>
+
+            <!-- TIMELINE SUMMARY -->
+            <section class="mb-16 bg-white rounded-lg shadow-lg p-8">
+                <h2 class="text-3xl font-bold mb-8" style="color: #667eea;">📅 Complete Timeline Summary</h2>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-gray-100 border-b-2 border-gray-300">
+                                <th class="text-left p-3">Timeline</th>
+                                <th class="text-left p-3">Phase</th>
+                                <th class="text-left p-3">Duration</th>
+                                <th class="text-left p-3">Key Deliverables</th>
+                                <th class="text-center p-3">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="p-3 font-bold">Completed</td>
+                                <td class="p-3">Phase 1: Foundation</td>
+                                <td class="p-3">~3 months</td>
+                                <td class="p-3">Project mgmt, Python, SQL, Cloud basics</td>
+                                <td class="p-3 text-center"><span class="badge"
+                                        style="background-color: #00c853; color: white; padding: 4px 12px; border-radius: 12px; font-weight: 600;">✅
+                                        DONE</span></td>
+                            </tr>
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="p-3 font-bold">Months 1-5</td>
+                                <td class="p-3">Phase 2: Gen AI Foundations</td>
+                                <td class="p-3">4-5 months</td>
+                                <td class="p-3">IBM Full Stack, Intro to Data Science, Deep Learning, ML Specialization</td>
+                                <td class="p-3 text-center"><span class="badge"
+                                        style="background-color: #f59e0b; color: white; padding: 4px 12px; border-radius: 12px; font-weight: 600;">🔄
+                                        IN PROGRESS</span></td>
+                            </tr>
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="p-3 font-bold">Months 6-12</td>
+                                <td class="p-3">Phase 3: Advanced RAG/Agentic AI</td>
+                                <td class="p-3">6-7 months</td>
+                                <td class="p-3">IBM GenAI Eng, Anthropic Academy, 20+ Short Courses (Agentic AI, RAG)</td>
+                                <td class="p-3 text-center"><span class="badge"
+                                        style="background-color: #6BCB77; color: white; padding: 4px 12px; border-radius: 12px; font-weight: 600;">🔥
+                                        CORE</span></td>
+                            </tr>
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="p-3 font-bold">Months 13-17</td>
+                                <td class="p-3">Phase 4: Leadership & Product</td>
+                                <td class="p-3">4-5 months</td>
+                                <td class="p-3">IBM AI Product Manager</td>
+                                <td class="p-3 text-center"><span class="badge"
+                                        style="background-color: #FFD166; color: white; padding: 4px 12px; border-radius: 12px; font-weight: 600;">💼
+                                        STRATEGY</span></td>
+                            </tr>
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="p-3 font-bold">Months 18-24</td>
+                                <td class="p-3">Phase 5: Data Engineering (Optional)</td>
+                                <td class="p-3">6-7 months</td>
+                                <td class="p-3">IBM Data Eng (selective), Data Warehouse Eng</td>
+                                <td class="p-3 text-center"><span class="badge"
+                                        style="background-color: #9E9E9E; color: white; padding: 4px 12px; border-radius: 12px; font-weight: 600;">🔧
+                                        OPTIONAL</span></td>
+                            </tr>
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="p-3 font-bold">Post-Career</td>
+                                <td class="p-3">Phase 6: MS-AI Degree (Optional)</td>
+                                <td class="p-3">24-36 months</td>
+                                <td class="p-3">CU Boulder MS-AI (while working as Staff/Principal AI Eng)</td>
+                                <td class="p-3 text-center"><span class="badge"
+                                        style="background-color: #667eea; color: white; padding: 4px 12px; border-radius: 12px; font-weight: 600;">🎓
+                                        HYBRID</span></td>
+                            </tr>
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="p-3 font-bold">Lifelong</td>
+                                <td class="p-3">Phase 7: Continuous Excellence</td>
+                                <td class="p-3">Ongoing</td>
+                                <td class="p-3">Research, new frameworks, open-source networking</td>
+                                <td class="p-3 text-center"><span class="badge"
+                                        style="background-color: #111827; color: white; padding: 4px 12px; border-radius: 12px; font-weight: 600;">♾️
+                                        ONGOING</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-8 bg-blue-50 p-6 rounded-lg border-l-4 border-blue-500">
+                    <h3 class="font-bold text-blue-900 mb-3">📊 Credential Summary</h3>
+                    <ul class="text-sm text-blue-800 space-y-2 list-disc list-inside">
+                        <li><strong>Professional Certificates:</strong> 7+ (IBM AI Developer, IBM AI Engineering, IBM
+                            GenAI Engineering, IBM AI Product Manager, IBM Data Engineering, Google PM, Google IT
+                            Automation)</li>
+                        <li><strong>DeepLearning.AI Specializations:</strong> 3 (Machine Learning, Deep Learning, plus
+                            individual short courses)</li>
+                        <li><strong>Short Courses:</strong> 20+ specialized courses (Agentic AI, RAG, Vector Databases,
+                            Coding Agents, Multimodal AI, Voice Agents, Document AI, etc.)</li>
+                        <li><strong>Optional Master's Degree:</strong> CU Boulder MS-AI (Phase 6)</li>
+                        <li><strong>Books:</strong> 69 O'Reilly technical & leadership books (52 books, 20 audiobooks, 1
+                            video course) covering AI engineering, MLOps, product management, and executive leadership
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SKILL DISTRIBUTION CHART -->
+            <section class="mb-16 bg-white rounded-lg shadow-lg p-8">
+                <h2 class="text-3xl font-bold mb-6 text-center" style="color: #667eea;">📊 Skill Distribution by Phase
+                </h2>
+                <div class="chart-container">
+                    <canvas id="skillDistributionChart"></canvas>
+                </div>
+                <p class="text-center text-sm text-gray-600 mt-6">Visual breakdown of curriculum focus across core
+                    competency areas</p>
+            </section>
+
+            <!-- IMPLEMENTATION STRATEGY -->
+            <section class="mb-16 bg-white rounded-lg shadow-lg p-8">
+                <h2 class="text-3xl font-bold mb-8" style="color: #667eea;">🚀 Implementation Strategy & Next Steps</h2>
+
+                <div class="space-y-4">
+                    <div class="bg-blue-50 p-6 rounded-lg border-2 border-blue-500">
+                        <h3 class="font-bold text-blue-900 mb-3">✅ Immediate Actions</h3>
+                        <ol class="text-sm text-blue-800 space-y-2 list-decimal list-inside">
+                            <li>Complete IBM Full Stack Software Developer Professional Certificate</li>
+                            <li>Start Introduction to Data Science Specialization</li>
+                            <li>Enroll in Machine Learning Specialization (DeepLearning.AI/Stanford)</li>
+                            <li>Purchase/access recommended books: "AI-Assisted Programming", "Hands-On ML"</li>
+                            <li>Stay consistent with GitHub repository creation for portfolio projects</li>
+                            <li>Schedule weekly review sessions (1 hour/week theory refresh)</li>
+                        </ol>
+                    </div>
+
+                    <div class="bg-purple-50 p-6 rounded-lg border-2 border-purple-500">
+                        <h3 class="font-bold text-purple-900 mb-3">📅 Near-Term Milestones</h3>
+                        <ul class="text-sm text-purple-800 space-y-2 list-disc list-inside">
+                            <li>Complete front-end and back-end modules of IBM Full Stack</li>
+                            <li>Knock out unique courses in Intro to Data Science (2 out of 4 already done)</li>
+                            <li>Complete Machine Learning Specialization courses 1-2</li>
+                            <li>Read Chapters 1-5 of "Hands-On Machine Learning"</li>
+                            <li>Establish study group or accountability partner</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-orange-50 p-6 rounded-lg border-2 border-orange-500">
+                        <h3 class="font-bold text-orange-900 mb-3">💡 Success Factors</h3>
+                        <ul class="text-sm text-orange-800 space-y-2 list-disc list-inside">
+                            <li>Consistency: Dedicate 10-12 hours weekly to courses</li>
+                            <li>Projects: Build real projects with each certification phase</li>
+                            <li>Community: Join Discord/forums, share projects, network</li>
+                            <li>Books: Read 2-3 chapters weekly alongside course work</li>
+                            <li>Short Courses: Complete 1-2 short courses per week during Phase 3</li>
+                            <li>Reflection: Monthly review of progress, adjustments as needed</li>
+                            <li>Flexibility: Adapt timelines based on progress and life events</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FINAL RECOMMENDATIONS -->
+            <section class="mb-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg shadow-lg p-8 text-white">
+                <h2 class="text-3xl font-bold mb-6">🎯 Final Recommendations</h2>
+
+                <div class="space-y-4">
+                    <div class="bg-white bg-opacity-10 p-6 rounded-lg backdrop-blur">
+                        <h3 class="font-bold text-lg mb-2">PRIMARY STRATEGY (Recommended)</h3>
+                        <p class="mb-3">Execute Phases 1-5 as outlined: 22-28 month professional pathway to elite AI
+                            engineer profile with specialization in gen AI, agentic systems (20+ frameworks and tools),
+                            product management, and data infrastructure.</p>
+                        <p class="text-sm font-semibold">✅ Fastest path to staff/principal AI engineer roles with the
+                            most comprehensive agentic AI skillset in the market</p>
+                    </div>
+
+                    <div class="bg-white bg-opacity-10 p-6 rounded-lg backdrop-blur">
+                        <h3 class="font-bold text-lg mb-2">HYBRID STRATEGY (For Long-Term Career)</h3>
+                        <p class="mb-3">Complete professional path (Phases 1-5), then pursue CU Boulder MS-AI degree
+                            (Phase 6) 2-3 years into your career. Combine practical expertise with accredited Master's
+                            credential for ultimate career advantage.</p>
+                        <p class="text-sm font-semibold">✅ Best for: Long-term career, corporate roles, future
+                            leadership positions</p>
+                    </div>
+
+                    <div class="bg-white bg-opacity-10 p-6 rounded-lg backdrop-blur">
+                        <h3 class="font-bold text-lg mb-2">CRITICAL SUCCESS FACTORS</h3>
+                        <ul class="space-y-2 text-sm list-disc list-inside">
+                            <li>Phase 3 (RAG/Agentic AI) is your PRIMARY DIFFERENTIATOR—do not skip any courses</li>
+                            <li>Complete ALL 20+ short courses in Phase 3—this creates unmatched breadth in agentic
+                                systems</li>
+                            <li>Phase 4 (Product Management) is critical for staff/principal roles—master it</li>
+                            <li>Build portfolio projects in each phase—employers evaluate capability via work samples
+                            </li>
+                            <li>Books provide theoretical depth—read alongside courses, don't skip</li>
+                            <li>Consistency matters more than speed—sustainable 10-12 hour/week pace beats burnout</li>
+                            <li>The combination of foundational theory (ML/DL Specializations) + hands-on practice
+                                (short courses) creates deep expertise</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- O'REILLY BOOK LIBRARY -->
+            <section class="mb-16 bg-white rounded-lg shadow-lg p-8">
+                <h2 class="text-3xl font-bold mb-6" style="color: #667eea;">📚 O'Reilly Comprehensive Book Library (69
+                    Titles)</h2>
+
+                <div class="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-lg border-2 border-blue-300 mb-6">
+                    <p class="text-gray-800 mb-3">
+                        <strong>📖 Complete Reference Library:</strong> This curated collection of 69 O'Reilly books and
+                        audiobooks provides comprehensive coverage across all phases of your AI career roadmap—from
+                        foundational mathematics and software architecture to cutting-edge AI agents, LLMs, and
+                        leadership skills.
+                    </p>
+                    <p class="text-sm text-gray-700">
+                        <span class="font-semibold">💡 Reading Strategy:</span> Focus on books aligned with your current
+                        phase. Use audiobooks during commutes. Build a personal library gradually—prioritize titles
+                        marked with ⭐ for each phase.
+                    </p>
+                </div>
+
+                <!-- BOOKS SECTION -->
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold mb-4 text-blue-900">📕 Technical Books (52 + 1 Video)</h3>
+
+                    <!-- AI/ML & LLMs Category -->
+                    <div class="mb-6 border-l-4 border-blue-500 pl-4">
+                        <input type="checkbox" id="toggle-books-ai-ml" class="details-toggle hidden">
+                        <label for="toggle-books-ai-ml"
+                            class="cursor-pointer font-bold text-lg text-blue-800 hover:text-blue-600 flex items-center gap-2 mb-3">
+                            🤖 AI/ML & Large Language Models (11 books) <span class="text-sm">▼</span>
+                        </label>
+                        <div class="details-content ml-4">
+                            <div class="bg-blue-50 p-4 rounded-lg space-y-2 text-sm">
+                                <p class="text-gray-700">⭐ <strong>Hands-On Large Language Models</strong></p>
+                                <p class="text-gray-700">⭐ <strong>Designing Large Language Model Applications</strong>
+                                </p>
+                                <p class="text-gray-700">⭐ <strong>LLM Engineer's Handbook</strong></p>
+                                <p class="text-gray-700"><strong>Prompt Engineering for LLMs</strong></p>
+                                <p class="text-gray-700"><strong>LLMOps</strong></p>
+                                <p class="text-gray-700">⭐ <strong>Hands-On Machine Learning 3rd Edition</strong>
+                                    (Keras/TensorFlow)</p>
+                                <p class="text-gray-700"><strong>Hands-On Machine Learning</strong> (PyTorch Edition)
+                                </p>
+                                <p class="text-gray-700"><strong>Essential Math for Data Science</strong></p>
+                                <p class="text-gray-700"><strong>Essential Math for AI</strong></p>
+                                <p class="text-gray-700">⭐ <strong>Designing Machine Learning Systems</strong> - Chip
+                                    Huyen</p>
+                                <p class="text-gray-700"><strong>AI Engineering</strong> - Chip Huyen</p>
+                                <p class="text-xs text-gray-600 mt-3 italic">Recommended for: Phase 2-3 | Core
+                                    theoretical foundations and practical ML/LLM implementation</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Agents & Frameworks -->
+                    <div class="mb-6 border-l-4 border-purple-500 pl-4">
+                        <input type="checkbox" id="toggle-books-agents" class="details-toggle hidden">
+                        <label for="toggle-books-agents"
+                            class="cursor-pointer font-bold text-lg text-purple-800 hover:text-purple-600 flex items-center gap-2 mb-3">
+                            🤝 AI Agents & LangChain Frameworks (8 books + 1 video) <span class="text-sm">▼</span>
+                        </label>
+                        <div class="details-content ml-4">
+                            <div class="bg-purple-50 p-4 rounded-lg space-y-2 text-sm">
+                                <p class="text-gray-700">⭐ <strong>An Illustrated Guide to AI Agents</strong></p>
+                                <p class="text-gray-700">⭐ <strong>Building Generative AI Agents</strong>
+                                    (LangGraph/AutoGen/CrewAI)</p>
+                                <p class="text-gray-700">⭐ <strong>Building Agentic AI Systems</strong></p>
+                                <p class="text-gray-700"><strong>Building Applications with AI Agents</strong></p>
+                                <p class="text-gray-700"><strong>AI Agents with MCP</strong></p>
+                                <p class="text-gray-700">⭐ <strong>Learning LangChain</strong></p>
+                                <p class="text-gray-700"><strong>Generative AI with LangChain 2nd Edition</strong></p>
+                                <p class="text-gray-700"><strong>LangChain for Life Sciences and Healthcare</strong></p>
+                                <p class="text-gray-700">🎬 <strong>Developing AI Agents with CrewAI</strong> (Video
+                                    Course)</p>
+                                <p class="text-xs text-gray-600 mt-3 italic">Recommended for: Phase 3 | Essential for
+                                    mastering agentic AI systems—your key differentiator</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Product Development -->
+                    <div class="mb-6 border-l-4 border-orange-500 pl-4">
+                        <input type="checkbox" id="toggle-books-ai-product" class="details-toggle hidden">
+                        <label for="toggle-books-ai-product"
+                            class="cursor-pointer font-bold text-lg text-orange-800 hover:text-orange-600 flex items-center gap-2 mb-3">
+                            💼 AI Product Development & Platforms (9 books) <span class="text-sm">▼</span>
+                        </label>
+                        <div class="details-content ml-4">
+                            <div class="bg-orange-50 p-4 rounded-lg space-y-2 text-sm">
+                                <p class="text-gray-700">⭐ <strong>Building AI-Powered Products</strong> - Tom Taulli
+                                </p>
+                                <p class="text-gray-700">⭐ <strong>The Art of AI Product Development</strong> - Tom
+                                    Taulli</p>
+                                <p class="text-gray-700"><strong>AI-Native Software Delivery</strong> - Tom Taulli</p>
+                                <p class="text-gray-700"><strong>Hugging Face in Action</strong></p>
+                                <p class="text-gray-700"><strong>Azure AI Fundamentals (AI-900) Study Guide</strong> -
+                                    Tom Taulli</p>
+                                <p class="text-gray-700"><strong>Generative AI on AWS</strong> - Tom Taulli</p>
+                                <p class="text-gray-700"><strong>GitHub Copilot Certification Study Guide</strong></p>
+                                <p class="text-gray-700"><strong>AI-Assisted Programming</strong></p>
+                                <p class="text-gray-700"><strong>Building Generative AI Services with FastAPI</strong>
+                                </p>
+                                <p class="text-xs text-gray-600 mt-3 italic">Recommended for: Phase 3-4 | Product
+                                    development, cloud platforms, and AI-assisted coding</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Software Architecture -->
+                    <div class="mb-6 border-l-4 border-green-500 pl-4">
+                        <input type="checkbox" id="toggle-books-architecture" class="details-toggle hidden">
+                        <label for="toggle-books-architecture"
+                            class="cursor-pointer font-bold text-lg text-green-800 hover:text-green-600 flex items-center gap-2 mb-3">
+                            🏗️ Software Architecture & Microservices (8 books) <span class="text-sm">▼</span>
+                        </label>
+                        <div class="details-content ml-4">
+                            <div class="bg-green-50 p-4 rounded-lg space-y-2 text-sm">
+                                <p class="text-gray-700">⭐ <strong>Fundamentals of Software Architecture 2nd
+                                        Edition</strong> - Mark Richards, Neal Ford</p>
+                                <p class="text-gray-700">⭐ <strong>Software Architecture: The Hard Parts</strong> - Mark
+                                    Richards, Neal Ford</p>
+                                <p class="text-gray-700"><strong>Facilitating Software Architecture</strong></p>
+                                <p class="text-gray-700"><strong>Designing Distributed Systems</strong></p>
+                                <p class="text-gray-700">⭐ <strong>The Staff Engineer's Path</strong></p>
+                                <p class="text-gray-700"><strong>Building Microservices</strong></p>
+                                <p class="text-gray-700"><strong>Enabling Microservice Success</strong></p>
+                                <p class="text-gray-700"><strong>Design for How People Think</strong></p>
+                                <p class="text-xs text-gray-600 mt-3 italic">Recommended for: Phase 3-5 | Essential for
+                                    staff/principal engineer roles and system design</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Data Engineering -->
+                    <div class="mb-6 border-l-4 border-cyan-500 pl-4">
+                        <input type="checkbox" id="toggle-books-data-eng" class="details-toggle hidden">
+                        <label for="toggle-books-data-eng"
+                            class="cursor-pointer font-bold text-lg text-cyan-800 hover:text-cyan-600 flex items-center gap-2 mb-3">
+                            📊 Data Engineering & Analytics Platforms (11 books) <span class="text-sm">▼</span>
+                        </label>
+                        <div class="details-content ml-4">
+                            <div class="bg-cyan-50 p-4 rounded-lg space-y-2 text-sm">
+                                <p class="text-gray-700">⭐ <strong>Fundamentals of Data Engineering</strong></p>
+                                <p class="text-gray-700">⭐ <strong>Designing Data-Intensive Applications 2nd
+                                        Edition</strong></p>
+                                <p class="text-gray-700"><strong>Deciphering Data Architectures</strong></p>
+                                <p class="text-gray-700"><strong>AWS Certified Data Engineer Associate Study
+                                        Guide</strong></p>
+                                <p class="text-gray-700"><strong>Data Modeling with Microsoft Power BI</strong></p>
+                                <p class="text-gray-700"><strong>Databricks Certified Data Engineer Associate Study
+                                        Guide</strong></p>
+                                <p class="text-gray-700"><strong>SQL Server on Kubernetes</strong> - Anthony E.
+                                    Nocentino, Ben Weissman</p>
+                                <p class="text-gray-700"><strong>Azure Arc-enabled Data Services Revealed</strong> - Ben
+                                    Weissman, Anthony E. Nocentino</p>
+                                <p class="text-gray-700"><strong>Fundamentals of Microsoft Fabric</strong> - Nikola
+                                    Ilic, Ben Weissman</p>
+                                <p class="text-gray-700"><strong>Analytics Engineering with SQL and dbt</strong></p>
+                                <p class="text-gray-700"><strong>Analytics Engineering with Microsoft Fabric and Power
+                                        BI</strong> - Shabnam Watson, Nikola Ilic</p>
+                                <p class="text-xs text-gray-600 mt-3 italic">Recommended for: Phase 5 | Optional data
+                                    infrastructure specialization for full-stack AI engineers</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Operations & Security -->
+                    <div class="mb-6 border-l-4 border-red-500 pl-4">
+                        <input type="checkbox" id="toggle-books-ops" class="details-toggle hidden">
+                        <label for="toggle-books-ops"
+                            class="cursor-pointer font-bold text-lg text-red-800 hover:text-red-600 flex items-center gap-2 mb-3">
+                            🔧 Operations, Reliability & Security (5 books) <span class="text-sm">▼</span>
+                        </label>
+                        <div class="details-content ml-4">
+                            <div class="bg-red-50 p-4 rounded-lg space-y-2 text-sm">
+                                <p class="text-gray-700">⭐ <strong>Site Reliability Engineering</strong> - Niall Richard
+                                    Murphy, Betsy Beyer, Chris Jones, Jennifer Petoff</p>
+                                <p class="text-gray-700"><strong>The Site Reliability Workbook</strong></p>
+                                <p class="text-gray-700"><strong>Building Secure and Reliable Systems</strong></p>
+                                <p class="text-gray-700"><strong>Puppet Best Practices</strong></p>
+                                <p class="text-gray-700"><strong>Data-Driven Cybersecurity</strong></p>
+                                <p class="text-xs text-gray-600 mt-3 italic">Recommended for: Phase 3-5 | Production ML
+                                    systems, MLOps, and enterprise security</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AUDIOBOOKS SECTION -->
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold mb-4 text-purple-900">🎧 Audiobook Library (20 Titles)</h3>
+
+                    <div class="bg-purple-50 p-4 rounded-lg mb-4">
+                        <p class="text-sm text-gray-700"><strong>💡 Audiobook Strategy:</strong> Listen during commutes,
+                            workouts, or household tasks. These cover essential soft skills—leadership, communication,
+                            and professional development—that complement your technical training.</p>
+                    </div>
+
+                    <!-- Leadership & Management -->
+                    <div class="mb-6 border-l-4 border-indigo-500 pl-4">
+                        <input type="checkbox" id="toggle-audio-leadership" class="details-toggle hidden">
+                        <label for="toggle-audio-leadership"
+                            class="cursor-pointer font-bold text-lg text-indigo-800 hover:text-indigo-600 flex items-center gap-2 mb-3">
+                            👔 Leadership & Engineering Management (7 audiobooks) <span class="text-sm">▼</span>
+                        </label>
+                        <div class="details-content ml-4">
+                            <div class="bg-indigo-50 p-4 rounded-lg space-y-2 text-sm">
+                                <p class="text-gray-700">⭐ <strong>The Engineering Executive's Primer</strong> - Will
+                                    Larson</p>
+                                <p class="text-gray-700">⭐ <strong>Think Like a Software Engineering Manager</strong>
+                                </p>
+                                <p class="text-gray-700"><strong>The CEO Difference: How to Climb, Crawl, and Leap Your
+                                        Way to the Next Level of Your Career</strong></p>
+                                <p class="text-gray-700"><strong>Leading the High Energy Culture</strong></p>
+                                <p class="text-gray-700"><strong>The Relatable Leader</strong></p>
+                                <p class="text-gray-700"><strong>Technology Strategy Patterns</strong></p>
+                                <p class="text-gray-700"><strong>The Salesforce Business Analyst Handbook</strong></p>
+                                <p class="text-xs text-gray-600 mt-3 italic">Recommended for: Phase 4-6 | Essential for
+                                    transition to staff+ and leadership roles</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Communication & Professional Skills -->
+                    <div class="mb-6 border-l-4 border-pink-500 pl-4">
+                        <input type="checkbox" id="toggle-audio-communication" class="details-toggle hidden">
+                        <label for="toggle-audio-communication"
+                            class="cursor-pointer font-bold text-lg text-pink-800 hover:text-pink-600 flex items-center gap-2 mb-3">
+                            💬 Communication & Professional Skills (4 audiobooks) <span class="text-sm">▼</span>
+                        </label>
+                        <div class="details-content ml-4">
+                            <div class="bg-pink-50 p-4 rounded-lg space-y-2 text-sm">
+                                <p class="text-gray-700">⭐ <strong>How to Deliver a TED Talk: Secrets of the World's
+                                        Most Inspiring Presentations</strong></p>
+                                <p class="text-gray-700"><strong>How To Talk To Absolutely Anyone, 3rd Edition</strong>
+                                </p>
+                                <p class="text-gray-700">⭐ <strong>Pitch Anything: An Innovative Method for Presenting,
+                                        Persuading, and Winning the Deal</strong></p>
+                                <p class="text-gray-700">⭐ <strong>Crucial Conversations</strong></p>
+                                <p class="text-xs text-gray-600 mt-3 italic">Recommended for: All phases | Critical for
+                                    interviews, presentations, and stakeholder management</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Software Engineering & Design -->
+                    <div class="mb-6 border-l-4 border-teal-500 pl-4">
+                        <input type="checkbox" id="toggle-audio-software" class="details-toggle hidden">
+                        <label for="toggle-audio-software"
+                            class="cursor-pointer font-bold text-lg text-teal-800 hover:text-teal-600 flex items-center gap-2 mb-3">
+                            🎨 Software Engineering & Design (5 audiobooks) <span class="text-sm">▼</span>
+                        </label>
+                        <div class="details-content ml-4">
+                            <div class="bg-teal-50 p-4 rounded-lg space-y-2 text-sm">
+                                <p class="text-gray-700"><strong>Fundamentals of Software Architecture 1st
+                                        Edition</strong> (Audiobook)</p>
+                                <p class="text-gray-700"><strong>Collaborative Software Design</strong></p>
+                                <p class="text-gray-700"><strong>Discussing Design: Improving Communication and
+                                        Collaboration through Critique</strong></p>
+                                <p class="text-gray-700"><strong>Talk to the Elephant: Design Learning for Behavior
+                                        Change</strong></p>
+                                <p class="text-gray-700"><strong>Cybersecurity Myths and Misconceptions</strong></p>
+                                <p class="text-xs text-gray-600 mt-3 italic">Recommended for: Phase 2-5 | Complements
+                                    technical architecture and design courses</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI & Data (Audiobooks) -->
+                    <div class="mb-6 border-l-4 border-amber-500 pl-4">
+                        <input type="checkbox" id="toggle-audio-ai-data" class="details-toggle hidden">
+                        <label for="toggle-audio-ai-data"
+                            class="cursor-pointer font-bold text-lg text-amber-800 hover:text-amber-600 flex items-center gap-2 mb-3">
+                            🤖 AI, Data & Operations (4 audiobooks) <span class="text-sm">▼</span>
+                        </label>
+                        <div class="details-content ml-4">
+                            <div class="bg-amber-50 p-4 rounded-lg space-y-2 text-sm">
+                                <p class="text-gray-700"><strong>AI and Machine Learning for Coders</strong> (Audiobook)
+                                </p>
+                                <p class="text-gray-700"><strong>Prompt Engineering for Generative AI</strong>
+                                    (Audiobook)</p>
+                                <p class="text-gray-700"><strong>Fundamentals of Data Engineering</strong> (Audiobook)
+                                </p>
+                                <p class="text-gray-700"><strong>Site Reliability Engineering: How Google Runs
+                                        Production Systems</strong> (Audiobook)</p>
+                                <p class="text-xs text-gray-600 mt-3 italic">Recommended for: Phase 2-5 | Technical
+                                    content in audiobook format for flexible learning</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reading Recommendations by Phase -->
+                <div class="bg-gradient-to-br from-indigo-50 to-purple-50 p-6 rounded-lg border-2 border-indigo-300">
+                    <h3 class="text-xl font-bold text-indigo-900 mb-4">📖 Strategic Reading Plan by Phase</h3>
+
+                    <div class="space-y-4 text-sm">
+                        <div class="bg-white p-4 rounded-lg border-l-4 border-blue-500">
+                            <p class="font-bold text-blue-900 mb-2">Phase 2 (Months 1-5): Foundation Building</p>
+                            <p class="text-gray-700"><strong>Priority Books:</strong> Hands-On Machine Learning 3rd Ed,
+                                Essential Math for Data Science, AI and Machine Learning for Coders (audio)</p>
+                            <p class="text-gray-600 text-xs mt-1">Goal: Build mathematical and ML foundations alongside
+                                courses</p>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-lg border-l-4 border-purple-500">
+                            <p class="font-bold text-purple-900 mb-2">Phase 3 (Months 6-14): Agentic AI Mastery</p>
+                            <p class="text-gray-700"><strong>Priority Books:</strong> Building Generative AI Agents, LLM
+                                Engineer's Handbook, Learning LangChain, An Illustrated Guide to AI Agents, Designing ML
+                                Systems (Chip Huyen)</p>
+                            <p class="text-gray-600 text-xs mt-1">Goal: Deep expertise in agentic frameworks and
+                                production LLM systems</p>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-lg border-l-4 border-orange-500">
+                            <p class="font-bold text-orange-900 mb-2">Phase 4 (Months 15-20): Leadership & Product</p>
+                            <p class="text-gray-700"><strong>Priority Books:</strong> Building AI-Powered Products,
+                                Staff Engineer's Path, The Engineering Executive's Primer (audio), Crucial Conversations
+                                (audio)</p>
+                            <p class="text-gray-600 text-xs mt-1">Goal: Develop product thinking and leadership
+                                capabilities for staff+ roles</p>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-lg border-l-4 border-cyan-500">
+                            <p class="font-bold text-cyan-900 mb-2">Phase 5 (Months 21-28): Data Infrastructure</p>
+                            <p class="text-gray-700"><strong>Priority Books:</strong> Fundamentals of Data Engineering,
+                                Designing Data-Intensive Applications 2nd Ed, Analytics Engineering with SQL and dbt</p>
+                            <p class="text-gray-600 text-xs mt-1">Goal: Master production data pipelines and
+                                infrastructure for full-stack AI engineering</p>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-lg border-l-4 border-green-500">
+                            <p class="font-bold text-green-900 mb-2">Throughout All Phases: Architecture & Operations
+                            </p>
+                            <p class="text-gray-700"><strong>Ongoing Reading:</strong> Fundamentals of Software
+                                Architecture 2nd Ed, Site Reliability Engineering, Building Microservices</p>
+                            <p class="text-gray-600 text-xs mt-1">Goal: Build system design thinking and production
+                                engineering mindset</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Library Statistics -->
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-blue-100 p-4 rounded-lg text-center">
+                        <p class="text-3xl font-bold text-blue-900">69</p>
+                        <p class="text-sm text-blue-700">Total Titles</p>
+                    </div>
+                    <div class="bg-purple-100 p-4 rounded-lg text-center">
+                        <p class="text-3xl font-bold text-purple-900">52+1</p>
+                        <p class="text-sm text-purple-700">Technical Books + Video</p>
+                    </div>
+                    <div class="bg-pink-100 p-4 rounded-lg text-center">
+                        <p class="text-3xl font-bold text-pink-900">20</p>
+                        <p class="text-sm text-pink-700">Audiobooks</p>
+                    </div>
+                </div>
+
+                <div class="mt-6 bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-500">
+                    <p class="text-sm text-gray-800">
+                        <strong>💡 Pro Tip:</strong> Don't try to read everything at once. Focus on 2-3 books per phase
+                        that align with your current learning objectives. Build your library gradually. Books marked
+                        with ⭐ are highest priority for each phase. Use O'Reilly Learning Platform subscription for
+                        unlimited access to the entire catalog.
+                    </p>
+                </div>
+            </section>
+            <!-- FOOTER -->
+            <footer class="bg-gray-800 text-white rounded-lg shadow-lg p-8 text-center">
+                <h3 class="font-bold text-xl mb-3">AI Career Roadmap v10 (with O'Reilly Book Library)</h3>
+                <p class="text-gray-300 mb-4">Comprehensive, hybrid-strategy pathway to elite AI engineering and
+                    technical leadership</p>
+                <p class="text-gray-400 text-sm">Last Updated: January 29, 2026 (Integrated 69 O'Reilly Books &
+                    Audiobooks) | Next Review: Monthly</p>
+                <p class="text-gray-500 text-xs mt-4">This roadmap is a living document. Adjust based on progress,
+                    market changes, and emerging technologies.</p>
+            </footer>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Roadmap v9 (Updated with DeepLearning.AI) loaded successfully');
+
+            // Chart.js implementation
+            const ctx = document.getElementById('skillDistributionChart');
+            if (ctx) {
+                const tooltipTitleCallback = (tooltipItems) => {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    }
+                    return label;
+                };
+
+                const skillData = {
+                    labels: [
+                        ['Foundational AI & Engineering (P2)'],
+                        ['Advanced RAG & Agentic AI (P3)'],
+                        ['LLM Systems & MLOps (P3/P5)'],
+                        ['Leadership & Product Strategy (P4)']
+                    ],
+                    datasets: [{
+                        label: 'Curriculum Focus',
+                        data: [2.5, 3, 2, 2.5],
+                        backgroundColor: [
+                            '#4D96FF',
+                            '#FF6B6B', // Emphasizing RAG/Agentic as the new core
+                            '#6BCB77',
+                            '#FFD166'
+                        ],
+                        borderColor: '#FFFFFF',
+                        borderWidth: 4,
+                        hoverOffset: 4
+                    }]
+                };
+
+                new Chart(ctx.getContext('2d'), {
+                    type: 'doughnut',
+                    data: skillData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '60%',
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    font: {
+                                        size: 12,
+                                        family: "'Inter', sans-serif"
+                                    },
+                                    padding: 20,
+                                    boxWidth: 30,
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    title: tooltipTitleCallback,
+                                    label: function (context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        label += context.raw + ' Key Focus Areas';
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
