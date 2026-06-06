@@ -12,7 +12,7 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    id: "6",
+    id: "2",
     title: "LLM Resilience Test Report",
     description:
       'An interactive HTML report for Hive Mind Solutions evaluating LLM resilience against prompt injection attacks, featuring a sticky navigation, key findings on model performance (e.g., Gemini 2.5 Pro and Claude Sonnet 4.5 showed high resilience), mitigation strategies, and recommendations for agent security using a custom "HMS Secure Responder Template".',
@@ -22,7 +22,7 @@ export const projects: Project[] = [
     featured: false,
   },
   {
-    id: "7",
+    id: "3",
     title: "R&D Funding Infographic for Hive Mind Solutions",
     description:
       "An interactive infographic visualizing R&D funding opportunities for Hive Mind Solutions, featuring doughnut and bar charts with Chart.js, multi-layered funding ecosystem details (federal, provincial, municipal), tax credit breakdowns, talent pipeline guidance, and top program recommendations using Tailwind CSS and JavaScript.",
@@ -32,7 +32,7 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    id: "8",
+    id: "4",
     title: "Interactive Funding Dashboard for Hive Mind Solutions",
     description:
       "An interactive dashboard visualizing R&D funding opportunities, featuring a program explorer with filters, dynamic charts (Chart.js), strategic pathways, and a prioritized action plan using Tailwind CSS and JavaScript.",
@@ -48,7 +48,7 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    id: "9",
+    id: "5",
     title: "Expense Tracker Application",
     description:
       "A full-stack expense tracking application built with React, featuring PDF and CSV export capabilities, real-time data visualization, and comprehensive expense management. Developed as part of advanced Claude AI collaboration exercises.",
@@ -64,7 +64,7 @@ export const projects: Project[] = [
     featured: false,
   },
   {
-    id: "10",
+    id: "6",
     title: "Gas Technician Unit 3 Training Website",
     description:
       "Interactive educational website covering properties, characteristics, and safe handling of fuel gases. Refactored using Claude AI with meta-prompting and context engineering, fact-checked against CSA training units and code B149.1.25 for regulatory compliance.",
@@ -81,7 +81,7 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    id: "11",
+    id: "7",
     title: "High-Efficiency Furnace Maintenance SOP",
     description:
       "Interactive Standard Operating Procedure for high-efficiency gas furnace inspection, maintenance, and commissioning. Features tabbed navigation, checklists, and detailed procedures adhering to CSA B149.1-25 and Ontario TSSA regulations.",
@@ -91,7 +91,7 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    id: "12",
+    id: "8",
     title: "Context Engineering Research",
     description:
       "Comprehensive research on Context Engineering methodologies for optimizing LLM performance. Covers retrieval strategies, processing techniques, and management approaches, contrasting with traditional Prompt Engineering. Includes impact statistics and future directions for agentic context systems.",
@@ -103,10 +103,10 @@ export const projects: Project[] = [
       "AI Research",
     ],
     link: "https://slateblue-magpie-954127.hostingersite.com/",
-    featured: true,
+    featured: false,
   },
   {
-    id: "14",
+    id: "9",
     title: "HVACHome",
     description:
       "Web application to help tradespeople and homeowners keep track of appliance maintenance. Features include log tracking, manual uploads, maintenance scheduling, and a user-friendly interface. Built using SOLID and KISS principles for robust and maintainable code.",
@@ -122,7 +122,7 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    id: "15",
+    id: "10",
     title: "Gas Technician Unit 3 Architecture & Knowledge Base",
     description:
       "Architected and documented a vanilla ES6 JavaScript refactoring of a monolithic Gas Technician study dashboard. Engineered a strict 5-layer dependency hierarchy enforcing SOLID principles—including constructor dependency injection, observer callback patterns, and stateless components (e.g., ChartService, FuelTable). Accompanied by a comprehensive DeepWiki documentation site and an interactive NotebookLM study guide (https://notebooklm.google.com/notebook/64da08f8-a548-4cae-9d53-65be553e0cf2).",
