@@ -30,14 +30,14 @@ export default function Experience() {
               ROLE // 01
             </span>
             <span className="text-xs font-mono text-muted-foreground">
-              2024–Present
+              Jan 2025–Present
             </span>
           </div>
 
           <div className="p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div className="lg:col-span-4 space-y-4">
               <h3 className="text-2xl font-bold tracking-tight text-foreground">
-                AI Project Consultant | Hive Mind Solutions (HMS) | Kingston, ON | 2024–Present
+                AI Product Manager | Hive Mind Solutions (HMS) | Kingston, ON | Jan 2025–Present
               </h3>
               <div className="p-4 border border-border rounded-md bg-muted/20 space-y-2">
                 <p className="text-xs font-mono uppercase tracking-wider text-muted-foreground">

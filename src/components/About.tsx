@@ -7,8 +7,8 @@ import { educationData } from "@/data/educationData";
 const verifiedFacts = [
   {
     label: "AI Consulting",
-    value: "Co-founder & AI Project Consultant — HiveMind Solutions",
-    meta: "Kingston, ON | 2024–Present",
+    value: "Co-founder & AI Product Manager — HiveMind Solutions",
+    meta: "Kingston, ON | Jan 2025–Present",
   },
   {
     label: "Field Operations",
