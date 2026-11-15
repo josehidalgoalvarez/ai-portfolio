@@ -5,7 +5,7 @@ export const projects: Project[] = [
     id: "9",
     title: "HVACHome",
     description:
-      "Field work-order app I built for my own maintenance job at Patry — 1,288 units, 96 buildings. Tickets, Day Plan, verified parts across 30 storage areas, and gas-furnace SOPs, all phone-first and offline-tolerant. Live since October 2026, with a 14-tool MCP server for AI agents.",
+      "Field work-order app I built for my own maintenance job at Patry — because the systems I was given could not answer the three questions that matter before touching a unit: what is in it, what is the job, and where is the part. 1,288 units, 96 buildings. Tickets, Day Plan, verified parts across 30 storage areas, and gas-furnace SOPs, all phone-first and offline-tolerant. Live since October 2026, with a 14-tool MCP server for AI agents.",
     category: "Web Development",
     technologies: ["React 19", "TypeScript", "Slim 4 PHP", "MySQL", "MCP", "Vite"],
     link: "https://mediumturquoise-gazelle-912925.hostingersite.com/",

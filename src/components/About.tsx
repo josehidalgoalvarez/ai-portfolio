@@ -20,6 +20,11 @@ const verifiedFacts = [
     value: "Caretaker — Queen's University (~18 residences)",
     meta: "Kingston, ON | Oct 2024–Jul 2026",
   },
+  {
+    label: "Trades training",
+    value: "Residential A/C Systems Technician Pre-Apprenticeship (Level 1)",
+    meta: "St. Lawrence College, Kingston, ON | Completed August 2025",
+  },
 ] as const;
 
 const containerVariants = {
