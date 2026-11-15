@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { useScrollToSection } from "@/hooks/use-scroll-to-section";
@@ -6,6 +6,33 @@ import { navigationItems } from "@/data/navigationItems";
 import { personalInfo } from "@/data/personalInfo";
 import NavItem from "./Navbar/NavItem";
 import MobileNavItem from "./Navbar/MobileNavItem";
+
+const mobileMenuVariants = {
+  hidden: {
+    opacity: 0,
+    y: -8,
+    transition: {
+      duration: 0.2,
+    },
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.25,
+      staggerChildren: 0.04,
+    },
+  },
+};
+
+const mobileItemVariants = {
+  hidden: { opacity: 0, y: -8 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.2 },
+  },
+};
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,23 +45,27 @@ export default function Navbar() {
 
   return (
     <motion.nav
-      initial={{ y: -100 }}
+      initial={{ y: -80 }}
       animate={{ y: 0 }}
-      className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b"
+      transition={{ duration: 0.35 }}
+      aria-label="Primary Navigation"
+      className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border"
     >
-      <div className="max-w-6xl mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
-          <motion.button
-            onClick={() => handleNavigation("hero")}
-            className="text-xl font-bold tracking-tight"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            {personalInfo.initials}
-          </motion.button>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-2">
+        <div className="flex items-center justify-between gap-4">
+          {/* Group 1: Brand Identity / Initials Logo */}
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => handleNavigation("hero")}
+              aria-label="Scroll to top"
+              className="inline-flex items-center justify-center min-h-11 min-w-11 px-4 py-2 text-base font-mono font-bold tracking-tight text-foreground border border-border bg-card hover:border-primary hover:bg-muted/40 focus-visible:border-primary rounded-md transition-colors"
+            >
+              {personalInfo.initials}
+            </button>
+          </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          {/* Group 2: Desktop Navigation Rail */}
+          <div className="hidden md:flex items-center gap-2 p-2 border border-border rounded-lg bg-card/80">
             {navigationItems.map((item) => (
               <NavItem
                 key={item.id}
@@ -44,31 +75,39 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Toggle Button (>= 44x44px touch target) */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2"
+            aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={isOpen}
+            className="md:hidden inline-flex items-center justify-center min-h-11 min-w-11 p-2 border border-border rounded-md bg-card text-foreground hover:border-primary hover:bg-muted/40 focus-visible:border-primary transition-colors"
           >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
+            {isOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
 
-        {/* Mobile Navigation */}
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="md:hidden pt-4 pb-2 flex flex-col gap-4"
-          >
-            {navigationItems.map((item) => (
-              <MobileNavItem
-                key={item.id}
-                label={item.label}
-                onClick={() => handleNavigation(item.id)}
-              />
-            ))}
-          </motion.div>
-        )}
+        {/* Mobile Navigation Menu */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              key="mobile-nav"
+              variants={mobileMenuVariants}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              className="md:hidden pt-4 pb-2 flex flex-col gap-2"
+            >
+              {navigationItems.map((item) => (
+                <motion.div key={item.id} variants={mobileItemVariants}>
+                  <MobileNavItem
+                    label={item.label}
+                    onClick={() => handleNavigation(item.id)}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </motion.nav>
   );
