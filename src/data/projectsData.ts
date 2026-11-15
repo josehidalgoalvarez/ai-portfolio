@@ -2,6 +2,16 @@ import { Project } from "@/types/project";
 
 export const projects: Project[] = [
   {
+    id: "9",
+    title: "HVACHome",
+    description:
+      "Field work-order app I built for my own maintenance job at Patry — 1,288 units, 96 buildings. Tickets, Day Plan, verified parts across 30 storage areas, and gas-furnace SOPs, all phone-first and offline-tolerant. Live since October 2026, with a 14-tool MCP server for AI agents.",
+    category: "Web Development",
+    technologies: ["React 19", "TypeScript", "Slim 4 PHP", "MySQL", "MCP", "Vite"],
+    link: "https://mediumturquoise-gazelle-912925.hostingersite.com/",
+    featured: true,
+  },
+  {
     id: "1",
     title: "AI Career Roadmap Infographic",
     description:
@@ -104,22 +114,6 @@ export const projects: Project[] = [
     ],
     link: "https://slateblue-magpie-954127.hostingersite.com/",
     featured: false,
-  },
-  {
-    id: "9",
-    title: "HVACHome",
-    description:
-      "Web application to help tradespeople and homeowners keep track of appliance maintenance. Features include log tracking, manual uploads, maintenance scheduling, and a user-friendly interface. Built using SOLID and KISS principles for robust and maintainable code.",
-    category: "Web Development",
-    technologies: [
-      "TypeScript",
-      "React",
-      "Google AI Studio",
-      "Gemini",
-      "Claude",
-    ],
-    link: "https://mediumturquoise-gazelle-912925.hostingersite.com/",
-    featured: true,
   },
   {
     id: "10",
