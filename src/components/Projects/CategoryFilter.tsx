@@ -13,17 +13,26 @@ export default function CategoryFilter({
   onCategoryChange,
 }: CategoryFilterProps) {
   return (
-    <div className="flex flex-wrap gap-3 mb-12">
-      {categories.map((category) => (
-        <Button
-          key={category}
-          onClick={() => onCategoryChange(category as ProjectCategory)}
-          variant={selectedCategory === category ? "default" : "outline"}
-          className="capitalize"
-        >
-          {category}
-        </Button>
-      ))}
+    <div
+      role="tablist"
+      aria-label="Filter projects by category"
+      className="flex flex-wrap gap-2 mb-8"
+    >
+      {categories.map((category) => {
+        const isActive = selectedCategory === category;
+        return (
+          <Button
+            key={category}
+            role="tab"
+            aria-selected={isActive}
+            onClick={() => onCategoryChange(category as ProjectCategory)}
+            variant={isActive ? "default" : "outline"}
+            className="min-h-11 px-4 py-2 text-xs font-mono capitalize shadow-none"
+          >
+            {category}
+          </Button>
+        );
+      })}
     </div>
   );
 }
