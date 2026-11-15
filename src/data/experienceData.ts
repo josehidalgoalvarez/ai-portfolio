@@ -29,3 +29,10 @@ export const accomplishments = [
   "Architected RAG-based knowledge system with context-aware prompts",
   "Designed automated workflows using N8N and other automation tools",
 ];
+
+export const patryAccomplishments = [
+  "Perform preventive and corrective maintenance across ~1,288 rental units in Kingston, covering HVAC, plumbing, drywall and patching, flooring, and light electrical.",
+  "Respond to emergency calls and lockouts, and coordinate other trades when a job needs a licensed specialist.",
+  "Handle tenant-facing work, including notices of entry and access coordination.",
+  "Built HVACHome, the field operations app I use on site, to track units, tickets, parts, and storage across the portfolio.",
+];

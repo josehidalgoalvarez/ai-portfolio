@@ -105,4 +105,18 @@ export const certificationsData: Certification[] = [
     description: "In progress — 8 of 15 courses completed as of Sep 29, 2026. Full-stack web, cloud, React, Node.js, Python and Django, containers and microservices, plus capstone.",
     link: "https://www.coursera.org/professional-certificates/ibm-full-stack-cloud-developer",
   },
+  {
+    id: "cert-15",
+    title: "Ozone Depletion Prevention (ODP)",
+    organization: "Government of Ontario",
+    description: "Certificate to purchase and handle refrigerants in Ontario under O. Reg. 463/10. Issued Jun 2025, expires Jun 2030. Credential ID 1183017. Covers handling refrigerants; it is not on its own a refrigeration repair qualification.",
+    link: "https://www.ontario.ca/page/certificate-handle-refrigerants",
+  },
+  {
+    id: "cert-16",
+    title: "IPEX System 636",
+    organization: "IPEX",
+    description: "IPEX System 636 credential for thermoplastic piping systems. Issued Jan 2026, expires Jan 2029.",
+    link: "https://www.ipexna.com/",
+  },
 ];

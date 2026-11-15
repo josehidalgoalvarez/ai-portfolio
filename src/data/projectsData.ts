@@ -87,7 +87,7 @@ export const projects: Project[] = [
       "Meta-Prompting",
       "Context Engineering",
     ],
-    link: "https://gray-badger-918104.hostingersite.com/",
+    link: "/projects/gas-tech-unit3/",
     featured: true,
   },
   {
@@ -130,5 +130,35 @@ export const projects: Project[] = [
     ],
     link: "https://deepwiki.com/josehidalgoalvarez/Gas-Technician-3-Unit-3/1-overview",
     featured: true,
+  },
+  {
+    id: "11",
+    title: "Interactive SOP: Ductless Mini-Split Service",
+    description:
+      "Interactive Standard Operating Procedure for ductless mini-split service, with a standardised process and customer interaction protocol.",
+    category: "Technical Documentation",
+    technologies: ["HTML", "CSS", "JavaScript", "SOP"],
+    link: "/projects/ductless-sop/",
+    featured: false,
+  },
+  {
+    id: "12",
+    title: "Interactive SOP: Wall Patch & Spot Paint",
+    description:
+      "Interactive Standard Operating Procedure for wall patching and spot painting, with a productivity and timeline dashboard.",
+    category: "Technical Documentation",
+    technologies: ["HTML", "CSS", "JavaScript", "SOP"],
+    link: "/projects/wall-prep-sop/",
+    featured: false,
+  },
+  {
+    id: "13",
+    title: "Gas Furnace Technical Dashboard",
+    description:
+      "Technical dashboard for gas furnace assessment, with an assessment breakdown, safe work practices, and the G51MP report.",
+    category: "Web Development",
+    technologies: ["HTML", "CSS", "JavaScript"],
+    link: "/projects/gas-tech-dashboard/",
+    featured: false,
   },
 ];

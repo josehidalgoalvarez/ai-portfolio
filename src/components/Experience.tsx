@@ -3,7 +3,7 @@ import SectionContainer from "./common/SectionContainer";
 import SectionTitle from "./common/SectionTitle";
 import AchievementCard from "./Experience/AchievementCard";
 import AccomplishmentsList from "./Experience/AccomplishmentsList";
-import { achievements, accomplishments } from "@/data/experienceData";
+import { achievements, accomplishments, patryAccomplishments } from "@/data/experienceData";
 
 export default function Experience() {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 });
@@ -35,6 +35,15 @@ export default function Experience() {
         {accomplishments && accomplishments.length > 0 && (
           <AccomplishmentsList accomplishments={accomplishments} inView={inView} />
         )}
+
+        <div className="mt-16">
+          <p className="text-xl text-muted-foreground">
+            Building Maintenance Technician | Patry Group of Companies | Kingston, ON | Jul 2026–Present
+          </p>
+          {patryAccomplishments && patryAccomplishments.length > 0 && (
+            <AccomplishmentsList accomplishments={patryAccomplishments} inView={inView} />
+          )}
+        </div>
       </div>
     </SectionContainer>
   );
