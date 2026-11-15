@@ -42,7 +42,7 @@ export const projects: Project[] = [
     id: "13",
     title: "Gas Furnace Technical Dashboard",
     description:
-      "Field furnace assessments needed a single view for readings and safety checks. I structured the G51MP inspection report, safe-work practices, and diagnostic breakdown into one browser dashboard.",
+      "Field furnace assessments needed a single view for readings and safety checks. I structured the G51MP inspection report, safe-work practices, and diagnostic breakdown into one browser dashboard. The reading, the safety check, and the diagnosis belong in one frame. Open the dashboard.",
     category: "Web Development",
     technologies: ["HTML", "CSS", "JavaScript"],
     link: "/projects/gas-tech-dashboard/",
@@ -52,7 +52,7 @@ export const projects: Project[] = [
     id: "1",
     title: "AI Career Roadmap Infographic",
     description:
-      "Mapped an 87-book O'Reilly reading list and Coursera curriculum into a single study tracker to sequence my transition into AI engineering.",
+      "Mapped my 87-book O'Reilly reading list and Coursera curriculum into a single study tracker to sequence my transition into AI engineering.",
     category: "Web Development",
     technologies: ["HTML", "CSS (Tailwind)", "JavaScript", "Chart.js"],
     link: "/projects/ai-career-roadmap/",
@@ -62,7 +62,7 @@ export const projects: Project[] = [
     id: "2",
     title: "LLM Resilience Test Report",
     description:
-      'Tested prompt-injection attacks across Gemini 2.5 Pro and Claude Sonnet 4.5 for HiveMind Solutions and documented the "HMS Secure Responder Template" for agent guardrails.',
+      'Tested prompt-injection attacks across Gemini 2.5 Pro and Claude Sonnet 4.5 for HiveMind Solutions, then documented the "HMS Secure Responder Template" for agent guardrails.',
     category: "Web Development",
     technologies: ["HTML", "Tailwind CSS", "JavaScript", "Inter Font"],
     link: "https://antiquewhite-snake-885911.hostingersite.com/",
@@ -72,7 +72,7 @@ export const projects: Project[] = [
     id: "3",
     title: "R&D Funding Infographic for Hive Mind Solutions",
     description:
-      "Consolidated federal, provincial, and municipal R&D grants and tax credits so HiveMind Solutions could compare non-dilutive funding requirements in one view.",
+      "Put federal, provincial, and municipal R&D grants and tax credits in one view so HiveMind Solutions could compare non-dilutive funding requirements.",
     category: "Web Development",
     technologies: ["HTML", "Tailwind CSS", "JavaScript", "Chart.js"],
     link: "https://lightcoral-trout-302187.hostingersite.com/",
@@ -82,7 +82,7 @@ export const projects: Project[] = [
     id: "4",
     title: "Interactive Funding Dashboard for Hive Mind Solutions",
     description:
-      "Built a filterable companion view to sort Canadian R&D funding programs by eligibility, stage, and application order for HiveMind Solutions.",
+      "Built a filterable companion view for HiveMind Solutions to sort Canadian R&D funding programs by eligibility, stage, and application order.",
     category: "Web Development",
     technologies: [
       "HTML",
@@ -114,7 +114,7 @@ export const projects: Project[] = [
     id: "8",
     title: "Context Engineering Research",
     description:
-      "Compared retrieval, context-window structuring, and prompt-only workflows to guide how HiveMind Solutions designs multi-agent memory.",
+      "Compared retrieval, context-window structuring, and prompt-only workflows to guide multi-agent memory design at HiveMind Solutions.",
     category: "Research",
     technologies: [
       "LLM Optimization",
@@ -129,7 +129,7 @@ export const projects: Project[] = [
     id: "10",
     title: "Gas Technician Unit 3 Architecture & Knowledge Base",
     description:
-      "Refactored a monolithic Gas Technician study app into a 5-layer ES6 module hierarchy with constructor dependency injection, paired with a DeepWiki architecture site and an interactive NotebookLM study guide.",
+      "Rebuilt a single-file Gas Technician study app into a 5-layer module structure so each part of the curriculum can be read and tested on its own, paired with a DeepWiki architecture site and an interactive NotebookLM study guide.",
     category: "Software Architecture",
     technologies: [
       "ES6 Modules",
@@ -145,7 +145,7 @@ export const projects: Project[] = [
     id: "11",
     title: "Interactive SOP: Ductless Mini-Split Service",
     description:
-      "Standardized ductless mini-split cleaning, inspection, and tenant handoff steps into a field-ready checklist.",
+      "Turned ductless mini-split cleaning, inspection, and tenant handoff steps into a field checklist.",
     category: "Technical Documentation",
     technologies: ["HTML", "CSS", "JavaScript", "SOP"],
     link: "/projects/ductless-sop/",
@@ -155,7 +155,7 @@ export const projects: Project[] = [
     id: "12",
     title: "Interactive SOP: Wall Patch & Spot Paint",
     description:
-      "Documented wall-patching, drying stages, and spot-painting steps so unit turnovers follow a predictable timeline.",
+      "Mapped wall-patching, drying stages, and spot-painting steps into a clear unit-turnover timeline.",
     category: "Technical Documentation",
     technologies: ["HTML", "CSS", "JavaScript", "SOP"],
     link: "/projects/wall-prep-sop/",
