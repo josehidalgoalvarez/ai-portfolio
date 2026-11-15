@@ -15,37 +15,41 @@ export default function CertificationCard({
 }: CertificationCardProps) {
   return (
     <AnimatedCard
-      delay={delay}
+      delay={Math.min(delay, 0.35)}
       inView={inView}
-      className="p-6 border rounded-lg bg-background hover:border-primary transition-colors flex flex-col h-full"
+      className="rounded-lg border border-border bg-card text-card-foreground hover:border-primary transition-colors flex flex-col h-full overflow-hidden"
     >
-      <div className="flex items-start gap-4 mb-4">
-        <div className="p-3 bg-primary/10 rounded-full text-primary shrink-0">
-          <Award size={24} />
-        </div>
-        <div>
-          <h3 className="text-xl font-bold leading-tight mb-1">
-            {certification.title}
-          </h3>
-          <p className="text-sm text-primary font-medium">
-            {certification.organization}
-          </p>
-        </div>
+      {/* Top Meta Bar */}
+      <div className="px-6 py-4 border-b border-border bg-muted/20 flex items-center justify-between gap-2">
+        <span className="inline-flex items-center gap-2 text-xs font-mono text-primary font-semibold">
+          <Award size={14} />
+          {certification.organization}
+        </span>
+        <span className="text-xs font-mono text-muted-foreground">
+          {certification.id.toUpperCase()}
+        </span>
       </div>
-      
-      <p className="text-muted-foreground text-sm mb-6 flex-grow">
-        {certification.description}
-      </p>
 
-      <div className="mt-auto pt-4 border-t">
-        <a
-          href={certification.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
-        >
-          Verify Credential <ExternalLink size={14} />
-        </a>
+      {/* Card Body */}
+      <div className="p-6 flex flex-col flex-1">
+        <h3 className="text-base font-bold tracking-tight text-foreground mb-4">
+          {certification.title}
+        </h3>
+
+        <p className="text-base text-muted-foreground leading-relaxed mb-6 flex-grow">
+          {certification.description}
+        </p>
+
+        <div className="mt-auto pt-4 border-t border-border">
+          <a
+            href={certification.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 min-h-11 px-4 py-2 text-xs font-mono font-semibold border border-border bg-background text-foreground hover:border-primary hover:text-primary rounded-md transition-colors"
+          >
+            Verify Credential <ExternalLink size={14} />
+          </a>
+        </div>
       </div>
     </AnimatedCard>
   );

@@ -13,18 +13,30 @@ export default function AccomplishmentsList({
 }: AccomplishmentsListProps) {
   return (
     <AnimatedCard
-      delay={0.4}
+      delay={0.2}
       inView={inView}
-      className="mt-16 p-8 border rounded-lg bg-background"
+      className="p-6 sm:p-8 border border-border rounded-lg bg-background"
     >
-      <h3 className="text-2xl font-bold tracking-tight mb-6">
-        {title}
-      </h3>
-      <ul className="space-y-4 text-muted-foreground">
+      <div className="flex items-center justify-between gap-4 pb-4 mb-6 border-b border-border">
+        <h3 className="text-2xl font-bold tracking-tight text-foreground">
+          {title}
+        </h3>
+        <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+          {accomplishments.length} Verified Items
+        </span>
+      </div>
+      <ul className="space-y-4 text-base text-muted-foreground">
         {accomplishments.map((accomplishment, index) => (
-          <li key={index} className="flex gap-3">
-            <span className="text-primary mt-1">•</span>
-            <span>{accomplishment}</span>
+          <li
+            key={index}
+            className="flex items-start gap-4 p-4 border border-border rounded-md bg-muted/20"
+          >
+            <span className="text-xs font-mono font-bold text-primary p-2 border border-border bg-background rounded-sm shrink-0">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <span className="leading-relaxed text-foreground">
+              {accomplishment}
+            </span>
           </li>
         ))}
       </ul>

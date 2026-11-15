@@ -18,23 +18,35 @@ export default function SkillCategoryCard({
 }: SkillCategoryCardProps) {
   return (
     <AnimatedCard
-      delay={delay}
+      delay={Math.min(delay, 0.35)}
       inView={inView}
-      className="p-8 border rounded-lg bg-background"
+      className="rounded-lg border border-border bg-card text-card-foreground hover:border-primary transition-colors flex flex-col overflow-hidden"
     >
-      <Icon className="w-10 h-10 mb-4 text-primary" />
-      <h3 className="text-xl font-bold tracking-tight mb-4">{title}</h3>
-      <ul className="space-y-2">
-        {skills.map((skill) => (
-          <li
-            key={skill}
-            className="text-sm text-muted-foreground flex items-start gap-2"
-          >
-            <span className="text-primary mt-1">•</span>
-            <span>{skill}</span>
-          </li>
-        ))}
-      </ul>
+      <div className="px-6 py-4 border-b border-border bg-muted/20 flex items-center justify-between gap-2">
+        <div className="p-2 border border-border rounded-sm bg-background text-primary">
+          <Icon size={18} />
+        </div>
+        <span className="text-xs font-mono text-muted-foreground">
+          {skills.length} Skills
+        </span>
+      </div>
+
+      <div className="p-6 flex flex-col flex-1">
+        <h3 className="text-2xl font-bold tracking-tight text-foreground mb-4">
+          {title}
+        </h3>
+
+        <ul className="flex flex-wrap gap-2">
+          {skills.map((skill) => (
+            <li
+              key={skill}
+              className="p-2 text-xs font-mono bg-muted text-foreground border border-border rounded-sm"
+            >
+              {skill}
+            </li>
+          ))}
+        </ul>
+      </div>
     </AnimatedCard>
   );
 }
