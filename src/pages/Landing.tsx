@@ -15,8 +15,8 @@ export default function Landing() {
       <Hero />
       <About />
       <Experience />
-      <Certifications />
       <Projects />
+      <Certifications />
       <Skills />
       <Contact />
       <Footer />

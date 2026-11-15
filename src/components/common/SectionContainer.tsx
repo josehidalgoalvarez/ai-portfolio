@@ -24,10 +24,10 @@ export default function SectionContainer({
     >
       <motion.div
         ref={ref}
-        initial={{ opacity: 0, y: 40 }}
+        initial={{ opacity: 1, y: 0 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6 }}
-        className="max-w-6xl mx-auto w-full"
+        transition={{ duration: 0.45 }}
+        className="max-w-6xl mx-auto w-full min-w-0"
       >
         {children}
       </motion.div>

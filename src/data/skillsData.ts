@@ -4,6 +4,7 @@ export const skillCategories = [
   {
     icon: Bot,
     title: "AI & Multi-Agent Frameworks",
+    purpose: "For orchestrating multi-step research, tool calling, and source-grounded answers.",
     skills: [
       "CrewAI",
       "LangGraph",
@@ -18,6 +19,7 @@ export const skillCategories = [
   {
     icon: Code,
     title: "Python & Development",
+    purpose: "For shipping backend services, field web apps, and repeatable automation scripts.",
     skills: [
       "Python for AI/ML",
       "Automation Scripting",
@@ -28,6 +30,7 @@ export const skillCategories = [
   {
     icon: Workflow,
     title: "Project Management",
+    purpose: "For turning messy operations into clear plans, SOPs, and scoped deliverables.",
     skills: [
       "Agile Methodologies",
       "Waterfall",
@@ -39,25 +42,19 @@ export const skillCategories = [
   {
     icon: Cloud,
     title: "Cloud & DevOps",
+    purpose: "For versioned releases, cloud hosting, and clean repository workflows.",
     skills: ["Google Cloud Platform", "AWS Fundamentals", "Git & GitHub"],
   },
   {
     icon: Database,
     title: "Data Science",
+    purpose: "For querying operational tables, tracking parts inventory, and verifying metrics.",
     skills: ["SQL", "Advanced Data Analysis", "Data Visualization"],
   },
   {
     icon: GitBranch,
     title: "LLM Providers",
+    purpose: "For matching each task to the right cloud or local model.",
     skills: ["OpenAI", "Google Gemini", "Claude", "Ollama"],
   },
-];
-
-export const certifications = [
-  "Multi AI Agent Systems with crewAI | DeepLearning.AI",
-  "Generative AI Software Engineering | Vanderbilt University",
-  "Google IT Automation with Python | Google",
-  "Google Project Management | Google",
-  "Generative AI Leadership & Strategy | Vanderbilt University",
-  "Generative AI Data Analyst | Vanderbilt University",
 ];

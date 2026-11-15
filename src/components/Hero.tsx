@@ -7,28 +7,27 @@ import { projects } from "@/data/projectsData";
 import HeroShowcaseCard from "./Hero/HeroShowcaseCard";
 
 const verifiedStats = [
-  { value: "1,288", label: "Rental Units" },
+  { value: "1,288", label: "Rental units" },
   { value: "96", label: "Buildings" },
-  { value: "14", label: "MCP Tools" },
+  { value: "14", label: "MCP tools" },
 ] as const;
 
 const containerVariants = {
-  hidden: { opacity: 0 },
+  hidden: { opacity: 1 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.05,
+      staggerChildren: 0.08,
     },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 16 },
+  hidden: { opacity: 1, y: 0 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.45 },
+    transition: { duration: 0.35 },
   },
 };
 
@@ -41,24 +40,24 @@ export default function Hero() {
       id="hero"
       className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 pt-24 pb-24 border-b border-border"
     >
-      <div className="max-w-6xl mx-auto w-full">
+      <div className="max-w-6xl mx-auto w-full min-w-0">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start"
+          className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start min-w-0"
         >
           {/* Left Column: Primary Identity, CTAs, Verified Stats Strip, Socials */}
-          <div className="lg:col-span-7 flex flex-col items-start text-left">
+          <div className="lg:col-span-7 flex flex-col items-start text-left min-w-0">
             <motion.div variants={itemVariants} className="mb-4">
-              <span className="inline-flex items-center px-2 py-1 text-xs font-mono uppercase tracking-wider border border-border bg-muted text-muted-foreground rounded-sm">
+              <span className="inline-flex items-center p-2 text-xs tracking-normal border border-border bg-muted text-muted-foreground rounded-sm">
                 {personalInfo.title}
               </span>
             </motion.div>
 
             <motion.h1
               variants={itemVariants}
-              className="text-4xl md:text-6xl font-bold tracking-tight text-foreground mb-6"
+              className="text-4xl md:text-6xl font-bold tracking-tight text-foreground mb-6 break-words min-w-0"
             >
               {personalInfo.name}
             </motion.h1>
@@ -94,17 +93,17 @@ export default function Hero() {
               </Button>
             </motion.div>
 
-            {/*Stats Strip: ONLY verified HVACHome numbers (8pt grid padding) */}
+            {/* Stats Strip: ONLY verified HVACHome numbers (8pt grid padding) */}
             <motion.div
               variants={itemVariants}
               className="w-full grid grid-cols-3 border border-border rounded-lg bg-muted/20 divide-x divide-border mb-8"
             >
               {verifiedStats.map((stat) => (
-                <div key={stat.label} className="p-2 sm:p-4 text-left">
-                  <p className="text-base font-mono font-bold text-foreground tracking-tight">
+                <div key={stat.label} className="p-2 sm:p-4 text-left min-w-0">
+                  <p className="text-base font-bold text-foreground tracking-normal">
                     {stat.value}
                   </p>
-                  <p className="text-xs font-mono text-muted-foreground mt-2">
+                  <p className="text-xs text-muted-foreground tracking-normal mt-2">
                     {stat.label}
                   </p>
                 </div>
@@ -125,7 +124,7 @@ export default function Hero() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={social.label}
-                    className="inline-flex items-center gap-2 min-h-11 px-4 py-2 text-xs font-mono text-muted-foreground hover:text-foreground border border-border rounded-md bg-background hover:border-primary transition-colors"
+                    className="inline-flex items-center gap-2 min-h-11 px-4 py-2 text-xs tracking-normal text-muted-foreground hover:text-foreground border border-border rounded-md bg-background hover:border-primary transition-colors"
                   >
                     <Icon size={16} />
                     <span>{social.label}</span>
@@ -136,7 +135,7 @@ export default function Hero() {
           </div>
 
           {/* Right Column: Flat Operational Showcase Composition */}
-          <motion.div variants={itemVariants} className="lg:col-span-5 w-full">
+          <motion.div variants={itemVariants} className="lg:col-span-5 w-full min-w-0">
             <HeroShowcaseCard project={hvacHomeProject} />
           </motion.div>
         </motion.div>
@@ -144,9 +143,9 @@ export default function Hero() {
 
       {/* Scroll Cue (touch target >= 44px) */}
       <motion.div
-        initial={{ opacity: 0 }}
+        initial={{ opacity: 1 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.45, duration: 0.45 }}
+        transition={{ duration: 0.35 }}
         className="absolute bottom-4 left-1/2 -translate-x-1/2"
       >
         <button

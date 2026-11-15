@@ -5,7 +5,8 @@ export const personalInfo = {
   initials: "JH",
   title: "Software Engineer & AI Product Manager",
   email: "josehidalgo@hivemindinc.solutions",
-  description: "I build AI systems, and I maintain the buildings they run in. Multi-agent frameworks, RAG, and automation — grounded in field work and safety standards.",
+  description:
+    "I solve people's problems every day — software, planning, plumbing, electricity, HVAC, refrigeration — or give them a clear solution that gets them back on track.",
   socials: [
     {
       label: "GitHub Profile",

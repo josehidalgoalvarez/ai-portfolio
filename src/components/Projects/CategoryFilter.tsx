@@ -20,6 +20,7 @@ export default function CategoryFilter({
     >
       {categories.map((category) => {
         const isActive = selectedCategory === category;
+        const displayLabel = category === "all" ? "All" : category;
         return (
           <Button
             key={category}
@@ -27,9 +28,9 @@ export default function CategoryFilter({
             aria-selected={isActive}
             onClick={() => onCategoryChange(category as ProjectCategory)}
             variant={isActive ? "default" : "outline"}
-            className="min-h-11 px-4 py-2 text-xs font-mono capitalize shadow-none"
+            className="min-h-11 px-4 py-2 text-xs tracking-normal shadow-none"
           >
-            {category}
+            {displayLabel}
           </Button>
         );
       })}

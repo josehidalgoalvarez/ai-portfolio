@@ -6,34 +6,24 @@ import { educationData } from "@/data/educationData";
 
 const verifiedFacts = [
   {
-    label: "AI Consulting",
+    label: "AI consulting",
     value: "Co-founder & AI Product Manager — HiveMind Solutions",
     meta: "Kingston, ON | Jan 2025–Present",
   },
   {
-    label: "Field Operations",
+    label: "Field operations",
     value: "Building Maintenance Technician — Patry Group of Companies",
     meta: "Kingston, ON | Jul 2026–Present",
   },
   {
-    label: "Speaking",
-    value: "Queen's University AI in Teaching & Learning Forum, Ideas Fair",
-    meta: "'GenAI Tools for Learning Patterns' | 2026",
-  },
-  {
-    label: "Engineering Diploma",
-    value: "Energy Systems Engineering Technician Diploma",
-    meta: "St. Lawrence College, Kingston, ON | 2022–2024",
-  },
-  {
-    label: "Trades Training",
-    value: "Residential A/C Systems Technician Pre-Apprenticeship (Level 1)",
-    meta: "St. Lawrence College, Kingston, ON | Completed August 2025",
+    label: "Prior campus role",
+    value: "Caretaker — Queen's University (~18 residences)",
+    meta: "Kingston, ON | Oct 2024–Jul 2026",
   },
 ] as const;
 
 const containerVariants = {
-  hidden: { opacity: 0 },
+  hidden: { opacity: 1 },
   visible: {
     opacity: 1,
     transition: {
@@ -43,11 +33,11 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 16 },
+  hidden: { opacity: 1, y: 0 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.45 },
+    transition: { duration: 0.35 },
   },
 };
 
@@ -56,11 +46,8 @@ export default function About() {
 
   return (
     <SectionContainer id="about" className="border-b border-border" threshold={0.05}>
-      <div className="mb-8">
-        <span className="inline-block p-2 text-xs font-mono uppercase tracking-wider border border-border bg-muted text-muted-foreground rounded-sm mb-2">
-          Field & Systems Profile
-        </span>
-        <h2 className="text-2xl font-bold tracking-tight text-foreground">
+      <div className="mb-8 min-w-0">
+        <h2 className="text-2xl font-bold tracking-tight text-foreground break-words min-w-0">
           About Me
         </h2>
       </div>
@@ -70,28 +57,28 @@ export default function About() {
         variants={containerVariants}
         initial="hidden"
         animate={inView ? "visible" : "hidden"}
-        className="space-y-8"
+        className="space-y-8 min-w-0"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Column: Narrative (all 5 paragraphs word-for-word, in order) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start min-w-0">
+          {/* Left Column: Scannable Thesis + Origin Story */}
           <motion.div
             variants={itemVariants}
-            className="lg:col-span-7 p-6 sm:p-8 border border-border rounded-lg bg-card text-card-foreground space-y-6 text-base text-muted-foreground leading-relaxed"
+            className="lg:col-span-7 p-6 sm:p-8 border border-border rounded-lg bg-card text-card-foreground space-y-4 text-base text-muted-foreground leading-relaxed min-w-0"
           >
+            <h3 className="text-2xl font-bold tracking-tight text-foreground break-words min-w-0">
+              I build systems so I can put my headphones on, follow a clear plan, and execute fast.
+            </h3>
+
             <p>
-              I build AI systems and I maintain buildings. By day I am a Building Maintenance Technician in Kingston, Ontario; I build the tools I need on site, because the systems I was given could not answer the three questions that matter before touching a unit: what is in it, what is the job, and where is the part.
+              At Queen's University across ~18 residences, an auto scrubber belonged in one building, but after someone's two-week vacation everything was scattered — every cart, chemical, and storage room different, and deep-clean handovers on a ~20-item checklist.
             </p>
 
             <p>
-              With HiveMind Solutions, the company I co-founded, I scope, build, and document AI systems for real operations — multi-agent frameworks with CrewAI and LangChain, RAG knowledge systems, and N8N automation — and I write the SOPs that make them repeatable.
+              I am forgetful and I hate decision fatigue. I build tools and SOPs that answer three questions before I start: what I need to know, what I need to do, and why I need to do it.
             </p>
 
             <p>
-              That combination is the point: my software is grounded in field work, safety standards, and tenant-facing reality — CSA B149.1-25 and TSSA gas-furnace procedures, not demos.
-            </p>
-
-            <p>
-              I learn by building, and I verify before I claim. Every result on this site is checkable in the repo or on the live app.
+              Today I bring that discipline to Patry Group of Companies and HiveMind Solutions, grounded in CSA B149.1-25 and TSSA procedures, with every result checkable in the repo or live app.
             </p>
 
             <p>
@@ -99,30 +86,30 @@ export default function About() {
             </p>
           </motion.div>
 
-          {/* Right Column: Flat Verified Fact Panel */}
+          {/* Right Column: Flat Verified Profile Ledger (non-duplicated facts only) */}
           <motion.aside
             variants={itemVariants}
-            className="lg:col-span-5 rounded-lg border border-border bg-card text-card-foreground overflow-hidden"
+            className="lg:col-span-5 rounded-lg border border-border bg-card text-card-foreground overflow-hidden min-w-0"
           >
-            <div className="px-6 py-4 border-b border-border bg-muted/40 flex items-center justify-between gap-2">
-              <span className="text-xs font-mono uppercase tracking-wider text-foreground font-semibold">
-                Verified Profile Ledger
+            <div className="px-6 py-4 border-b border-border bg-muted/40 flex items-center justify-between gap-2 min-w-0">
+              <span className="text-xs tracking-normal text-foreground font-semibold">
+                Verified profile ledger
               </span>
-              <span className="text-xs font-mono text-muted-foreground">
+              <span className="text-xs tracking-normal text-muted-foreground">
                 Kingston, ON
               </span>
             </div>
 
             <div className="divide-y divide-border">
               {verifiedFacts.map((fact) => (
-                <div key={fact.label} className="p-4 sm:p-6">
-                  <p className="text-xs font-mono uppercase tracking-wider text-primary mb-2">
+                <div key={fact.label} className="p-4 sm:p-6 min-w-0">
+                  <p className="text-xs tracking-normal text-primary mb-2">
                     {fact.label}
                   </p>
                   <p className="text-base font-semibold text-foreground mb-2">
                     {fact.value}
                   </p>
-                  <p className="text-xs font-mono text-muted-foreground">
+                  <p className="text-xs tracking-normal text-muted-foreground">
                     {fact.meta}
                   </p>
                 </div>
@@ -131,7 +118,7 @@ export default function About() {
           </motion.aside>
         </div>
 
-        <motion.div variants={itemVariants}>
+        <motion.div variants={itemVariants} className="min-w-0">
           <EducationList education={educationData} />
         </motion.div>
       </motion.div>

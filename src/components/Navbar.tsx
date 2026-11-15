@@ -45,27 +45,27 @@ export default function Navbar() {
 
   return (
     <motion.nav
-      initial={{ y: -80 }}
+      initial={{ y: 0 }}
       animate={{ y: 0 }}
-      transition={{ duration: 0.35 }}
+      transition={{ duration: 0.25 }}
       aria-label="Primary Navigation"
       className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border"
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-2">
-        <div className="flex items-center justify-between gap-4">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-2 min-w-0">
+        <div className="flex items-center justify-between gap-4 min-w-0">
           {/* Group 1: Brand Identity / Initials Logo */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 min-w-0">
             <button
               onClick={() => handleNavigation("hero")}
               aria-label="Scroll to top"
-              className="inline-flex items-center justify-center min-h-11 min-w-11 px-4 py-2 text-base font-mono font-bold tracking-tight text-foreground border border-border bg-card hover:border-primary hover:bg-muted/40 focus-visible:border-primary rounded-md transition-colors"
+              className="inline-flex items-center justify-center min-h-11 min-w-11 px-4 py-2 text-base font-bold tracking-normal text-foreground border border-border bg-card hover:border-primary hover:bg-muted/40 rounded-md transition-colors"
             >
               {personalInfo.initials}
             </button>
           </div>
 
-          {/* Group 2: Desktop Navigation Rail */}
-          <div className="hidden md:flex items-center gap-2 p-2 border border-border rounded-lg bg-card/80">
+          {/* Group 2: Desktop Navigation (flat open track, no nested card border) */}
+          <div className="hidden md:flex items-center gap-2">
             {navigationItems.map((item) => (
               <NavItem
                 key={item.id}
@@ -80,7 +80,7 @@ export default function Navbar() {
             onClick={() => setIsOpen(!isOpen)}
             aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
             aria-expanded={isOpen}
-            className="md:hidden inline-flex items-center justify-center min-h-11 min-w-11 p-2 border border-border rounded-md bg-card text-foreground hover:border-primary hover:bg-muted/40 focus-visible:border-primary transition-colors"
+            className="md:hidden inline-flex items-center justify-center min-h-11 min-w-11 p-2 border border-border rounded-md bg-card text-foreground hover:border-primary hover:bg-muted/40 transition-colors"
           >
             {isOpen ? <X size={20} /> : <Menu size={20} />}
           </button>

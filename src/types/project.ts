@@ -10,8 +10,6 @@ export interface Project {
 
 export type ProjectCategory =
   | "all"
-  | "AI Systems"
-  | "Automation"
   | "Web Development"
   | "Technical Documentation"
   | "Software Architecture"
