@@ -19,7 +19,8 @@ export default function Certifications() {
         claude.push(cert);
       } else if (
         cert.organization === "Government of Ontario" ||
-        cert.organization === "IPEX"
+        cert.organization === "IPEX" ||
+        cert.organization === "Gastite"
       ) {
         trd.push(cert);
       } else {

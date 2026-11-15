@@ -119,4 +119,11 @@ export const certificationsData: Certification[] = [
     description: "IPEX System 636 credential for thermoplastic piping systems. Issued Jan 2026, expires Jan 2029.",
     link: "https://www.ipexna.com/",
   },
+  {
+    id: "cert-17",
+    title: "Gastite FlashShield CSST",
+    organization: "Gastite",
+    description: "Gastite FlashShield corrugated stainless steel tubing (CSST) credential for gas piping systems. Issued Apr 2026. Manufacturer certification to install Gastite/FlashShield CSST; it is not a gas licence on its own.",
+    link: "https://www.gastite.com/ca/technical-resources/get-certified.html",
+  },
 ];
