@@ -68,22 +68,26 @@ export default function About() {
           {/* Left Column: Scannable Thesis + Origin Story */}
           <motion.div
             variants={itemVariants}
-            className="lg:col-span-7 p-6 sm:p-8 border border-border rounded-lg bg-card text-card-foreground space-y-4 text-base text-muted-foreground leading-relaxed min-w-0"
+            className="lg:col-span-7 p-6 sm:p-8 border border-border rounded-lg bg-card text-card-foreground space-y-6 text-base text-muted-foreground leading-relaxed min-w-0"
           >
             <h3 className="text-2xl font-bold tracking-tight text-foreground break-words min-w-0">
-              I build systems so I can put my headphones on, follow a clear plan, and execute fast.
+              Headphones on. Clear plan. Execute.
             </h3>
 
             <p>
-              At Queen's University across ~18 residences, an auto scrubber belonged in one building, but after someone's two-week vacation everything was scattered — every cart, chemical, and storage room different, and deep-clean handovers on a ~20-item checklist.
+              At Queen's University across ~18 residences, an auto scrubber belonged in one building. After someone's two-week vacation, everything was scattered — every cart, chemical, and storage room different, and deep-clean handovers on a ~20-item checklist.
+            </p>
+
+            <p className="text-foreground font-semibold">
+              That disorder became the specification.
             </p>
 
             <p>
-              I am forgetful and I hate decision fatigue. I build tools and SOPs that answer three questions before I start: what I need to know, what I need to do, and why I need to do it.
+              I became the person who builds the memory outside his head. I do not leave daily work to impulse or decision fatigue — I write systems that answer what I need to know, what I need to do, and why I need to do it.
             </p>
 
             <p>
-              Today I bring that discipline to Patry Group of Companies and HiveMind Solutions, grounded in CSA B149.1-25 and TSSA procedures, with every result checkable in the repo or live app.
+              Today that discipline runs at Patry Group of Companies and HiveMind Solutions, grounded in CSA B149.1-25 and TSSA procedures, checkable in the repo or live app.
             </p>
 
             <p>
@@ -91,7 +95,7 @@ export default function About() {
             </p>
           </motion.div>
 
-          {/* Right Column: Flat Verified Profile Ledger (non-duplicated facts only) */}
+          {/* Right Column: Flat Verified Profile Ledger (4 rows untouched) */}
           <motion.aside
             variants={itemVariants}
             className="lg:col-span-5 rounded-lg border border-border bg-card text-card-foreground overflow-hidden min-w-0"

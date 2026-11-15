@@ -5,7 +5,7 @@ export const projects: Project[] = [
     id: "9",
     title: "HVACHome",
     description:
-      "Field work-order app I built for my own maintenance job at Patry — because the systems I was given could not answer the three questions that matter before touching a unit: what is in it, what is the job, and where is the part. 1,288 units, 96 buildings. Tickets, Day Plan, verified parts across 30 storage areas, and gas-furnace SOPs, all phone-first and offline-tolerant. Live since October 2026, with a 14-tool MCP server for AI agents.",
+      "Field work-order app I built for my own maintenance job at Patry — because the systems I was given could not answer the three questions that matter before touching a unit: what is in it, what is the job, and where is the part. 1,288 units, 96 buildings. Tickets, Day Plan, verified parts across 30 storage areas, and gas-furnace SOPs, all phone-first and offline-tolerant. Live since October 2026, with a 14-tool MCP server for AI agents. A missing auto scrubber taught me that tools only work when the system remembers where they live. Inspect the system below.",
     category: "Web Development",
     technologies: ["React 19", "TypeScript", "Slim 4 PHP", "MySQL", "MCP", "Vite"],
     link: "https://mediumturquoise-gazelle-912925.hostingersite.com/",
@@ -15,7 +15,7 @@ export const projects: Project[] = [
     id: "6",
     title: "Gas Technician Unit 3 Training Website",
     description:
-      "Dense fuel-gas safety tables and gas laws were hard to review on site. I refactored the Unit 3 curriculum with context engineering and fact-checked every formula against CSA B149.1-25, producing a searchable field study app.",
+      "Fuel-gas safety tables and gas laws are hard to check mid-shift. I refactored the Unit 3 curriculum with context engineering and fact-checked every formula against CSA B149.1-25. Precision in the code starts with precision in the trade manual. Open the training app to test it.",
     category: "Technical Documentation",
     technologies: [
       "HTML",
@@ -32,7 +32,7 @@ export const projects: Project[] = [
     id: "7",
     title: "High-Efficiency Furnace Maintenance SOP",
     description:
-      "Furnace inspections fail when steps live in memory instead of a checklist. I turned CSA B149.1-25 and Ontario TSSA commissioning rules into a step-by-step field SOP used before closing a call.",
+      "Furnace inspections fail when steps stay in memory. I turned CSA B149.1-25 and Ontario TSSA commissioning rules into a step-by-step field SOP used before closing a call. A checklist removes the guesswork when the basement is dark. Walk the procedure.",
     category: "Technical Documentation",
     technologies: ["HTML", "CSS", "JavaScript", "CSA B149.1-25", "TSSA Compliance"],
     link: "/projects/furnace-sop/",

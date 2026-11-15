@@ -6,7 +6,7 @@ export const personalInfo = {
   title: "Software Engineer & AI Product Manager",
   email: "josehidalgo@hivemindinc.solutions",
   description:
-    "I solve people's problems every day — software, planning, plumbing, electricity, HVAC, refrigeration — or give them a clear solution that gets them back on track.",
+    "When the systems on site cannot answer the job, I build the ones that do — across software, planning, and HVAC/R.",
   socials: [
     {
       label: "GitHub Profile",

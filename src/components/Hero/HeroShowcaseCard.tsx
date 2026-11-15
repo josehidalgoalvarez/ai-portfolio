@@ -22,13 +22,16 @@ export default function HeroShowcaseCard({ project }: HeroShowcaseCardProps) {
         </span>
       </div>
 
-      {/* Single Field Outcome */}
-      <div className="p-6 border-b border-border min-w-0">
-        <p className="text-xs tracking-normal text-muted-foreground mb-2">
+      {/* Single Field Outcome — ends on a pause (white space) */}
+      <div className="p-6 pb-8 border-b border-border space-y-4 min-w-0">
+        <p className="text-xs tracking-normal text-muted-foreground">
           Field outcome
         </p>
         <p className="text-base text-foreground leading-relaxed">
-          The day plan is reviewed before leaving, I know where to stop for parts, and on a few calls I have been on site with the right part in under 20 minutes.
+          The plan is reviewed before I leave. I know where to stop for parts, and on a few calls I have been on site in under 20 minutes.
+        </p>
+        <p className="text-base font-bold text-foreground">
+          Then the work starts.
         </p>
       </div>
 

@@ -30,10 +30,10 @@ export default function Experience() {
               AI Product Manager | Hive Mind Solutions (HMS) | Kingston, ON | Jan 2025–Present
             </h3>
             <p className="text-base text-muted-foreground leading-relaxed">
-              Co-founded with my friend Elvis because I would deeply regret not trying — starting with ourselves as the first client.
+              Co-founded with my friend Elvis because not trying was the only thing I would regret. Our first client was ourselves.
             </p>
             <p className="text-base font-medium text-foreground leading-relaxed pt-4 border-t border-border">
-              Outcome: Replicable content, personal-brand, and automation systems that give small businesses — often friends — traction, cash flow, and the freedom to focus on what they are good at.
+              Outcome: Freedom to focus on what you are good at — backed by traction and cash flow from replicable content, personal-brand, and automation systems built for small businesses.
             </p>
           </div>
 
@@ -51,9 +51,9 @@ export default function Experience() {
           </div>
         </article>
 
-        {/* Connective sentence between the two roles (Q5) */}
+        {/* Connective sentence between the two roles (Koe reframe) */}
         <p className="py-6 border-t border-border text-base font-medium text-foreground leading-relaxed">
-          When full-time tech roles did not land right away, I kept building with HiveMind Solutions while doing the hands-on maintenance work I am good at — and the field is what makes the software real.
+          I didn't fail into tech. I became the person who builds in both worlds — and the field is what makes the software real.
         </p>
 
         {/* Role 2 — Patry Group of Companies */}
@@ -66,7 +66,7 @@ export default function Experience() {
               Building Maintenance Technician | Patry Group of Companies | Kingston, ON | Jul 2026–Present
             </h3>
             <p className="text-base font-medium text-foreground leading-relaxed pt-4 border-t border-border">
-              Outcome: Turned daily multi-building maintenance routes and parts room lookups into a single phone-first workflow used on site.
+              Outcome: Daily multi-building routes and parts-room lookups run through one phone-first workflow on site.
             </p>
           </div>
 
