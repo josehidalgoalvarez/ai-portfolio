@@ -50,7 +50,7 @@ export default function Certifications() {
           </span>
         </div>
         <p className="text-base text-muted-foreground leading-relaxed max-w-3xl">
-          Two programmes changed how I work every day: hands-on gas-technician training for safe mechanical troubleshooting, and the IBM Full Stack Software Developer path (in progress) — which gave me confidence in what code is and how full-stack systems fit together.
+          Three things changed how I work every day: hands-on gas-technician training for safe mechanical troubleshooting, the Google Project Management Professional Certificate, and the IBM Full Stack Software Developer path (in progress) — which gave me confidence in what code is and how full-stack systems fit together.
         </p>
       </div>
 
