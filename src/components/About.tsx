@@ -34,6 +34,10 @@ export default function About() {
             I learn by building, and I verify before I claim. Every result on this site is checkable in the repo or on the live app.
           </p>
 
+          <p>
+            In 2026 I presented 'GenAI Tools for Learning Patterns' at Queen's University's AI in Teaching & Learning Forum, Ideas Fair.
+          </p>
+
           <EducationList education={educationData} />
         </div>
       </motion.div>

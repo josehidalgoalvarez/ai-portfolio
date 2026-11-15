@@ -37,11 +37,15 @@ export default function Experience() {
         )}
 
         <div className="mt-16">
-          <p className="text-xl text-muted-foreground">
+          <h3 className="text-2xl font-bold tracking-tight mb-6">
             Building Maintenance Technician | Patry Group of Companies | Kingston, ON | Jul 2026–Present
-          </p>
+          </h3>
           {patryAccomplishments && patryAccomplishments.length > 0 && (
-            <AccomplishmentsList accomplishments={patryAccomplishments} inView={inView} />
+            <AccomplishmentsList
+              accomplishments={patryAccomplishments}
+              inView={inView}
+              title="Patry — Key Accomplishments"
+            />
           )}
         </div>
       </div>

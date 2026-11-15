@@ -3,11 +3,13 @@ import AnimatedCard from "../common/AnimatedCard";
 interface AccomplishmentsListProps {
   accomplishments: string[];
   inView: boolean;
+  title?: string;
 }
 
 export default function AccomplishmentsList({
   accomplishments,
   inView,
+  title = "Key Accomplishments",
 }: AccomplishmentsListProps) {
   return (
     <AnimatedCard
@@ -16,7 +18,7 @@ export default function AccomplishmentsList({
       className="mt-16 p-8 border rounded-lg bg-background"
     >
       <h3 className="text-2xl font-bold tracking-tight mb-6">
-        Key Accomplishments
+        {title}
       </h3>
       <ul className="space-y-4 text-muted-foreground">
         {accomplishments.map((accomplishment, index) => (
