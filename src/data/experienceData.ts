@@ -3,23 +3,23 @@ import { Briefcase, TrendingDown, TrendingUp, Zap } from "lucide-react";
 export const achievements = [
   {
     icon: TrendingDown,
-    title: "Cost Reduction",
-    description: "Reduced AI operational costs through hierarchical multi-agent framework",
+    title: "Multi-Agent Systems",
+    description: "Architected hierarchical multi-agent framework with CrewAI and LangChain, orchestrating OpenAI, Gemini, Claude and Ollama.",
   },
   {
     icon: TrendingUp,
-    title: "Accuracy",
-    description: "Improved agent task completion accuracy with specialized agent roles",
+    title: "RAG Knowledge Systems",
+    description: "Built RAG-based knowledge systems with context-aware prompts, including a NotebookLM creator and business research library.",
   },
   {
     icon: Zap,
-    title: "Faster Planning",
-    description: "Accelerated project planning cycles from 10 days to 4 days",
+    title: "Automation & SOPs",
+    description: "Designed N8N automated workflows and a 6-SOP content-marketing system so work repeats without me.",
   },
   {
     icon: Briefcase,
-    title: "Productivity Boost",
-    description: "Increased team productivity through workflow automation",
+    title: "Field-Built Software",
+    description: "Built HVACHome, a live field operations app for 1,288 rental units, verified against repo and live site before every release.",
   },
 ];
 

@@ -19,19 +19,19 @@ export default function About() {
 
         <div className="space-y-6 text-lg text-muted-foreground">
           <p>
-            I'm an AI Systems Engineer with a proven track record of architecting scalable AI solutions that deliver significant business impact. My expertise spans Multi-Agent Frameworks, LLM integration, Python automation, and agile project management, complemented by hands-on technical documentation and regulatory compliance experience.
+            I build AI systems and I maintain buildings. By day I am a Building Maintenance Technician in Kingston, Ontario; I build the tools I need on site, because the systems I was given could not answer the three questions that matter before touching a unit: what is in it, what is the job, and where is the part.
           </p>
 
           <p>
-            Currently working with Hive Mind Solutions (HMS), I've successfully accelerated project planning cycles and improved AI agent factual accuracy through innovative multi-agent architectures and RAG-based knowledge systems.
+            With HiveMind Solutions, the company I co-founded, I scope, build, and document AI systems for real operations — multi-agent frameworks with CrewAI and LangChain, RAG knowledge systems, and N8N automation — and I write the SOPs that make them repeatable.
           </p>
 
           <p>
-            My cross-domain expertise bridges AI engineering with technical trades, having developed interactive training materials and SOPs for gas technician certification that adhere to CSA B149.1-25 and TSSA regulations. This unique combination enables me to create AI solutions grounded in real-world operational requirements and safety standards.
+            That combination is the point: my software is grounded in field work, safety standards, and tenant-facing reality — CSA B149.1-25 and TSSA gas-furnace procedures, not demos.
           </p>
 
           <p>
-            I hold professional specializations from institutions including DeepLearning.AI, Google, and Vanderbilt University, covering areas from Multi AI Agent Systems to Generative AI Leadership & Strategy.
+            I learn by building, and I verify before I claim. Every result on this site is checkable in the repo or on the live app.
           </p>
 
           <EducationList education={educationData} />

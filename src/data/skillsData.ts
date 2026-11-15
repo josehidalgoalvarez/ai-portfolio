@@ -11,6 +11,8 @@ export const skillCategories = [
       "LLM Integration",
       "RAG Architectures",
       "Prompt Engineering",
+      "MCP",
+      "Claude Code",
     ],
   },
   {
